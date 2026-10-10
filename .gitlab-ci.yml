@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: None
+# SPDX-License-Identifier: LGPL-2.0-or-later
+
+include:
+  - project: sysadmin/ci-utilities
+    file:
+      - /gitlab-templates/reuse-lint.yml
+      - /gitlab-templates/linux-qt6.yml
+      - /gitlab-templates/linux-qt6-next.yml
+      - /gitlab-templates/qml-lint.yml
+      - /gitlab-templates/yaml-lint.yml
