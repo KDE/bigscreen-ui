@@ -3,7 +3,6 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
 
 import org.kde.kirigami as Kirigami
 
@@ -37,7 +36,7 @@ ColumnLayout {
         implicitHeight: 96
     }
 
-    QQC2.Label {
+    Label {
         id: titleLabel
         visible: text.length > 0
 
@@ -51,7 +50,7 @@ ColumnLayout {
         font.weight: Font.Light
     }
 
-    QQC2.Label {
+    Label {
         id: subtitleLabel
         visible: text.length > 0
 

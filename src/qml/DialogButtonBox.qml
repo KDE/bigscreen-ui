@@ -3,13 +3,18 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
+import QtQuick.Templates as T
 import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
 
-QQC2.DialogButtonBox {
+T.DialogButtonBox {
     id: root
+
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                            implicitContentWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             implicitContentHeight + topPadding + bottomPadding)
 
     required property var dialog
 
@@ -22,7 +27,7 @@ QQC2.DialogButtonBox {
     alignment: Qt.AlignRight
 
     spacing: Kirigami.Units.mediumSpacing
-    position: QQC2.DialogButtonBox.Footer
+    position: T.DialogButtonBox.Footer
 
     standardButtons: root.dialog.standardButtons
 
@@ -34,6 +39,27 @@ QQC2.DialogButtonBox {
     }
 
     delegate: Button {
+        icon.name: {
+            switch (T.DialogButtonBox.buttonRole) {
+            case T.DialogButtonBox.AcceptRole:
+            case T.DialogButtonBox.YesRole:
+                return "dialog-ok";
+            case T.DialogButtonBox.RejectRole:
+            case T.DialogButtonBox.NoRole:
+                return "dialog-cancel";
+            case T.DialogButtonBox.ApplyRole:
+                return "dialog-ok-apply";
+            case T.DialogButtonBox.ResetRole:
+                return "edit-undo";
+            case T.DialogButtonBox.DestructiveRole:
+                return "edit-delete";
+            case T.DialogButtonBox.HelpRole:
+                return "help-contents";
+            default:
+                return "";
+            }
+        }
+
         // HACK: for some reason the height isn't correct on initial start
         onImplicitHeightChanged: height = implicitHeight
 
@@ -56,7 +82,6 @@ QQC2.DialogButtonBox {
         orientation: ListView.Horizontal
         boundsBehavior: Flickable.StopAtBounds
         snapMode: ListView.SnapToItem
-        delegate: root.delegate
 
         Button {
             id: buttonMetrics

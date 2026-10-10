@@ -3,7 +3,6 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
 import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami

@@ -3,11 +3,11 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
+import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 
-QQC2.Popup {
+T.Popup {
     id: root
 
     /*!
@@ -26,7 +26,7 @@ QQC2.Popup {
     Kirigami.Theme.inherit: false
     Kirigami.Theme.colorSet: Kirigami.Theme.View
 
-    parent: QQC2.Overlay.overlay
+    parent: T.Overlay.overlay
     height: parent ? parent.height : null
     width: Math.min(Kirigami.Units.gridUnit * 30, Math.max(Kirigami.Units.gridUnit * 25, Math.round(parent ? (parent.width * 0.3) : 0)))
 
@@ -61,7 +61,7 @@ QQC2.Popup {
         }
     }
 
-    QQC2.Overlay.modal: Rectangle {
+    T.Overlay.modal: Rectangle {
         color: Qt.rgba(0,0,0,0.4)
         Behavior on opacity {
             OpacityAnimator {
@@ -77,13 +77,13 @@ QQC2.Popup {
             color: Kirigami.Theme.backgroundColor
         }
 
-        // Shadow
+        // Shadow cast onto the content to the left
         Rectangle {
-            width: Kirigami.Units.largeSpacing
+            width: Kirigami.Units.largeSpacing * 2
             anchors.top: parent.top
-            anchors.right: frame.right
+            anchors.right: frame.left
             anchors.bottom: parent.bottom
-            opacity: 0.1
+            opacity: 0.25
 
             gradient: Gradient {
                 orientation: Gradient.Horizontal
@@ -96,9 +96,11 @@ QQC2.Popup {
     contentItem: ColumnLayout {
         spacing: 0
 
-        QQC2.Control {
+        T.Control {
             id: headerControl
             visible: contentItem
+            implicitWidth: implicitContentWidth + leftPadding + rightPadding
+            implicitHeight: implicitContentHeight + topPadding + bottomPadding
 
             topPadding: Kirigami.Units.gridUnit
             bottomPadding: Kirigami.Units.gridUnit
@@ -113,7 +115,7 @@ QQC2.Popup {
 
             contentItem: null
         }
-        QQC2.Control {
+        T.Control {
             id: contentControl
             Layout.fillWidth: true
             Layout.fillHeight: true

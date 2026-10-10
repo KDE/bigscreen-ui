@@ -3,7 +3,7 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
+import QtQuick.Templates as T
 import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
@@ -76,12 +76,16 @@ ItemDelegate {
     contentItem: RowLayout {
         spacing: 0
 
-        QQC2.Control {
+        T.Control {
             Layout.rightMargin: visible ? root.leadingPadding : 0
             visible: root.leading
             implicitHeight: visible ? root.leading.implicitHeight : 0
             implicitWidth: visible ? root.leading.implicitWidth : 0
             contentItem: root.leading
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
         Kirigami.Icon {
@@ -100,7 +104,7 @@ ItemDelegate {
             Layout.alignment: Qt.AlignVCenter
             spacing: (!internalTextItem.visible || !internalDescriptionItem.visible) ? 0 : Kirigami.Units.smallSpacing
 
-            QQC2.Label {
+            Label {
                 id: internalTextItem
                 Layout.fillWidth: true
                 text: root.text
@@ -109,11 +113,11 @@ ItemDelegate {
                 visible: root.text
                 Accessible.ignored: true // base class sets this text on root already
             }
-            QQC2.Label {
+            Label {
                 id: internalDescriptionItem
                 Layout.fillWidth: true
                 text: root.description
-                font.pixelSize: root.smallDescription ? 14 : Units.defaultFontPixelSize
+                font.pixelSize: root.smallDescription ? Units.smallFontPixelSize : Units.defaultFontPixelSize
                 color: Kirigami.Theme.disabledTextColor
                 visible: root.description !== ''
                 elide: Text.ElideRight
@@ -121,12 +125,16 @@ ItemDelegate {
             }
         }
 
-        QQC2.Control {
+        T.Control {
             Layout.leftMargin: visible ? root.trailingPadding : 0
             visible: root.trailing
             implicitHeight: visible ? root.trailing.implicitHeight : 0
             implicitWidth: visible ? root.trailing.implicitWidth : 0
             contentItem: root.trailing
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
     }
 }

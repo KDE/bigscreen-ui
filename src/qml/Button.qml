@@ -3,7 +3,6 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
 import QtQuick.Templates as T
 import QtQuick.Effects
 
@@ -59,7 +58,7 @@ T.Button {
             visible: root.icon.name != ''
         }
 
-        QQC2.Label {
+        Label {
             id: internalTextItem
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter

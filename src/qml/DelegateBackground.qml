@@ -3,7 +3,6 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
 import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
@@ -30,6 +29,12 @@ Item {
     // Whether to use the theme's alternate background color for differentiation. Only applicable when raisedBackground = true.
     property bool alternateBackgroundColor: false
 
+    // The width of the border when it is highlighted.
+    property int borderHighlightWidth: 2
+
+    // Whether the background is shown as selected. By default, this is when the control is checked.
+    property bool checked: control && ("checked" in control) && control.checked
+
     Rectangle {
         id: frame
         anchors.fill: parent
@@ -38,7 +43,10 @@ Item {
 
         readonly property bool hovered: control && ("hovered" in control) && control.hovered
 
-        readonly property color backgroundNeutralColor: (alternateBackgroundColor ? Kirigami.Theme.alternateBackgroundColor : Kirigami.Theme.backgroundColor)
+        readonly property color backgroundNeutralColor: {
+            const color = alternateBackgroundColor ? Kirigami.Theme.alternateBackgroundColor : Kirigami.Theme.backgroundColor;
+            return root.checked ? Kirigami.ColorUtils.tintWithAlpha(color, Kirigami.Theme.highlightColor, 0.4) : color;
+        }
         readonly property color backgroundHighlightColor: {
             (root.translucentHighlight)
                 ? Qt.rgba(Kirigami.Theme.highlightColor.r, Kirigami.Theme.highlightColor.g, Kirigami.Theme.highlightColor.b, 0.2)
@@ -60,10 +68,9 @@ Item {
             )
         }
 
-        readonly property int borderHighlightWidth: 2
         readonly property int borderNeutralWidth: (isLightTheme ? 1 : 0)
 
-        border.width: borderHighlighted ? borderHighlightWidth : borderNeutralWidth
+        border.width: borderHighlighted ? root.borderHighlightWidth : borderNeutralWidth
         border.color: {
             (root.borderHighlighted)
                 ? borderHighlightColor
