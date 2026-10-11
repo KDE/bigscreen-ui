@@ -52,7 +52,8 @@ T.Page {
     // Keep content inside the safe area, for example below a header overlaying the page.
     // When overriding a padding, add the safe area margin for that side.
     padding: Kirigami.Units.gridUnit * 2
-    topPadding: padding + SafeArea.margins.top
+    // With a title, the title already keeps clear of the top safe area
+    topPadding: padding + (title.length > 0 ? 0 : SafeArea.margins.top)
     bottomPadding: padding + SafeArea.margins.bottom
     // The title-safe margin, so content isn't lost at the edges of a TV
     leftPadding: Units.contentMargin(SafeArea.margins.left)
@@ -63,7 +64,7 @@ T.Page {
         text: root.title
         leftPadding: root.leftPadding
         rightPadding: root.rightPadding
-        topPadding: root.topPadding
+        topPadding: root.padding + root.SafeArea.margins.top
         type: Label.Title
         elide: Text.ElideRight
         Accessible.role: Accessible.Heading
@@ -105,7 +106,7 @@ T.Page {
         Flickable {
             id: flickable
 
-            readonly property real topOverflow: Math.max(0, root.topPadding - root.SafeArea.margins.top)
+            readonly property real topOverflow: Math.max(0, root.topPadding - (root.title.length > 0 ? 0 : root.SafeArea.margins.top))
             readonly property real bottomOverflow: Math.max(0, root.bottomPadding - root.SafeArea.margins.bottom)
 
             x: -root.leftPadding
