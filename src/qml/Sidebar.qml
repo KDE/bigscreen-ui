@@ -378,8 +378,9 @@ FocusScope {
                             trailingPadding: toggle ? Kirigami.Units.gridUnit : 0
                             trailing: SwitchIndicator {
                                 visible: entry.toggle
-                                implicitWidth: entry.toggle ? Math.round(Kirigami.Units.gridUnit * 2.6) : 0
+                                implicitWidth: entry.toggle ? implicitHeight * 2 : 0
                                 checked: entry.modelData.checked
+                                highlighted: entry.activeFocus || entry.hovered
                                 enabled: entry.enabled
                                 opacity: root.expanded ? 1 : 0
                                 Behavior on opacity {

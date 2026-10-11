@@ -166,8 +166,8 @@ T.SwitchDelegate {
             Layout.alignment: Qt.AlignVCenter
             enabled: root.enabled
             checked: root.checked
+            highlighted: root.activeFocus || root.hovered
         }
-
 
         T.Control {
             Layout.leftMargin: visible ? root.trailingPadding : 0
