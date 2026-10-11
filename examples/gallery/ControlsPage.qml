@@ -13,9 +13,7 @@ BigscreenUI.ScrollablePage {
     id: root
 
     title: "Controls"
-    background: BigscreenUI.BackdropImage {
-        source: "qrc:/images/flow.jpg"
-    }
+    background: BigscreenUI.AmbientBackground {}
 
     ColumnLayout {
         spacing: Kirigami.Units.gridUnit * 3
@@ -223,6 +221,11 @@ BigscreenUI.ScrollablePage {
                     Accessible.name: "Example position"
                 }
             }
+        }
+
+        GallerySection {
+            title: "Busy indicator"
+            description: "Shown while something loads, such as media buffering."
         }
     }
 }
