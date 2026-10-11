@@ -2,66 +2,157 @@
 // SPDX-License-Identifier: LGPL-2.0-or-later
 
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Window
-import QtQuick.Controls as QQC2
+import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 
-/**
- * Scrollable page built on Kirigami.ScrollablePage that always
- * keeps the selected item on the page in view.
- */
+/*!
+   \brief A page whose content scrolls vertically, always keeping the focused item in view.
 
-Kirigami.ScrollablePage {
+   Give the page a single content item, such as a ColumnLayout.
+
+   \code
+   BigscreenUI.ScrollablePage {
+       title: i18n("Settings")
+
+       ColumnLayout {
+           ...
+       }
+   }
+   \endcode
+ */
+T.Page {
     id: root
 
-    // HACK: There are cases where Window.window is null until a parent is set for the page.
-    //       Window.window doesn't seem to automatically listen to value changes, so we need to reload
-    //       the entire Connections to get a non-null window.
-    property var __window: null
+    /*!
+       \brief The content of the page.
+     */
+    default property alias content: flickable.flickableData
 
-    onParentChanged: {
-        if (parent) {
-            if (Window.window && __window !== Window.window) {
-                __window = Window.window
-                Window.window.activeFocusItemChanged.connect(__onActiveFocusItemChanged);
+    /*!
+       \qmlproperty Flickable flickable
+       \brief The Flickable that scrolls the content.
+     */
+    property alias flickable: flickable
+
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                            contentWidth + leftPadding + rightPadding,
+                            implicitHeaderWidth,
+                            implicitFooterWidth)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             contentHeight + topPadding + bottomPadding
+                             + (implicitHeaderHeight > 0 ? implicitHeaderHeight + spacing : 0)
+                             + (implicitFooterHeight > 0 ? implicitFooterHeight + spacing : 0))
+
+    padding: Kirigami.Units.gridUnit * 2
+
+    header: Label {
+        visible: text.length > 0
+        text: root.title
+        leftPadding: root.leftPadding
+        rightPadding: root.rightPadding
+        topPadding: root.topPadding
+        font.pixelSize: Units.titleFontPixelSize
+        font.weight: Font.Light
+        elide: Text.ElideRight
+        Accessible.role: Accessible.Heading
+    }
+
+    /*!
+       \brief Scrolls so that \a item is fully visible, with some margin around it.
+     */
+    function ensureVisible(item: Item): void {
+        const position = item.mapToItem(flickable.contentItem, 0, 0);
+        const margin = Kirigami.Units.gridUnit;
+        // The part of the viewport inside the padding
+        const top = flickable.contentY + flickable.topMargin;
+        const bottom = flickable.contentY + flickable.height - flickable.bottomMargin;
+        let target = flickable.contentY;
+        if (position.y - margin < top) {
+            target = position.y - margin - flickable.topMargin;
+        } else if (position.y + item.height + margin > bottom) {
+            target = position.y + item.height + margin + flickable.bottomMargin - flickable.height;
+        }
+        scrollTo(target);
+    }
+
+    /*!
+       \brief Scrolls back to the start of the content.
+     */
+    function scrollToTop(): void {
+        scrollTo(-flickable.topMargin);
+    }
+
+    function scrollTo(contentY: real): void {
+        const minimum = -flickable.topMargin;
+        const maximum = Math.max(minimum, flickable.contentHeight + flickable.bottomMargin - flickable.height);
+        scrollAnimation.to = Math.max(minimum, Math.min(maximum, contentY));
+        scrollAnimation.restart();
+    }
+
+    contentItem: Item {
+        Flickable {
+            id: flickable
+
+            x: -root.leftPadding
+            y: -root.topPadding
+            width: parent.width + root.leftPadding + root.rightPadding
+            height: parent.height + root.topPadding + root.bottomPadding
+
+            leftMargin: root.leftPadding
+            rightMargin: root.rightPadding
+            topMargin: root.topPadding
+            bottomMargin: root.bottomPadding
+
+            clip: true
+            layer.enabled: contentHeight > height - topMargin - bottomMargin
+            layer.effect: EdgeFadeEffect {
+                topFadeLength: root.topPadding
+                bottomFadeLength: root.bottomPadding
+            }
+            contentWidth: parent.width
+            contentHeight: contentItem.childrenRect.height
+            boundsBehavior: Flickable.StopAtBounds
+
+            Component.onCompleted: {
+                contentY = -topMargin;
+                updateContentWidth();
+            }
+
+            function updateContentWidth(): void {
+                for (const child of contentItem.children) {
+                    child.width = Qt.binding(() => root.availableWidth);
+                }
+            }
+
+            Connections {
+                target: flickable.contentItem
+                function onChildrenChanged() {
+                    flickable.updateContentWidth();
+                }
+            }
+
+            NumberAnimation {
+                id: scrollAnimation
+                target: flickable
+                property: "contentY"
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.OutCubic
             }
         }
     }
 
-    Component.onCompleted: {
-        if (Window.window && __window !== Window.window) {
-            __window = Window.window;
-            Window.window.activeFocusItemChanged.connect(__onActiveFocusItemChanged);
-        }
-    }
-
-    Component.onDestruction: {
-        if (__window) {
-            __window.activeFocusItemChanged.disconnect(__onActiveFocusItemChanged);
-        }
-    }
-
-    function __onActiveFocusItemChanged() {
-        // If the active focused item is a child of this page, scroll to where it is
-        let item = Window.activeFocusItem;
-        if (__isChildOfRoot(item)) {
-            // ensureVisible requires offset since it assumes flickable's coordinate system
-            const itemPosition = root.flickable.contentItem.mapFromItem(item, 0, 0);
-            root.ensureVisible(item, itemPosition.x - item.x, itemPosition.y - item.y);
-        }
-    }
-
-    // Whether the item is a child of root
-    function __isChildOfRoot(item) {
-        var cur = item;
-        while (cur !== null) {
-            if (cur === root.flickable) {
-                return true;
+    Connections {
+        target: root.Window.window
+        function onActiveFocusItemChanged() {
+            const item = root.Window.activeFocusItem;
+            for (let parent = item; parent; parent = parent.parent) {
+                if (parent === flickable.contentItem) {
+                    root.ensureVisible(item);
+                    return;
+                }
             }
-            cur = cur.parent;
         }
-        return false;
     }
 }
