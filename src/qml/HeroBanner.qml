@@ -10,9 +10,6 @@ import org.kde.kirigami as Kirigami
    \brief Large title, metadata and description for a featured or focused piece of media,
    with a row of actions underneath.
 
-   Pair it with a BackdropImage showing the same media behind it. The text fades in again
-   whenever \c title changes.
-
    \code
    BigscreenUI.HeroBanner {
        overline: i18n("Featured")
@@ -45,12 +42,12 @@ ColumnLayout {
     property list<string> metadata
 
     /*!
-       \brief Short labels shown after the metadata, such as the video quality.
+       \brief Short labels shown after the metadata.
      */
     property list<string> badges
 
     /*!
-       \brief The description of the media. Long text is cut off after three lines.
+       \brief The description of the media.
      */
     property string description
 
@@ -61,16 +58,15 @@ ColumnLayout {
     property int titlePixelSize: Units.displayFontPixelSize
 
     /*!
-       \brief Whether the actions are shown. They fade out rather than disappearing, so the
-       layout doesn't move, for example while the user browses content below the banner.
-       Hidden actions can still take focus, so moving focus to them shows them again.
+       \brief Whether the actions are shown.
        \default true
      */
     property bool actionsVisible: true
 
     /*!
        \qmlproperty list<Item> actions
-       \brief Items shown in a row under the description, usually Buttons.
+       \brief Items shown in a row under the description, usually Buttons. Left and right
+       move focus between them.
      */
     default property alias actions: actionRow.data
 
@@ -162,6 +158,9 @@ ColumnLayout {
         spacing: Kirigami.Units.largeSpacing * 2
         visible: children.length > 0
         opacity: root.actionsVisible ? 1 : 0
+
+        // Left and right move between the actions
+        KeyNavigationGroup.orientation: Qt.Horizontal
 
         Behavior on opacity {
             NumberAnimation {

@@ -76,6 +76,9 @@ FocusScope {
         anchors.bottomMargin: root.bottomPadding
         spacing: Kirigami.Units.gridUnit * 2
 
+        // Handle focus between leading <-> tabs <-> trailing
+        KeyNavigationGroup.orientation: Qt.Horizontal
+
         T.Control {
             implicitWidth: implicitContentWidth + leftPadding + rightPadding
             implicitHeight: implicitContentHeight + topPadding + bottomPadding
@@ -107,6 +110,12 @@ FocusScope {
 
                 action: modelData
                 selected: index === root.currentIndex
+
+                onActiveFocusChanged: {
+                    if (activeFocus) {
+                        ListView.view.currentIndex = index;
+                    }
+                }
                 onClicked: {
                     root.currentIndex = index;
                     root.activated(index);
