@@ -29,6 +29,12 @@ QtObject {
     // Margin between the screen edges and content
     readonly property int screenMargin: Kirigami.Units.gridUnit * 5
 
+    // Margin between an edge and content, given the SafeArea margin on that side: the
+    // screen margin, or more to keep clear of something over that edge, such as a Sidebar.
+    function contentMargin(safeMargin: real): real {
+        return Math.max(screenMargin, safeMargin + Kirigami.Units.gridUnit * 2);
+    }
+
     // Corner radius of media artwork
     readonly property int cardCornerRadius: Kirigami.Units.cornerRadius * 2
 

@@ -33,15 +33,15 @@ FocusScope {
 
     /*!
        \brief The space between the left screen edge and the first item.
-       \default Units.screenMargin
+       \default Units.contentMargin(SafeArea.margins.left)
      */
-    property real leftPadding: Units.screenMargin
+    property real leftPadding: Units.contentMargin(SafeArea.margins.left)
 
     /*!
        \brief The space between the last item and the right screen edge.
-       \default Units.screenMargin
+       \default Units.contentMargin(SafeArea.margins.right)
      */
-    property real rightPadding: Units.screenMargin
+    property real rightPadding: Units.contentMargin(SafeArea.margins.right)
 
     property alias model: listView.model
     property alias delegate: listView.delegate

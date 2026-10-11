@@ -55,8 +55,8 @@ T.Page {
     topPadding: padding + SafeArea.margins.top
     bottomPadding: padding + SafeArea.margins.bottom
     // The title-safe margin, so content isn't lost at the edges of a TV
-    leftPadding: Units.screenMargin + SafeArea.margins.left
-    rightPadding: Units.screenMargin + SafeArea.margins.right
+    leftPadding: Units.contentMargin(SafeArea.margins.left)
+    rightPadding: Units.contentMargin(SafeArea.margins.right)
 
     header: Label {
         visible: text.length > 0

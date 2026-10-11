@@ -56,7 +56,7 @@ FocusScope {
     signal activated(int index)
 
     implicitHeight: layout.implicitHeight + topPadding + bottomPadding
-    implicitWidth: layout.implicitWidth + Units.screenMargin * 2
+    implicitWidth: layout.implicitWidth + layout.anchors.leftMargin + layout.anchors.rightMargin
 
     property real topPadding: Kirigami.Units.gridUnit * 2
     property real bottomPadding: Kirigami.Units.gridUnit
@@ -70,8 +70,8 @@ FocusScope {
     RowLayout {
         id: layout
         anchors.fill: parent
-        anchors.leftMargin: Units.screenMargin
-        anchors.rightMargin: Units.screenMargin
+        anchors.leftMargin: Units.contentMargin(root.SafeArea.margins.left)
+        anchors.rightMargin: Units.contentMargin(root.SafeArea.margins.right)
         anchors.topMargin: root.topPadding
         anchors.bottomMargin: root.bottomPadding
         spacing: Kirigami.Units.gridUnit * 2

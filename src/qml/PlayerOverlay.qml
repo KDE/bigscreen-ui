@@ -197,6 +197,8 @@ FocusScope {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: Units.screenMargin
+            anchors.leftMargin: Units.contentMargin(root.SafeArea.margins.left)
+            anchors.rightMargin: Units.contentMargin(root.SafeArea.margins.right)
             // Below anything overlaying the top of the video, such as a header
             anchors.topMargin: root.SafeArea.margins.top + Kirigami.Units.gridUnit * 3
             spacing: Kirigami.Units.smallSpacing
@@ -222,8 +224,8 @@ FocusScope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            anchors.leftMargin: Units.screenMargin
-            anchors.rightMargin: Units.screenMargin
+            anchors.leftMargin: Units.contentMargin(root.SafeArea.margins.left)
+            anchors.rightMargin: Units.contentMargin(root.SafeArea.margins.right)
             anchors.bottomMargin: Kirigami.Units.gridUnit * 3
             spacing: Kirigami.Units.gridUnit * 1.5
 
