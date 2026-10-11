@@ -15,6 +15,8 @@ set_source_files_properties(qml/Units.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 target_sources(bigscreenuiplugin PRIVATE
     backhandler.cpp
     backhandler.h
+    keynavigationgroup.cpp
+    keynavigationgroup.h
 )
 
 ecm_target_qml_sources(bigscreenuiplugin SOURCES
@@ -52,6 +54,7 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/SwitchIndicator.qml
     qml/TextDelegate.qml
     qml/TextField.qml
+    qml/Toast.qml
     qml/Units.qml
 )
 
