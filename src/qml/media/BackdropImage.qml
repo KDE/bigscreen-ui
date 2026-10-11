@@ -8,8 +8,6 @@ import org.kde.kirigami as Kirigami
 /*!
    \brief Full-screen artwork that fades into the window background on the left and at the
    bottom, so text drawn over it stays readable.
-
-   Changing \l source fades to the new image once it has loaded.
  */
 Item {
     id: root
@@ -30,8 +28,16 @@ Item {
      */
     property real artworkOpacity: 0.85
 
+    /*!
+       \brief Whether to show an AmbientBackground while there is no image.
+       \default false
+     */
+    property bool useAmbientFallback: false
+
     property Image __front: imageA
     property Image __back: imageB
+
+    readonly property bool __hasArtwork: __front.status === Image.Ready && __front.source.toString() !== ""
 
     onSourceChanged: {
         if (__front.source.toString() === source.toString()) {
@@ -51,17 +57,27 @@ Item {
         __back.opacity = 0;
     }
 
+    Loader {
+        id: ambientLoader
+
+        anchors.fill: parent
+        opacity: root.__hasArtwork ? 0 : 1
+        active: root.useAmbientFallback && (!root.__hasArtwork || opacity > 0)
+
+        Behavior on opacity { NumberAnimation { duration: Kirigami.Units.veryLongDuration } }
+
+        sourceComponent: AmbientBackground {
+            color: root.fadeColor
+        }
+    }
+
     Image {
         id: imageA
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
         opacity: 0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.veryLongDuration
-            }
-        }
+        Behavior on opacity { NumberAnimation { duration: Kirigami.Units.veryLongDuration } }
         onStatusChanged: if (status === Image.Ready && root.__back === imageA && source.toString() === root.source.toString()) root.__swap()
     }
 
@@ -71,16 +87,18 @@ Item {
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
         opacity: 0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.veryLongDuration
-            }
-        }
+        Behavior on opacity { NumberAnimation { duration: Kirigami.Units.veryLongDuration } }
         onStatusChanged: if (status === Image.Ready && root.__back === imageB && source.toString() === root.source.toString()) root.__swap()
     }
 
     Rectangle {
         anchors.fill: parent
+        opacity: root.__hasArtwork ? 1 : 0
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Kirigami.Units.veryLongDuration
+            }
+        }
         gradient: Gradient {
             orientation: Gradient.Horizontal
             GradientStop { position: 0.0; color: root.fadeColor }
@@ -92,6 +110,12 @@ Item {
 
     Rectangle {
         anchors.fill: parent
+        opacity: root.__hasArtwork ? 1 : 0
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Kirigami.Units.veryLongDuration
+            }
+        }
         gradient: Gradient {
             GradientStop { position: 0.0; color: Qt.alpha(root.fadeColor, 0.8) }
             GradientStop { position: 0.2; color: Qt.alpha(root.fadeColor, 0) }
