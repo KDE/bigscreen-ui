@@ -10,7 +10,7 @@ ecm_add_qml_module(bigscreenuiplugin
         org.kde.kirigami
 )
 
-set_source_files_properties(Units.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+set_source_files_properties(qml/Units.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 
 target_sources(bigscreenuiplugin PRIVATE
     backhandler.cpp
@@ -18,18 +18,37 @@ target_sources(bigscreenuiplugin PRIVATE
 )
 
 ecm_target_qml_sources(bigscreenuiplugin SOURCES
+    qml/ApplicationWindow.qml
+    qml/BackdropImage.qml
+    qml/Badge.qml
     qml/Button.qml
     qml/ButtonDelegate.qml
+    qml/Chip.qml
+    qml/ChipBar.qml
     qml/ComboBoxDelegate.qml
+    qml/ContentRail.qml
     qml/DelegateBackground.qml
     qml/Dialog.qml
     qml/DialogButtonBox.qml
+    qml/EdgeFadeEffect.qml
+    qml/HeroBanner.qml
     qml/ItemDelegate.qml
+    qml/Label.qml
+    qml/MediaCard.qml
+    qml/MediaProgressBar.qml
+    qml/NavigationBar.qml
+    qml/NavigationTab.qml
+    qml/PlayerOverlay.qml
     qml/PopupBackground.qml
+    qml/RailView.qml
+    qml/RoundButton.qml
     qml/ScrollablePage.qml
+    qml/SeekBar.qml
     qml/SidebarOverlay.qml
     qml/SidebarOverlayHeader.qml
+    qml/StackView.qml
     qml/SwitchDelegate.qml
+    qml/SwitchIndicator.qml
     qml/TextDelegate.qml
     qml/TextField.qml
     qml/Units.qml
@@ -38,7 +57,6 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
 target_link_libraries(bigscreenuiplugin PRIVATE
     Qt6::Qml
     Qt6::Quick
-    Qt6::QuickControls2
 )
 
 ecm_finalize_qml_module(bigscreenuiplugin DESTINATION ${KDE_INSTALL_QMLDIR})

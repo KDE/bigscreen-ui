@@ -3,7 +3,7 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
+import QtQuick.Templates as T
 import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
@@ -141,12 +141,16 @@ ItemDelegate {
     contentItem: RowLayout {
         spacing: 0
 
-        QQC2.Control {
+        T.Control {
             Layout.rightMargin: visible ? root.leadingPadding : 0
             visible: root.leading
             implicitHeight: visible ? root.leading.implicitHeight : 0
             implicitWidth: visible ? root.leading.implicitWidth : 0
             contentItem: root.leading
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
         Kirigami.Icon {
@@ -165,7 +169,7 @@ ItemDelegate {
             Layout.alignment: Qt.AlignVCenter
             spacing: (!internalTextItem.visible || !internalDescriptionItem.visible) ? 0 : Kirigami.Units.smallSpacing
 
-            QQC2.Label {
+            Label {
                 id: internalTextItem
                 Layout.fillWidth: true
                 text: root.text
@@ -174,28 +178,34 @@ ItemDelegate {
                 visible: root.text
                 Accessible.ignored: true // base class sets this text on root already
             }
-            QQC2.Label {
+            Label {
                 id: internalDescriptionItem
                 Layout.fillWidth: true
                 text: root.displayText
-                font.pixelSize: root.smallDescription ? 14 : Units.defaultFontPixelSize
+                font.pixelSize: root.smallDescription ? Units.smallFontPixelSize : Units.defaultFontPixelSize
                 color: Kirigami.Theme.disabledTextColor
                 elide: Text.ElideRight
                 wrapMode: Text.Wrap
             }
         }
 
-        QQC2.Control {
+        T.Control {
             Layout.leftMargin: visible ? root.trailingPadding : 0
             visible: root.trailing
             implicitHeight: visible ? root.trailing.implicitHeight : 0
             implicitWidth: visible ? root.trailing.implicitWidth : 0
             contentItem: root.trailing
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
-        // Internal combobox
-        QQC2.ComboBox {
+        // Internal combobox, providing the model handling
+        T.ComboBox {
             id: combobox
+            // A delegate is needed for the combobox to resolve currentText and displayText
+            delegate: Item {}
             focusPolicy: Qt.NoFocus // provided by parent
             model: root.model
             visible: false
@@ -208,39 +218,62 @@ ItemDelegate {
         id: comboBoxDialog
         title: root.text
         onOpened: {
-            contentItem.forceActiveFocus();
+            optionList.forceActiveFocus();
             root.dialogOpened()
         }
 
         // Use aboutToHide() instead of close() because closing take a certain duration (this could steal focus from another opening dialog)
         onAboutToHide: root.forceActiveFocus()
 
-        contentItem: ListView {
-            implicitHeight: contentHeight
-            clip: true
-            spacing: Kirigami.Units.smallSpacing
-            model: root.model
-            currentIndex: root.currentIndex
-            keyNavigationEnabled: true
+        contentItem: Item {
+            implicitHeight: optionList.contentHeight
 
-            // For long lists, avoid looong scrolls, have instant feedback
-            highlightMoveDuration: 0
+            ListView {
+                id: optionList
 
-            delegate: ButtonDelegate {
-                width: ListView.view.width
-                text: root.textRole ? (Array.isArray(root.model) ? modelData[root.textRole] : model[root.textRole]) : modelData
+                readonly property real overflow: Kirigami.Units.gridUnit
 
-                onClicked: {
-                    root.currentIndex = index;
-                    root.activated(index);
-                    comboBoxDialog.close();
+                anchors.fill: parent
+                anchors.margins: -overflow
+                leftMargin: overflow
+                rightMargin: overflow
+                topMargin: overflow
+                bottomMargin: overflow
+
+                clip: true
+                layer.enabled: contentHeight > height - topMargin - bottomMargin
+                layer.effect: EdgeFadeEffect {
+                    topFadeLength: optionList.overflow
+                    bottomFadeLength: optionList.overflow
                 }
+                // Keep the current option clear of the fade
+                highlightRangeMode: ListView.ApplyRange
+                preferredHighlightBegin: overflow
+                preferredHighlightEnd: height - overflow
+                spacing: Kirigami.Units.smallSpacing
+                model: root.model
+                currentIndex: root.currentIndex
+                keyNavigationEnabled: true
 
-                trailing: Kirigami.Icon {
-                    visible: root.currentIndex == model.index;
-                    source: 'checkmark'
-                    implicitWidth: Kirigami.Units.iconSizes.medium
-                    implicitHeight: Kirigami.Units.iconSizes.medium
+                // For long lists, avoid looong scrolls, have instant feedback
+                highlightMoveDuration: 0
+
+                delegate: ButtonDelegate {
+                    width: ListView.view.width - ListView.view.leftMargin - ListView.view.rightMargin
+                    text: root.textRole ? (Array.isArray(root.model) ? modelData[root.textRole] : model[root.textRole]) : modelData
+
+                    onClicked: {
+                        root.currentIndex = index;
+                        root.activated(index);
+                        comboBoxDialog.close();
+                    }
+
+                    trailing: Kirigami.Icon {
+                        visible: root.currentIndex == model.index;
+                        source: 'checkmark'
+                        implicitWidth: Kirigami.Units.iconSizes.medium
+                        implicitHeight: Kirigami.Units.iconSizes.medium
+                    }
                 }
             }
         }

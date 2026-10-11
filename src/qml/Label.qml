@@ -6,9 +6,6 @@ import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 
-/*!
-   \brief Text in the theme's text color, at a size readable from across the room.
- */
 T.Label {
     color: Kirigami.Theme.textColor
     linkColor: Kirigami.Theme.linkColor
