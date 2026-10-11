@@ -16,7 +16,10 @@ T.Button {
     Kirigami.Theme.inherit: false
 
     implicitWidth: implicitHeight
-    implicitHeight: icon.height + Kirigami.Units.gridUnit * 2
+    implicitHeight: implicitContentHeight + topPadding + bottomPadding
+
+    // The space around the icon; without it the icon fills the whole circle
+    padding: Kirigami.Units.gridUnit
 
     icon.width: Kirigami.Units.iconSizes.medium
     icon.height: Kirigami.Units.iconSizes.medium
