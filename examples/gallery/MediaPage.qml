@@ -9,7 +9,7 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
-FocusScope {
+BigscreenUI.Page {
     id: root
 
     property var shownItem: Artwork.movies[0]
@@ -23,15 +23,14 @@ FocusScope {
 
     property var pending
 
+    background: BigscreenUI.BackdropImage {
+        source: root.shownItem.image
+    }
+
     onBrowsingChanged: {
         if (!browsing) {
             show(Artwork.movies[0], "Featured");
         }
-    }
-
-    BigscreenUI.BackdropImage {
-        anchors.fill: parent
-        source: root.shownItem.image
     }
 
     Timer {
@@ -85,9 +84,11 @@ FocusScope {
         // The rail view fades rails out in its top margin, above the current rail
         anchors.topMargin: Math.round(parent.height * 0.52) - topMargin
 
-        // Shift down to make room for the banner's actions; a transform keeps the view's size fixed
+        // Follow the banner, whose height depends on its text: below its actions, or in their
+        // place while browsing. A transform keeps the view's size fixed.
         transform: Translate {
-            y: root.browsing ? 0 : Math.round(root.height * 0.6) - Math.round(root.height * 0.52)
+            y: hero.y + (root.browsing ? hero.actionRow.y : hero.height + Kirigami.Units.gridUnit * 2)
+               - Math.round(root.height * 0.52)
 
             Behavior on y {
                 NumberAnimation {

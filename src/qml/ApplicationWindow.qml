@@ -13,12 +13,12 @@ import org.kde.kirigami as Kirigami
    BigscreenUI.ApplicationWindow {
        id: root
 
-       readonly property var pageActions: [
+       readonly property list<Kirigami.Action> pageActions: [
            Kirigami.Action { text: "Home"; onTriggered: root.showPage(homePage) },
            Kirigami.Action { text: "Settings"; onTriggered: root.showPage(settingsPage) }
        ]
 
-       readonly property var pages: [
+       readonly property list<BigscreenUI.Page> pages: [
            HomePage { id: homePage },
            SettingsPage { id: settingsPage }
        ]
@@ -41,7 +41,7 @@ T.ApplicationWindow {
     /*!
        \brief The page shown first.
      */
-    property alias initialPage: stack.initialItem
+    property var initialPage
 
     /*!
        \brief A NavigationBar, shown across the top of the window.
@@ -57,11 +57,17 @@ T.ApplicationWindow {
        \brief Shows \a page in place of the current page, closing any pages pushed over it.
      */
     function showPage(page: var): void {
-        const fromSidebar = sidebar ? sidebar.activeFocus : false;
         if (stack.currentItem !== page) {
+            // HACK: Parent the page before the stack takes it
+            // Otherwise, if the page has already read its SafeArea, its children's SafeArea margins never update
+            if (page instanceof Item) {
+                page.parent = stack;
+            }
             stack.replace(null, page);
         }
-        // The sidebar covers the page while it has focus, so move on to the page
+
+        // Focus the page to close the sidebar if it's open
+        const fromSidebar = sidebar ? sidebar.activeFocus : false;
         if (fromSidebar && stack.currentItem) {
             stack.currentItem.forceActiveFocus();
         }
@@ -78,10 +84,20 @@ T.ApplicationWindow {
         readonly property bool atTop: depth <= 1
 
         anchors.fill: parent
+        anchors.leftMargin: sidebarHolder.reservedWidth
         focus: true
 
+        initialItem: {
+            // HACK: Parent the page before the stack takes it
+            // Otherwise, if the page has already read its SafeArea, its children's SafeArea margins never update
+            if (root.initialPage instanceof Item) {
+                root.initialPage.parent = stack;
+            }
+            return root.initialPage;
+        }
+
         SafeArea.additionalMargins.top: navbarHolder.visible ? navbarHolder.height : 0
-        SafeArea.additionalMargins.left: sidebarHolder.visible ? sidebarHolder.collapsedWidth : 0
+        SafeArea.additionalMargins.left: sidebarHolder.overlapWidth
 
         // The navigation bar and sidebar hide under pages pushed over the top, so the page
         // takes focus from them
@@ -115,11 +131,12 @@ T.ApplicationWindow {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
+        anchors.leftMargin: sidebarHolder.reservedWidth
         height: root.navigationBar ? root.navigationBar.height : 0
         visible: root.navigationBar && stack.atTop
         children: root.navigationBar ? [root.navigationBar] : []
 
-        SafeArea.additionalMargins.left: sidebarHolder.visible ? sidebarHolder.collapsedWidth : 0
+        SafeArea.additionalMargins.left: sidebarHolder.overlapWidth
 
         // Down that the navigation bar leaves unhandled
         Keys.onDownPressed: stack.currentItem?.forceActiveFocus()
@@ -138,15 +155,26 @@ T.ApplicationWindow {
     FocusScope {
         id: sidebarHolder
 
-        // The width the sidebar takes up beside the pages
-        readonly property real collapsedWidth: root.sidebar?.collapsedWidth ?? root.sidebar?.width ?? 0
+        // The width the sidebar takes up while focus is elsewhere
+        readonly property real collapsedWidth: visible ? root.sidebar.collapsedWidth ?? root.sidebar.width : 0
 
-        width: root.sidebar ? root.sidebar.width : 0
-        height: parent.height
+        // Amount of space fully reserved for the sidebar
+        property real reservedWidth: visible && root.sidebar.mode === Sidebar.Expanded ? collapsedWidth : 0
+        Behavior on reservedWidth {
+            NumberAnimation {
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        // Amount of space reserved for the sidebar, but is overlaid over the page (contents use SafeArea to get overlaid dimensions)
+        readonly property real overlapWidth: Math.max(0, collapsedWidth - reservedWidth)
+
+        // Fills the window, so the sidebar can dim the pages while it is expanded over them
+        anchors.fill: parent
         visible: root.sidebar && stack.atTop
         children: root.sidebar ? [root.sidebar] : []
 
-        // Right that the sidebar leaves unhandled
         Keys.onRightPressed: stack.currentItem?.forceActiveFocus()
 
         Binding {

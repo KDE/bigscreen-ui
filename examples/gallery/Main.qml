@@ -20,7 +20,7 @@ BigscreenUI.ApplicationWindow {
     visible: true
     title: "Bigscreen UI Gallery"
 
-    readonly property var pageActions: [
+    readonly property list<T.Action> pageActions: [
         Kirigami.Action {
             text: "Controls"
             icon.name: "configure"
@@ -48,7 +48,7 @@ BigscreenUI.ApplicationWindow {
         }
     ]
 
-    readonly property var pages: [
+    readonly property list<Item> pages: [
         ControlsPage {
             id: controlsPage
         },

@@ -7,7 +7,7 @@ import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
 // PlayerOverlay over a still image, with simulated playback
-FocusScope {
+BigscreenUI.Page {
     id: root
 
     readonly property var movie: Artwork.movies[3]
@@ -15,16 +15,15 @@ FocusScope {
     readonly property real duration: 107 * 60 * 1000
     property bool playing: true
 
-    Rectangle {
-        anchors.fill: parent
+    background: Rectangle {
         color: "black"
-    }
 
-    Image {
-        anchors.fill: parent
-        fillMode: Image.PreserveAspectCrop
-        source: root.movie.image
-        opacity: root.playing ? 1 : 0.6
+        Image {
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectCrop
+            source: root.movie.image
+            opacity: root.playing ? 1 : 0.6
+        }
     }
 
     Timer {
