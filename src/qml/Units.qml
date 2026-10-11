@@ -16,14 +16,8 @@ QtObject {
     readonly property int smallFontPixelSize: 14
     readonly property int defaultFontPixelSize: 18
     readonly property int headingFontPixelSize: 22
-
-    // Section headings
     readonly property int sectionFontPixelSize: 30
-
-    // Page titles
     readonly property int titleFontPixelSize: 48
-
-    // Large display text, such as the title in a Hero
     readonly property int displayFontPixelSize: 72
 
     // Margin between the screen edges and content

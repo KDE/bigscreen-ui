@@ -6,6 +6,9 @@ import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \brief The header on a ContextDrawer, containing a title, subtitle and icon.
+ */
 ColumnLayout {
     id: root
 

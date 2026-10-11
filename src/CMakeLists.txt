@@ -21,41 +21,47 @@ target_sources(bigscreenuiplugin PRIVATE
 
 ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/ApplicationWindow.qml
-    qml/BackdropImage.qml
-    qml/Badge.qml
-    qml/Button.qml
-    qml/ButtonDelegate.qml
-    qml/Chip.qml
-    qml/ChipBar.qml
-    qml/ComboBoxDelegate.qml
-    qml/ContentRail.qml
-    qml/ContextDrawer.qml
-    qml/ContextDrawerHeader.qml
-    qml/DelegateBackground.qml
-    qml/Dialog.qml
-    qml/DialogButtonBox.qml
-    qml/EdgeFadeEffect.qml
-    qml/HeroBanner.qml
-    qml/ItemDelegate.qml
-    qml/Label.qml
-    qml/MediaCard.qml
-    qml/MediaProgressBar.qml
-    qml/NavigationBar.qml
-    qml/NavigationTab.qml
-    qml/PlayerOverlay.qml
-    qml/PopupBackground.qml
-    qml/RailView.qml
-    qml/RoundButton.qml
     qml/ScrollablePage.qml
-    qml/SeekBar.qml
-    qml/Sidebar.qml
-    qml/StackView.qml
-    qml/SwitchDelegate.qml
-    qml/SwitchIndicator.qml
-    qml/TextDelegate.qml
-    qml/TextField.qml
-    qml/Toast.qml
     qml/Units.qml
+
+    qml/controls/Badge.qml
+    qml/controls/Button.qml
+    qml/controls/Chip.qml
+    qml/controls/ChipBar.qml
+    qml/controls/Label.qml
+    qml/controls/RoundButton.qml
+    qml/controls/SeekBar.qml
+    qml/controls/SwitchIndicator.qml
+    qml/controls/TextField.qml
+
+    qml/delegates/ButtonDelegate.qml
+    qml/delegates/ComboBoxDelegate.qml
+    qml/delegates/ItemDelegate.qml
+    qml/delegates/SwitchDelegate.qml
+    qml/delegates/TextDelegate.qml
+
+    qml/navigation/NavigationBar.qml
+    qml/navigation/NavigationTab.qml
+    qml/navigation/Sidebar.qml
+    qml/navigation/StackView.qml
+
+    qml/media/BackdropImage.qml
+    qml/media/ContentRail.qml
+    qml/media/HeroBanner.qml
+    qml/media/MediaCard.qml
+    qml/media/MediaProgressBar.qml
+    qml/media/PlayerOverlay.qml
+    qml/media/RailView.qml
+
+    qml/overlays/ContextDrawer.qml
+    qml/overlays/ContextDrawerHeader.qml
+    qml/overlays/Dialog.qml
+    qml/overlays/DialogButtonBox.qml
+    qml/overlays/Toast.qml
+
+    qml/utils/DelegateBackground.qml
+    qml/utils/EdgeFadeEffect.qml
+    qml/utils/PopupBackground.qml
 )
 
 target_link_libraries(bigscreenuiplugin PRIVATE

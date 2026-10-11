@@ -7,7 +7,7 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
-   \brief A top-level window using the theme's window colors.
+   \brief A top-level window.
  */
 T.ApplicationWindow {
     Kirigami.Theme.colorSet: Kirigami.Theme.Window
