@@ -9,7 +9,7 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
-   \brief Playback controls
+   \brief Controls overlay over media content
  */
 FocusScope {
     id: root
@@ -23,6 +23,11 @@ FocusScope {
        \brief The title of what is playing.
      */
     property string title
+
+    /*!
+       \brief Pieces of metadata shown under the title, separated by dots.
+     */
+    property list<string> metadata
 
     /*!
        \brief The playback position, in milliseconds.
@@ -40,6 +45,23 @@ FocusScope {
     property bool playing: false
 
     /*!
+       \brief Whether the media is loading or buffering. A busy indicator is shown in the
+       middle of the screen, even while the controls are hidden.
+     */
+    property bool busy: false
+
+    /*!
+       \brief Whether there is an item to go back to, such as the previous file in a playlist.
+       Skip buttons are shown when this or \l hasNext is true.
+     */
+    property bool hasPrevious: false
+
+    /*!
+       \brief Whether there is an item to go on to, such as the next file in a playlist.
+     */
+    property bool hasNext: false
+
+    /*!
        \brief How far the skip buttons and the left and right keys on the seek bar move, in milliseconds.
      */
     property int seekStep: 10000
@@ -51,6 +73,7 @@ FocusScope {
 
     /*!
        \brief Extra actions shown as round buttons on the right, such as subtitle selection.
+       Actions with a \c visible property, such as Kirigami.Action, are hidden while it is false.
      */
     property list<T.Action> actions
 
@@ -59,15 +82,10 @@ FocusScope {
      */
     readonly property bool shown: __shown
 
-    /*!
-       \brief This signal is emitted when the user asks to play or pause.
-     */
     signal playPauseRequested()
-
-    /*!
-       \brief This signal is emitted when the user asks to move to \a position, in milliseconds.
-     */
     signal seekRequested(real position)
+    signal previousRequested()
+    signal nextRequested()
 
     property bool __shown: true
     property Item __lastFocusItem: null
@@ -127,6 +145,11 @@ FocusScope {
         // Only hide while the user is watching, not while focus is elsewhere
         running: root.__shown && root.playing && root.activeFocus
         onTriggered: root.hide()
+    }
+
+    BusyIndicator {
+        anchors.centerIn: parent
+        running: root.busy
     }
 
     Connections {
@@ -218,6 +241,14 @@ FocusScope {
                 font.weight: Font.Light
                 elide: Text.ElideRight
             }
+            Label {
+                Layout.fillWidth: true
+                visible: text.length > 0
+                text: root.metadata.filter(part => part.length > 0).join("  ·  ")
+                color: Kirigami.Theme.disabledTextColor
+                type: Label.Heading
+                elide: Text.ElideRight
+            }
         }
 
         ColumnLayout {
@@ -266,25 +297,26 @@ FocusScope {
                 Layout.fillWidth: true
                 implicitHeight: transport.implicitHeight
 
-                readonly property list<Item> order: [backButton, playButton, forwardButton, ...extraActions.children.filter(item => item instanceof RoundButton)]
-
-                function moveFocus(delta: int): void {
-                    const index = order.findIndex(item => item.activeFocus);
-                    const next = order[index + delta];
-                    if (next) {
-                        next.forceActiveFocus();
-                    }
-                }
-
-                Keys.onLeftPressed: moveFocus(-1)
-                Keys.onRightPressed: moveFocus(1)
-                Keys.onUpPressed: seekBar.forceActiveFocus()
+                KeyNavigationGroup.orientation: Qt.Horizontal
+                KeyNavigation.up: seekBar
 
                 RowLayout {
                     id: transport
                     anchors.centerIn: parent
                     spacing: Kirigami.Units.gridUnit
 
+                    RoundButton {
+                        id: previousButton
+                        text: "Previous"
+                        icon.name: "media-skip-backward"
+                        visible: root.hasPrevious || root.hasNext
+                        enabled: root.hasPrevious
+                        opacity: enabled ? 1 : 0.4
+                        onClicked: {
+                            root.previousRequested();
+                            root.show();
+                        }
+                    }
                     RoundButton {
                         id: backButton
                         text: "Back %1 seconds".arg(Math.round(root.seekStep / 1000))
@@ -309,6 +341,18 @@ FocusScope {
                         icon.name: "media-seek-forward"
                         onClicked: root.__seekBy(root.seekStep)
                     }
+                    RoundButton {
+                        id: nextButton
+                        text: "Next"
+                        icon.name: "media-skip-forward"
+                        visible: root.hasPrevious || root.hasNext
+                        enabled: root.hasNext
+                        opacity: enabled ? 1 : 0.4
+                        onClicked: {
+                            root.nextRequested();
+                            root.show();
+                        }
+                    }
                 }
 
                 RowLayout {
@@ -323,6 +367,7 @@ FocusScope {
                             required property var modelData
                             action: modelData
                             display: T.AbstractButton.IconOnly
+                            visible: !("visible" in modelData) || modelData.visible
                         }
                     }
                 }
