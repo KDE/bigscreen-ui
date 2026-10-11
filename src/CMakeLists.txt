@@ -21,6 +21,7 @@ target_sources(bigscreenuiplugin PRIVATE
 
 ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/ApplicationWindow.qml
+    qml/Page.qml
     qml/ScrollablePage.qml
     qml/Units.qml
 

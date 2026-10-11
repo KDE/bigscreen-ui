@@ -3,7 +3,6 @@
 
 import QtQuick
 import QtQuick.Window
-import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 
@@ -26,7 +25,7 @@ import org.kde.kirigami as Kirigami
    }
    \endcode
  */
-T.Page {
+Page {
     id: root
 
     /*!
@@ -40,15 +39,6 @@ T.Page {
      */
     property alias flickable: flickable
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            contentWidth + leftPadding + rightPadding,
-                            implicitHeaderWidth,
-                            implicitFooterWidth)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             contentHeight + topPadding + bottomPadding
-                             + (implicitHeaderHeight > 0 ? implicitHeaderHeight + spacing : 0)
-                             + (implicitFooterHeight > 0 ? implicitFooterHeight + spacing : 0))
-
     // Keep content inside the safe area, for example below a header overlaying the page.
     // When overriding a padding, add the safe area margin for that side.
     padding: Kirigami.Units.gridUnit * 2
@@ -58,17 +48,6 @@ T.Page {
     // The title-safe margin, so content isn't lost at the edges of a TV
     leftPadding: Units.contentMargin(SafeArea.margins.left)
     rightPadding: Units.contentMargin(SafeArea.margins.right)
-
-    header: Label {
-        visible: text.length > 0
-        text: root.title
-        leftPadding: root.leftPadding
-        rightPadding: root.rightPadding
-        topPadding: root.padding + root.SafeArea.margins.top
-        type: Label.Title
-        elide: Text.ElideRight
-        Accessible.role: Accessible.Heading
-    }
 
     /*!
        \brief Scrolls so that \a item is fully visible, with some margin around it.
