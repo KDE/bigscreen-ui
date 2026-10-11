@@ -169,7 +169,6 @@ T.ItemDelegate {
                 text: root.text
                 visible: text.length > 0
                 elide: Text.ElideRight
-                font.pixelSize: Units.defaultFontPixelSize
                 Accessible.ignored: true
             }
             Label {
@@ -178,7 +177,7 @@ T.ItemDelegate {
                 visible: text.length > 0
                 elide: Text.ElideRight
                 color: Kirigami.Theme.disabledTextColor
-                font.pixelSize: Units.smallFontPixelSize
+                type: Label.Small
                 Accessible.ignored: true
             }
         }

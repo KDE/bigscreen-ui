@@ -205,7 +205,7 @@ FocusScope {
                 visible: text.length > 0
                 text: root.overline
                 color: Kirigami.Theme.disabledTextColor
-                font.pixelSize: Units.headingFontPixelSize
+                type: Label.Heading
                 elide: Text.ElideRight
             }
             Label {
@@ -233,7 +233,7 @@ FocusScope {
                 Label {
                     Layout.minimumWidth: Kirigami.Units.gridUnit * 5
                     text: root.__formatTime(root.position)
-                    font.pixelSize: Units.headingFontPixelSize
+                    type: Label.Heading
                     font.features: ({ "tnum": 1 })
                 }
 
@@ -253,7 +253,7 @@ FocusScope {
                     Layout.minimumWidth: Kirigami.Units.gridUnit * 5
                     horizontalAlignment: Text.AlignRight
                     text: "−" + root.__formatTime(root.duration - root.position)
-                    font.pixelSize: Units.headingFontPixelSize
+                    type: Label.Heading
                     font.features: ({ "tnum": 1 })
                 }
             }

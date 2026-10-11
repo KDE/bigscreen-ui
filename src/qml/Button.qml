@@ -63,7 +63,6 @@ T.Button {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
             text: root.text
-            font.pixelSize: Units.defaultFontPixelSize
             elide: Text.ElideRight
             visible: root.text
         }

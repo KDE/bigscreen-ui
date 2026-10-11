@@ -37,7 +37,6 @@ T.Button {
 
     contentItem: Label {
         text: root.text
-        font.pixelSize: Units.defaultFontPixelSize
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         Accessible.ignored: true

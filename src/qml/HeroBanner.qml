@@ -100,7 +100,7 @@ ColumnLayout {
         visible: text.length > 0
         text: root.overline
         color: Kirigami.Theme.disabledTextColor
-        font.pixelSize: Units.headingFontPixelSize
+        type: Label.Heading
         elide: Text.ElideRight
     }
 
@@ -127,7 +127,7 @@ ColumnLayout {
             visible: text.length > 0
             text: root.metadata.filter(part => part.length > 0).join("  ·  ")
             color: Kirigami.Theme.disabledTextColor
-            font.pixelSize: Units.headingFontPixelSize
+            type: Label.Heading
         }
 
         Repeater {
@@ -149,7 +149,7 @@ ColumnLayout {
         Layout.topMargin: Kirigami.Units.largeSpacing * 2
         visible: text.length > 0
         text: root.description
-        font.pixelSize: Units.headingFontPixelSize
+        type: Label.Heading
         lineHeight: 1.2
         wrapMode: Text.Wrap
         maximumLineCount: 3

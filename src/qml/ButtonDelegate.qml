@@ -108,7 +108,6 @@ ItemDelegate {
                 id: internalTextItem
                 Layout.fillWidth: true
                 text: root.text
-                font.pixelSize: Units.defaultFontPixelSize
                 elide: Text.ElideRight
                 visible: root.text
                 Accessible.ignored: true // base class sets this text on root already
@@ -117,7 +116,7 @@ ItemDelegate {
                 id: internalDescriptionItem
                 Layout.fillWidth: true
                 text: root.description
-                font.pixelSize: root.smallDescription ? Units.smallFontPixelSize : Units.defaultFontPixelSize
+                type: root.smallDescription ? Label.Small : Label.Body
                 color: Kirigami.Theme.disabledTextColor
                 visible: root.description !== ''
                 elide: Text.ElideRight

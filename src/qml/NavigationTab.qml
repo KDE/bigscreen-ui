@@ -74,7 +74,7 @@ T.AbstractButton {
             anchors.centerIn: parent
             visible: !root.iconOnly
             text: root.text
-            font.pixelSize: Units.headingFontPixelSize
+            type: Label.Heading
             color: (root.selected || root.activeFocus) ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
             Accessible.ignored: true
         }

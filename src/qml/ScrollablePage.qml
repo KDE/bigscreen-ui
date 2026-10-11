@@ -53,8 +53,7 @@ T.Page {
         leftPadding: root.leftPadding
         rightPadding: root.rightPadding
         topPadding: root.topPadding
-        font.pixelSize: Units.titleFontPixelSize
-        font.weight: Font.Light
+        type: Label.Title
         elide: Text.ElideRight
         Accessible.role: Accessible.Heading
     }

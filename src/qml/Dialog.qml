@@ -75,8 +75,7 @@ T.Dialog {
 
         contentItem: Label {
             text: root.title
-            font.pixelSize: Units.headingFontPixelSize + 6
-            font.weight: Font.Light
+            type: Label.Section
             wrapMode: Text.Wrap
         }
     }

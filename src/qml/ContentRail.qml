@@ -78,8 +78,7 @@ FocusScope {
             visible: text.length > 0
             text: root.title
             elide: Text.ElideRight
-            font.pixelSize: Units.sectionFontPixelSize
-            font.weight: Font.Light
+            type: Label.Section
             Accessible.role: Accessible.Heading
         }
 

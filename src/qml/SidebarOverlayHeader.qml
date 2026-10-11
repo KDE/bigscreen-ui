@@ -46,8 +46,7 @@ ColumnLayout {
         maximumLineCount: 2
         elide: Text.ElideRight
         text: root.title
-        font.pixelSize: 32
-        font.weight: Font.Light
+        type: Label.Section
     }
 
     Label {
@@ -60,7 +59,6 @@ ColumnLayout {
         maximumLineCount: 2
         elide: Text.ElideRight
         text: root.subtitle
-        font.pixelSize: Units.defaultFontPixelSize
         font.weight: Font.Light
     }
 }

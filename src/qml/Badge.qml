@@ -16,7 +16,7 @@ Label {
     topPadding: 1
     bottomPadding: 1
 
-    font.pixelSize: Units.smallFontPixelSize
+    type: Label.Small
     font.weight: Font.DemiBold
 
     background: Rectangle {
