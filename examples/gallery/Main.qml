@@ -5,6 +5,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
@@ -19,127 +20,91 @@ BigscreenUI.ApplicationWindow {
     visible: true
     title: "Bigscreen UI Gallery"
 
+    readonly property var pageActions: [
+        Kirigami.Action {
+            text: "Controls"
+            icon.name: "configure"
+            onTriggered: root.showPage(controlsPage)
+        },
+        Kirigami.Action {
+            text: "Lists"
+            icon.name: "view-list-details"
+            onTriggered: root.showPage(listsPage)
+        },
+        Kirigami.Action {
+            text: "Media"
+            icon.name: "folder-videos"
+            onTriggered: root.showPage(mediaPage)
+        },
+        Kirigami.Action {
+            text: "Playback"
+            icon.name: "media-playback-start"
+            onTriggered: root.showPage(playbackPage)
+        },
+        Kirigami.Action {
+            text: "Overlays"
+            icon.name: "window-new"
+            onTriggered: root.showPage(overlaysPage)
+        }
+    ]
+
+    readonly property var pages: [
+        ControlsPage {
+            id: controlsPage
+        },
+        ListsPage {
+            id: listsPage
+        },
+        MediaPage {
+            id: mediaPage
+        },
+        PlaybackPage {
+            id: playbackPage
+        },
+        OverlaysPage {
+            id: overlaysPage
+        }
+    ]
+
     function pushPage(): void {
-        stack.push(pushedPage);
+        pageStack.push(pushedPage);
     }
 
-    BigscreenUI.StackView {
-        id: stack
-        anchors.fill: parent
-        focus: true
+    initialPage: controlsPage
 
-        initialItem: FocusScope {
-            // Pages leave up and left unhandled at their edges, so they reach the
-            // navigation bar and the sidebar
-            Keys.onUpPressed: navigationBar.forceActiveFocus()
-            Keys.onLeftPressed: sidebar.forceActiveFocus()
+    navigationBar: BigscreenUI.NavigationBar {
+        actions: root.pageActions
+        onActivated: index => sidebar.currentIndex = index
+    }
 
-            BigscreenUI.BackHandler.enabled: visible
-            BigscreenUI.BackHandler.onActivated: navigationBar.forceActiveFocus()
+    sidebar: BigscreenUI.Sidebar {
+        id: sidebar
 
-            StackLayout {
-                id: pages
+        mode: pin.checked ? BigscreenUI.Sidebar.Expanded
+            : showRail.checked ? BigscreenUI.Sidebar.Rail
+            : BigscreenUI.Sidebar.Hidden
+        title: "Bigscreen UI"
+        iconName: "applications-graphics"
 
-                anchors.fill: parent
-                // Pages fill the window behind the navigation bar and sidebar, and keep
-                // their content clear of them
-                SafeArea.additionalMargins.top: navigationBar.height
-                SafeArea.additionalMargins.left: sidebar.collapsedWidth
-                currentIndex: navigationBar.currentIndex
+        onActivated: index => root.navigationBar.currentIndex = index
 
-                ControlsPage {}
-                ListsPage {}
-                MediaPage {}
-                PlaybackPage {}
-                OverlaysPage {}
-            }
+        actions: [...root.pageActions, separator, showRail, pin]
 
-            BigscreenUI.NavigationBar {
-                id: navigationBar
-
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: parent.top
-                SafeArea.additionalMargins.left: sidebar.collapsedWidth
-                focus: true
-
-                Keys.onDownPressed: pages.children[pages.currentIndex].forceActiveFocus()
-                onActivated: index => sidebar.currentIndex = index
-
-                actions: [
-                    Kirigami.Action {
-                        text: "Controls"
-                    },
-                    Kirigami.Action {
-                        text: "Lists"
-                    },
-                    Kirigami.Action {
-                        text: "Media"
-                    },
-                    Kirigami.Action {
-                        text: "Playback"
-                    },
-                    Kirigami.Action {
-                        text: "Overlays"
-                    }
-                ]
-            }
-
-            // The same pages again, out of the way until the user moves left
-            BigscreenUI.Sidebar {
-                id: sidebar
-
-                mode: pin.checked ? BigscreenUI.Sidebar.Expanded
-                    : showRail.checked ? BigscreenUI.Sidebar.Rail
-                    : BigscreenUI.Sidebar.Hidden
-                height: parent.height
-                title: "Bigscreen UI"
-                iconName: "applications-graphics"
-
-                KeyNavigation.right: pages.children[pages.currentIndex]
-                onActivated: index => {
-                    navigationBar.currentIndex = index;
-                    pages.children[index].forceActiveFocus();
-                }
-
-                actions: [
-                    Kirigami.Action {
-                        text: "Controls"
-                        icon.name: "configure"
-                    },
-                    Kirigami.Action {
-                        text: "Lists"
-                        icon.name: "view-list-details"
-                    },
-                    Kirigami.Action {
-                        text: "Media"
-                        icon.name: "folder-videos"
-                    },
-                    Kirigami.Action {
-                        text: "Playback"
-                        icon.name: "media-playback-start"
-                    },
-                    Kirigami.Action {
-                        text: "Overlays"
-                        icon.name: "window-new"
-                    },
-                    Kirigami.Action {
-                        separator: true
-                    },
-                    Kirigami.Action {
-                        id: showRail
-                        text: "Show rail"
-                        icon.name: "sidebar-collapse-left"
-                        checkable: true
-                    },
-                    Kirigami.Action {
-                        id: pin
-                        text: "Pin sidebar"
-                        icon.name: "pin"
-                        checkable: true
-                    }
-                ]
-            }
+        Kirigami.Action {
+            id: separator
+            separator: true
+        }
+        Kirigami.Action {
+            id: showRail
+            text: "Show rail"
+            icon.name: "sidebar-collapse-left"
+            checkable: true
+        }
+        Kirigami.Action {
+            id: pin
+            text: "Pin sidebar"
+            icon.name: "pin"
+            checkable: true
         }
     }
 
@@ -150,14 +115,14 @@ BigscreenUI.ApplicationWindow {
             title: "A pushed page"
 
             BigscreenUI.BackHandler.enabled: visible
-            BigscreenUI.BackHandler.onActivated: stack.pop()
+            BigscreenUI.BackHandler.onActivated: root.pageStack.pop()
 
             ColumnLayout {
                 spacing: Kirigami.Units.gridUnit * 2
 
                 BigscreenUI.Label {
                     Layout.fillWidth: true
-                    text: "This page was pushed onto a StackView. It is a ScrollablePage, which keeps the focused item in view as you move through it."
+                    text: "This page was pushed onto the window's page stack. It is a ScrollablePage, which keeps the focused item in view as you move through it."
                     wrapMode: Text.Wrap
                 }
 
@@ -165,7 +130,7 @@ BigscreenUI.ApplicationWindow {
                     focus: true
                     text: "Go back"
                     icon.name: "go-previous"
-                    onClicked: stack.pop()
+                    onClicked: root.pageStack.pop()
                 }
             }
         }
