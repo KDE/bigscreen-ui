@@ -38,7 +38,7 @@ Item {
             return;
         }
         __back.source = source;
-        if (__back.status === Image.Ready || source.toString() === "") {
+        if (__back.source.toString() === source.toString() && (__back.status === Image.Ready || source.toString() === "")) {
             __swap();
         }
     }
