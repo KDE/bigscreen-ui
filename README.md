@@ -7,6 +7,12 @@ SPDX-License-Identifier: LGPL-2.0-or-later
 
 Bigscreen UI provides reusable Qt Quick components designed for applications targeting TV/console style platforms (i.e. Plasma Bigscreen).
 
+## Links
+
+Project page: https://invent.kde.org/devinlin/bigscreen-ui
+File issues: https://invent.kde.org/devinlin/bigscreen-ui/-/work-items
+Development channel: https://matrix.to/#/#plasma-bigscreen:kde.org
+
 ## Using the QML module
 
 Import the module as `org.kde.bigscreen.ui`:
