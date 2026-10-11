@@ -21,6 +21,7 @@ ecm_target_qml_sources(bigscreen-ui-demo SOURCES
     Artwork.qml
     ControlsPage.qml
     GallerySection.qml
+    GridPage.qml
     ListsPage.qml
     Main.qml
     MediaPage.qml

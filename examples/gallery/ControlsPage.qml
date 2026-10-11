@@ -225,7 +225,8 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Busy indicator"
-            description: "Shown while something loads, such as media buffering."
+
+            BigscreenUI.BusyIndicator {}
         }
     }
 }

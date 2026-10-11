@@ -37,6 +37,11 @@ BigscreenUI.ApplicationWindow {
             onTriggered: root.showPage(mediaPage)
         },
         Kirigami.Action {
+            text: "Grid"
+            icon.name: "view-list-icons"
+            onTriggered: root.showPage(gridPage)
+        },
+        Kirigami.Action {
             text: "Playback"
             icon.name: "media-playback-start"
             onTriggered: root.showPage(playbackPage)
@@ -57,6 +62,9 @@ BigscreenUI.ApplicationWindow {
         },
         MediaPage {
             id: mediaPage
+        },
+        GridPage {
+            id: gridPage
         },
         PlaybackPage {
             id: playbackPage

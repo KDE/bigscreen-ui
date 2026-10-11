@@ -80,9 +80,10 @@ BigscreenUI.Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.bottom: parent.bottom
         // The rail view fades rails out in its top margin, above the current rail
         anchors.topMargin: Math.round(parent.height * 0.52) - topMargin
+        // As tall as the page, so it still reaches the bottom when moved up to the banner
+        height: parent.height
 
         // Follow the banner, whose height depends on its text: below its actions, or in their
         // place while browsing. A transform keeps the view's size fixed.

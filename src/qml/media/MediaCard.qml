@@ -12,11 +12,20 @@ import org.kde.kirigami as Kirigami
    \brief A focusable piece of media artwork.
 
    The artwork is drawn at \l artworkWidth by \l artworkHeight. The title (\c text) and
-   \l subtitle are shown underneath it when set. When focused, the artwork grows slightly
-   and gets a highlight border.
+   \l subtitle are shown underneath it when set.
 
-   When used as the delegate of a ListView or GridView, focusing the card with the mouse
-   also makes it the view's current item.
+   \code
+   BigscreenUI.MediaCard {
+       artworkWidth: Kirigami.Units.gridUnit * 20
+       artworkHeight: artworkWidth * 9 / 16
+       source: episode.thumbnail
+       placeholderIconName: "video-x-generic"
+       text: episode.title
+       subtitle: i18n("%1 min left", episode.minutesLeft)
+       progress: episode.position / episode.duration
+       onClicked: player.play(episode.url)
+   }
+   \endcode
  */
 T.ItemDelegate {
     id: root
@@ -49,9 +58,15 @@ T.ItemDelegate {
     property real artworkWidth: Kirigami.Units.gridUnit * 12
 
     /*!
-       \brief The height of the artwork. Defaults to a 2:3 poster ratio.
+       \brief The height of the artwork. Defaults to 2:3 poster ratio.
      */
     property real artworkHeight: artworkWidth * 1.5
+
+    /*!
+       \brief The name of an icon shown in place of the artwork while it is missing or loading,
+       such as a folder or a generic video icon.
+     */
+    property string placeholderIconName
 
     /*!
        \qmlproperty ShadowedImage artworkItem
@@ -116,6 +131,19 @@ T.ItemDelegate {
                 NumberAnimation {
                     duration: Kirigami.Units.longDuration
                     easing.type: Easing.OutCubic
+                }
+            }
+
+            // Placeholder icon
+            Loader {
+                anchors.centerIn: parent
+                width: Math.min(Kirigami.Units.iconSizes.enormous, Math.round(Math.min(parent.width, parent.height) * 0.5))
+                height: width
+                active: root.placeholderIconName.length > 0 && artwork.status !== Image.Ready
+
+                sourceComponent: Kirigami.Icon {
+                    source: root.placeholderIconName
+                    opacity: 0.6
                 }
             }
 
