@@ -173,7 +173,7 @@ FocusScope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            height: Math.round(parent.height * 0.25)
+            height: root.SafeArea.margins.top + Math.round(parent.height * 0.25)
             gradient: Gradient {
                 GradientStop { position: 0; color: Qt.rgba(0, 0, 0, 0.75) }
                 GradientStop { position: 1; color: "transparent" }
@@ -197,7 +197,8 @@ FocusScope {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: Units.screenMargin
-            anchors.topMargin: Kirigami.Units.gridUnit * 3
+            // Below anything overlaying the top of the video, such as a header
+            anchors.topMargin: root.SafeArea.margins.top + Kirigami.Units.gridUnit * 3
             spacing: Kirigami.Units.smallSpacing
 
             Label {

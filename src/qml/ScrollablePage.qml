@@ -8,9 +8,13 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
-   \brief A page whose content scrolls vertically, always keeping the focused item in view.
+   \brief A page that can scroll. The selected item is kept in the visible view.
 
    Give the page a single content item, such as a ColumnLayout.
+
+   The page can sit under a header such as a NavigationBar, so its background reaches the
+   top of the screen. Set \c SafeArea.additionalMargins.top on the page to the header's height,
+   so content starts below the header and never scrolls under it.
 
    \code
    BigscreenUI.ScrollablePage {
@@ -45,7 +49,14 @@ T.Page {
                              + (implicitHeaderHeight > 0 ? implicitHeaderHeight + spacing : 0)
                              + (implicitFooterHeight > 0 ? implicitFooterHeight + spacing : 0))
 
+    // Keep content inside the safe area, for example below a header overlaying the page.
+    // When overriding a padding, add the safe area margin for that side.
     padding: Kirigami.Units.gridUnit * 2
+    topPadding: padding + SafeArea.margins.top
+    bottomPadding: padding + SafeArea.margins.bottom
+    // The title-safe margin, so content isn't lost at the edges of a TV
+    leftPadding: Units.screenMargin + SafeArea.margins.left
+    rightPadding: Units.screenMargin + SafeArea.margins.right
 
     header: Label {
         visible: text.length > 0
@@ -94,21 +105,24 @@ T.Page {
         Flickable {
             id: flickable
 
+            readonly property real topOverflow: Math.max(0, root.topPadding - root.SafeArea.margins.top)
+            readonly property real bottomOverflow: Math.max(0, root.bottomPadding - root.SafeArea.margins.bottom)
+
             x: -root.leftPadding
-            y: -root.topPadding
+            y: -topOverflow
             width: parent.width + root.leftPadding + root.rightPadding
-            height: parent.height + root.topPadding + root.bottomPadding
+            height: parent.height + topOverflow + bottomOverflow
 
             leftMargin: root.leftPadding
             rightMargin: root.rightPadding
-            topMargin: root.topPadding
-            bottomMargin: root.bottomPadding
+            topMargin: topOverflow
+            bottomMargin: bottomOverflow
 
             clip: true
             layer.enabled: contentHeight > height - topMargin - bottomMargin
             layer.effect: EdgeFadeEffect {
-                topFadeLength: root.topPadding
-                bottomFadeLength: root.bottomPadding
+                topFadeLength: flickable.topOverflow
+                bottomFadeLength: flickable.bottomOverflow
             }
             contentWidth: parent.width
             contentHeight: contentItem.childrenRect.height
