@@ -27,6 +27,8 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/ChipBar.qml
     qml/ComboBoxDelegate.qml
     qml/ContentRail.qml
+    qml/ContextDrawer.qml
+    qml/ContextDrawerHeader.qml
     qml/DelegateBackground.qml
     qml/Dialog.qml
     qml/DialogButtonBox.qml
@@ -44,8 +46,7 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/RoundButton.qml
     qml/ScrollablePage.qml
     qml/SeekBar.qml
-    qml/SidebarOverlay.qml
-    qml/SidebarOverlayHeader.qml
+    qml/Sidebar.qml
     qml/StackView.qml
     qml/SwitchDelegate.qml
     qml/SwitchIndicator.qml

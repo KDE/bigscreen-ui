@@ -7,11 +7,17 @@ import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \brief A modal panel that slides in from the right with options for the current screen,
+   such as subtitle and audio tracks in a player.
+
+   For switching between the sections of an app, use Sidebar.
+ */
 T.Popup {
     id: root
 
     /*!
-       \brief This property holds item to focus when the sidebar opens.
+       \brief This property holds item to focus when the context drawer opens.
        \default content
      */
     property var openFocusItem: content
