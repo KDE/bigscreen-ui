@@ -6,9 +6,13 @@
 
 int main(int argc, char *argv[])
 {
+    if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_STYLE")) {
+        qputenv("QT_QUICK_CONTROLS_STYLE", "org.kde.desktop");
+    }
+
     QGuiApplication application(argc, argv);
     application.setApplicationName(QStringLiteral("bigscreen-ui-demo"));
-    application.setApplicationDisplayName(QStringLiteral("Bigscreen UI Demo"));
+    application.setApplicationDisplayName(QStringLiteral("Bigscreen UI Gallery"));
     application.setOrganizationDomain(QStringLiteral("kde.org"));
 
     QQmlApplicationEngine engine;
