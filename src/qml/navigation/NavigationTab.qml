@@ -66,7 +66,6 @@ T.AbstractButton {
             implicitWidth: Kirigami.Units.iconSizes.smallMedium
             implicitHeight: Kirigami.Units.iconSizes.smallMedium
             source: root.icon.name
-            color: label.color
         }
 
         Label {
