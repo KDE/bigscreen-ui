@@ -82,5 +82,17 @@ T.Dialog {
 
     footer: DialogButtonBox {
         dialog: root
+
+        // Up from the buttons goes back to the content, to the item before them in the focus chain
+        Keys.onUpPressed: event => {
+            const item = itemAt(0)?.nextItemInFocusChain(false);
+            for (let parent = item; parent; parent = parent.parent) {
+                if (parent === root.contentItem) {
+                    item.forceActiveFocus(Qt.BacktabFocusReason);
+                    return;
+                }
+            }
+            event.accepted = false;
+        }
     }
 }

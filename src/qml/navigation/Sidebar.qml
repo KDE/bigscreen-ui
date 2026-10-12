@@ -137,33 +137,8 @@ FocusScope {
     // Focus always arrives on the current entry
     onActiveFocusChanged: {
         if (activeFocus) {
-            (entries.itemAt(currentIndex) ?? root.nextEntry(-1, 1))?.forceActiveFocus();
+            (entries.itemAt(currentIndex) ?? entryColumn.children.find(entry => entry.activeFocusOnTab && entry.enabled))?.forceActiveFocus();
         }
-    }
-
-    Keys.onUpPressed: event => event.accepted = moveFocus(-1)
-    Keys.onDownPressed: event => event.accepted = moveFocus(1)
-
-    function nextEntry(from: int, step: int): Item {
-        for (let i = from + step; i >= 0 && i < entries.count; i += step) {
-            const entry = entries.itemAt(i);
-            if (entry && entry.focusPolicy !== Qt.NoFocus && entry.enabled) {
-                return entry;
-            }
-        }
-        return null;
-    }
-
-    function moveFocus(step: int): bool {
-        let from = -1;
-        for (let i = 0; i < entries.count; ++i) {
-            if (entries.itemAt(i)?.activeFocus) {
-                from = i;
-            }
-        }
-        const entry = nextEntry(from, step);
-        entry?.forceActiveFocus();
-        return entry !== null;
     }
 
     HoverHandler {
@@ -330,6 +305,9 @@ FocusScope {
                     width: entryView.width
                     height: entryView.contentHeight
                     spacing: Kirigami.Units.smallSpacing
+
+                    // Separators don't take focus, so the arrow keys skip them
+                    KeyNavigationGroup.orientation: Qt.Vertical
 
                     Repeater {
                         id: entries

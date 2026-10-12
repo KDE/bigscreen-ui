@@ -31,10 +31,10 @@ T.DialogButtonBox {
 
     standardButtons: root.dialog.standardButtons
 
+    // Focus arriving on the box goes to its first button
     onActiveFocusChanged: {
         if (activeFocus) {
-            listView.currentIndex = 0;
-            listView.forceActiveFocus();
+            itemAt(0)?.forceActiveFocus();
         }
     }
 
@@ -59,47 +59,15 @@ T.DialogButtonBox {
                 return "";
             }
         }
-
-        // HACK: for some reason the height isn't correct on initial start
-        onImplicitHeightChanged: height = implicitHeight
-
-        onActiveFocusChanged: {
-            if (activeFocus) {
-                listView.forceActiveFocus()
-            }
-        }
         Kirigami.MnemonicData.controlType: Kirigami.MnemonicData.DialogButton
     }
 
-    contentItem: ListView {
-        id: listView
-        keyNavigationEnabled: true
-        implicitWidth: contentWidth
-        implicitHeight: buttonMetrics.implicitHeight
-
-        model: root.contentModel
+    contentItem: RowLayout {
         spacing: root.spacing
-        orientation: ListView.Horizontal
-        boundsBehavior: Flickable.StopAtBounds
-        snapMode: ListView.SnapToItem
+        KeyNavigationGroup.orientation: Qt.Horizontal
 
-        Button {
-            id: buttonMetrics
-            visible: false
-            text: 'A'
-            icon.name: 'dialog-ok'
-        }
-
-        Keys.onLeftPressed: {
-            if (currentIndex > 0) {
-                currentIndex = Math.max(0, currentIndex - 1);
-            }
-        }
-
-        Keys.onRightPressed: {
-            if (currentIndex < count - 1) {
-                currentIndex = Math.min(count - 1, currentIndex + 1);
-            }
+        Repeater {
+            model: root.contentModel
         }
     }
 }
