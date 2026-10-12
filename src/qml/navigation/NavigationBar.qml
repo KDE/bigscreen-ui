@@ -66,6 +66,8 @@ FocusScope {
             tabs.currentIndex = root.currentIndex;
         }
     }
+    // Focus follows the selected tab when it changes from elsewhere, such as Back going Home
+    onCurrentIndexChanged: tabs.currentIndex = currentIndex
 
     RowLayout {
         id: layout
