@@ -45,8 +45,8 @@ BigscreenUI.Page {
     BigscreenUI.HeroBanner {
         id: hero
 
-        x: BigscreenUI.Units.contentMargin(root.SafeArea.margins.left)
-        y: root.SafeArea.margins.top + Kirigami.Units.gridUnit * 2
+        x: root.contentMargins.left
+        y: root.contentMargins.top
         width: Math.round(parent.width * 0.5)
 
         overline: root.shownRail
@@ -86,17 +86,20 @@ BigscreenUI.Page {
         height: parent.height
 
         // Follow the banner, whose height depends on its text: below its actions, or in their
-        // place while browsing. A transform keeps the view's size fixed.
-        transform: Translate {
-            y: hero.y + (root.browsing ? hero.actionRow.y : hero.height + Kirigami.Units.gridUnit * 2)
-               - Math.round(root.height * 0.52)
-
-            Behavior on y {
-                NumberAnimation {
-                    duration: Kirigami.Units.longDuration * 1.5
-                    easing.type: Easing.InOutCubic
-                }
+        // place while browsing. A transform keeps the view's size fixed. Only the move between
+        // the two is animated, so the rails don't slide around as the page is first laid out.
+        property real browseProgress: root.browsing ? 1 : 0
+        Behavior on browseProgress {
+            NumberAnimation {
+                duration: Kirigami.Units.longDuration * 1.5
+                easing.type: Easing.InOutCubic
             }
+        }
+
+        transform: Translate {
+            readonly property real belowActions: hero.height + Kirigami.Units.gridUnit * 2
+            y: hero.y + belowActions + (hero.actionRow.y - belowActions) * rails.browseProgress
+               - Math.round(root.height * 0.52)
         }
 
         Keys.priority: Keys.AfterItem

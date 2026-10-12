@@ -20,13 +20,16 @@ QtObject {
     readonly property int titleFontPixelSize: 48
     readonly property int displayFontPixelSize: 72
 
-    // Margin between the screen edges and content
-    readonly property int screenMargin: Kirigami.Units.gridUnit * 5
+    // Recommended margins between the edges of the screen and content
+    readonly property int horizontalScreenMargin: Kirigami.Units.gridUnit * 5
+    readonly property int verticalScreenMargin: Kirigami.Units.gridUnit * 3
 
-    // Margin between an edge and content, given the SafeArea margin on that side: the
-    // screen margin, or more to keep clear of something over that edge, such as a Sidebar.
-    function contentMargin(safeMargin: real): real {
-        return Math.max(screenMargin, safeMargin + Kirigami.Units.gridUnit * 2);
+    // Margins between a screen edge and content: recommended padding + safearea (navigation bars)
+    function horizontalContentMargin(safeMargin: real): real {
+        return Math.max(horizontalScreenMargin, safeMargin + Kirigami.Units.gridUnit * 2);
+    }
+    function verticalContentMargin(safeMargin: real): real {
+        return Math.max(verticalScreenMargin, safeMargin + Kirigami.Units.gridUnit * 2);
     }
 
     // Corner radius of media artwork

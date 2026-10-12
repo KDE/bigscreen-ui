@@ -72,8 +72,8 @@ FocusScope {
     RowLayout {
         id: layout
         anchors.fill: parent
-        anchors.leftMargin: Units.contentMargin(root.SafeArea.margins.left)
-        anchors.rightMargin: Units.contentMargin(root.SafeArea.margins.right)
+        anchors.leftMargin: Units.horizontalContentMargin(root.SafeArea.margins.left)
+        anchors.rightMargin: Units.horizontalContentMargin(root.SafeArea.margins.right)
         anchors.topMargin: root.topPadding
         anchors.bottomMargin: root.bottomPadding
         spacing: Kirigami.Units.gridUnit * 2

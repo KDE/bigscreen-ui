@@ -75,8 +75,8 @@ GridView {
     // Room around the edges for the focused card to grow into
     readonly property real __focusRoom: Kirigami.Units.gridUnit * 2
 
-    leftMargin: Units.contentMargin(SafeArea.margins.left)
-    rightMargin: Units.contentMargin(SafeArea.margins.right) - columnSpacing
+    leftMargin: Units.horizontalContentMargin(SafeArea.margins.left)
+    rightMargin: Units.horizontalContentMargin(SafeArea.margins.right) - columnSpacing
     topMargin: __focusRoom + SafeArea.margins.top
     bottomMargin: __focusRoom + SafeArea.margins.bottom
 
@@ -107,12 +107,13 @@ GridView {
 
     onCurrentItemChanged: scrollToCurrent()
     onHeightChanged: scrollToCurrentInstant()
+    onCellHeightChanged: scrollToCurrentInstant()
 
     /*!
        \brief Scrolls so the current card is fully in view.
      */
     function scrollToCurrent(): void {
-        if (!currentItem) {
+        if (!__canScroll()) {
             return;
         }
         scrollAnimation.to = __currentTargetContentY();
@@ -120,10 +121,17 @@ GridView {
     }
 
     function scrollToCurrentInstant(): void {
-        if (!currentItem) {
+        if (!__canScroll()) {
             return;
         }
+        // A scroll still animating would otherwise carry on to where it was headed
+        scrollAnimation.stop();
         contentY = __currentTargetContentY();
+    }
+
+    // Whether the item can be scrolled to
+    function __canScroll(): bool {
+        return currentItem !== null && width > 0 && height > 0;
     }
 
     function __currentTargetContentY(): double {

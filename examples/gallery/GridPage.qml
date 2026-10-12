@@ -47,8 +47,8 @@ BigscreenUI.Page {
             id: chips
 
             Layout.fillWidth: true
-            Layout.leftMargin: BigscreenUI.Units.contentMargin(root.SafeArea.margins.left)
-            Layout.rightMargin: BigscreenUI.Units.contentMargin(root.SafeArea.margins.right)
+            Layout.leftMargin: root.contentMargins.left
+            Layout.rightMargin: root.contentMargins.right
             Layout.topMargin: Kirigami.Units.gridUnit
 
             focus: true
@@ -91,7 +91,7 @@ BigscreenUI.Page {
                 id: placeholder
 
                 anchors.centerIn: parent
-                width: Math.min(parent.width - BigscreenUI.Units.screenMargin * 2, implicitWidth)
+                width: Math.min(parent.width - BigscreenUI.Units.horizontalScreenMargin * 2, implicitWidth)
 
                 iconName: "folder-videos"
                 text: "Nothing here yet"

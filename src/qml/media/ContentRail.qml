@@ -33,15 +33,15 @@ FocusScope {
 
     /*!
        \brief The space between the left screen edge and the first item.
-       \default Units.contentMargin(SafeArea.margins.left)
+       \default Units.horizontalContentMargin(SafeArea.margins.left)
      */
-    property real leftPadding: Units.contentMargin(SafeArea.margins.left)
+    property real leftPadding: Units.horizontalContentMargin(SafeArea.margins.left)
 
     /*!
        \brief The space between the last item and the right screen edge.
-       \default Units.contentMargin(SafeArea.margins.right)
+       \default Units.horizontalContentMargin(SafeArea.margins.right)
      */
-    property real rightPadding: Units.contentMargin(SafeArea.margins.right)
+    property real rightPadding: Units.horizontalContentMargin(SafeArea.margins.right)
 
     property alias model: listView.model
     property alias delegate: listView.delegate
@@ -106,15 +106,28 @@ FocusScope {
             // Keep the current item at the left padding until the end of the row is reached
             onCurrentItemChanged: scrollToCurrent()
             onWidthChanged: scrollToCurrent()
+            // The padding changes with the layout, such as when a Sidebar appears, and a ListView
+            // leaves its items where they were, so move them at once
+            onLeftMarginChanged: {
+                scrollAnimation.stop();
+                contentX = targetContentX();
+            }
 
             function scrollToCurrent(): void {
                 if (!currentItem) {
                     return;
                 }
-                const minimum = originX - leftMargin;
-                const maximum = Math.max(minimum, originX + contentWidth + rightMargin - width);
-                scrollAnimation.to = Math.max(minimum, Math.min(maximum, currentItem.x - root.leftPadding));
+                scrollAnimation.to = targetContentX();
                 scrollAnimation.restart();
+            }
+
+            function targetContentX(): real {
+                const minimum = originX - leftMargin;
+                if (!currentItem) {
+                    return minimum;
+                }
+                const maximum = Math.max(minimum, originX + contentWidth + rightMargin - width);
+                return Math.max(minimum, Math.min(maximum, currentItem.x - root.leftPadding));
             }
 
             NumberAnimation {

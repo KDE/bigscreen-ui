@@ -41,8 +41,8 @@ T.ItemDelegate {
     property string subtitle
 
     /*!
-       \brief How far into the media the user is, from 0 to 1. A progress bar is shown
-       over the artwork when this is greater than 0 and less than 1.
+       \brief How far into the media the user is.
+       A progress bar is shown over the artwork if between 0 and 1.
        \default -1
      */
     property real progress: -1
@@ -180,17 +180,19 @@ T.ItemDelegate {
         ColumnLayout {
             id: labels
 
-            y: artwork.height + Kirigami.Units.largeSpacing + (root.activeFocus ? Kirigami.Units.smallSpacing * 2 : 0)
-            width: artwork.width
-            spacing: 0
-            visible: root.hasLabels
-
-            Behavior on y {
+            // Move labels down when item is focused (since the card grows)
+            property real focusOffset: root.activeFocus ? Kirigami.Units.smallSpacing * 2 : 0
+            Behavior on focusOffset {
                 NumberAnimation {
                     duration: Kirigami.Units.longDuration
                     easing.type: Easing.OutCubic
                 }
             }
+
+            y: artwork.height + Kirigami.Units.largeSpacing + focusOffset
+            width: artwork.width
+            spacing: 0
+            visible: root.hasLabels
 
             Label {
                 Layout.fillWidth: true

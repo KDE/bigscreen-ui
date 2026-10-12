@@ -11,9 +11,8 @@ import org.kde.kirigami as Kirigami
 
    Give the page a single content item, such as a ColumnLayout.
 
-   The page can sit under a header such as a NavigationBar, so its background reaches the
-   top of the screen. Set \c SafeArea.additionalMargins.top on the page to the header's height,
-   so content starts below the header and never scrolls under it.
+   The content keeps within the page's \l {Page::contentMargins}{contentMargins}, so it starts
+   below anything over the page, such as a NavigationBar, and never scrolls under it.
 
    \code
    BigscreenUI.ScrollablePage {
@@ -41,11 +40,11 @@ Page {
 
     padding: Kirigami.Units.gridUnit * 2
 
-    // Keep content in SafeArea
-    topPadding: padding + (title.length > 0 ? 0 : SafeArea.margins.top)
-    bottomPadding: padding + SafeArea.margins.bottom
-    leftPadding: Units.contentMargin(SafeArea.margins.left)
-    rightPadding: Units.contentMargin(SafeArea.margins.right)
+    // The title, when there is one, already keeps clear of the top
+    topPadding: title.length > 0 ? padding : contentMargins.top
+    bottomPadding: contentMargins.bottom
+    leftPadding: contentMargins.left
+    rightPadding: contentMargins.right
 
     /*!
        \brief Scrolls so that \a item is fully visible, with some margin around it.

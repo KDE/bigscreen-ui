@@ -46,7 +46,7 @@ T.Control {
 
     anchors.horizontalCenter: parent?.horizontalCenter
     anchors.bottom: parent?.bottom
-    anchors.bottomMargin: Kirigami.Units.gridUnit * 3 + SafeArea.margins.bottom
+    anchors.bottomMargin: Units.verticalContentMargin(SafeArea.margins.bottom)
 
     opacity: 0
     visible: opacity > 0

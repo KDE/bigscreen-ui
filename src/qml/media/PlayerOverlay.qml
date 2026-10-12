@@ -219,11 +219,9 @@ FocusScope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.margins: Units.screenMargin
-            anchors.leftMargin: Units.contentMargin(root.SafeArea.margins.left)
-            anchors.rightMargin: Units.contentMargin(root.SafeArea.margins.right)
-            // Below anything overlaying the top of the video, such as a header
-            anchors.topMargin: root.SafeArea.margins.top + Kirigami.Units.gridUnit * 3
+            anchors.leftMargin: Units.horizontalContentMargin(root.SafeArea.margins.left)
+            anchors.rightMargin: Units.horizontalContentMargin(root.SafeArea.margins.right)
+            anchors.topMargin: Units.verticalContentMargin(root.SafeArea.margins.top)
             spacing: Kirigami.Units.smallSpacing
 
             Label {
@@ -255,9 +253,9 @@ FocusScope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            anchors.leftMargin: Units.contentMargin(root.SafeArea.margins.left)
-            anchors.rightMargin: Units.contentMargin(root.SafeArea.margins.right)
-            anchors.bottomMargin: Kirigami.Units.gridUnit * 3
+            anchors.leftMargin: Units.horizontalContentMargin(root.SafeArea.margins.left)
+            anchors.rightMargin: Units.horizontalContentMargin(root.SafeArea.margins.right)
+            anchors.bottomMargin: Units.verticalContentMargin(root.SafeArea.margins.bottom)
             spacing: Kirigami.Units.gridUnit * 1.5
 
             RowLayout {
