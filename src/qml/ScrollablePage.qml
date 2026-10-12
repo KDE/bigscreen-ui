@@ -39,13 +39,11 @@ Page {
      */
     property alias flickable: flickable
 
-    // Keep content inside the safe area, for example below a header overlaying the page.
-    // When overriding a padding, add the safe area margin for that side.
     padding: Kirigami.Units.gridUnit * 2
-    // With a title, the title already keeps clear of the top safe area
+
+    // Keep content in SafeArea
     topPadding: padding + (title.length > 0 ? 0 : SafeArea.margins.top)
     bottomPadding: padding + SafeArea.margins.bottom
-    // The title-safe margin, so content isn't lost at the edges of a TV
     leftPadding: Units.contentMargin(SafeArea.margins.left)
     rightPadding: Units.contentMargin(SafeArea.margins.right)
 
@@ -55,6 +53,7 @@ Page {
     function ensureVisible(item: Item): void {
         const position = item.mapToItem(flickable.contentItem, 0, 0);
         const margin = Kirigami.Units.gridUnit;
+
         // The part of the viewport inside the padding
         const top = flickable.contentY + flickable.topMargin;
         const bottom = flickable.contentY + flickable.height - flickable.bottomMargin;
@@ -136,8 +135,20 @@ Page {
         }
     }
 
+    // When scrolling past the top or bottom, snap the view to the end of the page
+    Keys.onUpPressed: event => {
+        scrollToTop();
+        event.accepted = false;
+    }
+    Keys.onDownPressed: event => {
+        scrollTo(flickable.contentHeight);
+        event.accepted = false;
+    }
+
     Connections {
         target: root.Window.window
+
+        // If an item is focused in the page, call ensureVisible(item) on it so the view scrolls there
         function onActiveFocusItemChanged() {
             const item = root.Window.activeFocusItem;
             for (let parent = item; parent; parent = parent.parent) {
