@@ -91,7 +91,7 @@ FocusScope {
         Button {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: Kirigami.Units.gridUnit
-            focus: true
+            focus: visible
             visible: root.helpfulAction !== null && (!("visible" in root.helpfulAction) || root.helpfulAction.visible)
             action: root.helpfulAction
         }
