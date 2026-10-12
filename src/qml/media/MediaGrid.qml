@@ -96,8 +96,17 @@ GridView {
         bottomFadeLength: root.__focusRoom
     }
 
+    onWidthChanged: __ensureCurrent()
+    onActiveFocusChanged: __ensureCurrent()
+
+    function __ensureCurrent(): void {
+        if (currentIndex < 0 && count > 0 && width > 0) {
+            currentIndex = 0;
+        }
+    }
+
     onCurrentItemChanged: scrollToCurrent()
-    onHeightChanged: scrollToCurrent()
+    onHeightChanged: scrollToCurrentInstant()
 
     /*!
        \brief Scrolls so the current card is fully in view.
@@ -105,6 +114,21 @@ GridView {
     function scrollToCurrent(): void {
         if (!currentItem) {
             return;
+        }
+        scrollAnimation.to = __currentTargetContentY();
+        scrollAnimation.restart();
+    }
+
+    function scrollToCurrentInstant(): void {
+        if (!currentItem) {
+            return;
+        }
+        contentY = __currentTargetContentY();
+    }
+
+    function __currentTargetContentY(): double {
+        if (!currentItem) {
+            return 0;
         }
         const top = contentY + topMargin;
         const bottom = contentY + height - bottomMargin;
@@ -116,8 +140,7 @@ GridView {
         }
         const minimum = originY - topMargin;
         const maximum = Math.max(minimum, originY + contentHeight + bottomMargin - height);
-        scrollAnimation.to = Math.max(minimum, Math.min(maximum, target));
-        scrollAnimation.restart();
+        return Math.max(minimum, Math.min(maximum, target));
     }
 
     NumberAnimation {
