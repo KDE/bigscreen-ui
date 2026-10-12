@@ -92,7 +92,19 @@ ListView {
         for (let i = 0; i < railModel.count; ++i) {
             railModel.get(i).width = Qt.binding(() => root.width);
         }
+        updateSafeArea();
         updateFade();
+    }
+
+    SafeArea.onMarginsChanged: updateSafeArea()
+
+    // Pass the safearea props to children
+    function updateSafeArea(): void {
+        for (let i = 0; i < railModel.count; ++i) {
+            const rail = railModel.get(i);
+            rail.SafeArea.additionalMargins.left = root.SafeArea.margins.left;
+            rail.SafeArea.additionalMargins.right = root.SafeArea.margins.right;
+        }
     }
 
     function updateFade(): void {
