@@ -13,7 +13,6 @@ import org.kde.bigscreen.ui as BigscreenUI
 BigscreenUI.Page {
     id: root
 
-    // Folders first, then every movie a few times over, so the grid scrolls
     readonly property var library: [
         { title: "Holidays", subtitle: "Folder", folder: true },
         { title: "Concerts", subtitle: "Folder", folder: true },

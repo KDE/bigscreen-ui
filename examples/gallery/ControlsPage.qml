@@ -206,7 +206,7 @@ BigscreenUI.ScrollablePage {
                 }
 
                 BigscreenUI.Label {
-                    text: "SeekBar · %1%".arg(Math.round(seekBar.value))
+                    text: "SeekBar - %1%".arg(Math.round(seekBar.value))
                     color: Kirigami.Theme.disabledTextColor
                     font.features: ({ "tnum": 1 })
                 }
@@ -218,7 +218,6 @@ BigscreenUI.ScrollablePage {
                     to: 100
                     stepSize: 5
                     value: 35
-                    Accessible.name: "Example position"
                 }
             }
         }

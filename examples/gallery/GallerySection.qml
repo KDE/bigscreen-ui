@@ -23,7 +23,6 @@ ColumnLayout {
         Layout.fillWidth: true
         text: root.title
         type: BigscreenUI.Label.Section
-        Accessible.role: Accessible.Heading
     }
 
     BigscreenUI.Label {

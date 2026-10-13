@@ -8,7 +8,7 @@ import QtQml
 QtObject {
     readonly property var movies: [
         { title: "Konqi & Tux's Adventure", year: 2025, genres: "Sci-fi, Drama", runtime: "1h 52m", badges: ["4K HDR", "13+"], image: "qrc:/images/mountain.jpg",
-          synopsis: "Konqi and Tux got sucked into a Windows computer! Can they fight their way back to KDEValley?" },
+          synopsis: "Konqi and Tux got sucked into a computer! Can they fight their way back to KDEValley?" },
         { title: "Krita: Paint the world", year: 2023, genres: "Family", runtime: "1h 58m", badges: ["4K", "16+"], image: "qrc:/images/safelanding.jpg",
           synopsis: "Kiki the cyber squirrel's discovery of a paintbrush illuminates the lives of all those around her." },
         { title: "Katie", year: 2024, genres: "Drama", runtime: "2h 04m", badges: ["4K", "12+"], image: "qrc:/images/scarlettree.jpg",

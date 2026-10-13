@@ -67,6 +67,9 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/utils/DelegateBackground.qml
     qml/utils/EdgeFadeEffect.qml
     qml/utils/PopupBackground.qml
+
+    qml/views/GridView.qml
+    qml/views/ListView.qml
 )
 
 target_link_libraries(bigscreenuiplugin PRIVATE
