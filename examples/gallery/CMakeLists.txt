@@ -27,6 +27,7 @@ ecm_target_qml_sources(bigscreen-ui-demo SOURCES
     MediaPage.qml
     OverlaysPage.qml
     PlaybackPage.qml
+    PlayerPage.qml
 )
 
 target_link_libraries(bigscreen-ui-demo PRIVATE

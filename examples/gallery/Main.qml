@@ -78,6 +78,10 @@ BigscreenUI.ApplicationWindow {
         pageStack.push(pushedPage);
     }
 
+    function openPlayer(): void {
+        pageStack.push(playerPage);
+    }
+
     initialPage: controlsPage
 
     navigationBar: BigscreenUI.NavigationBar {
@@ -114,6 +118,11 @@ BigscreenUI.ApplicationWindow {
             icon.name: "pin"
             checkable: true
         }
+    }
+
+    Component {
+        id: playerPage
+        PlayerPage {}
     }
 
     Component {
