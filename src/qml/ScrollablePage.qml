@@ -129,7 +129,7 @@ Page {
                 id: scrollAnimation
                 target: flickable
                 property: "contentY"
-                duration: Kirigami.Units.longDuration
+                duration: Kirigami.Units.veryLongDuration
                 easing.type: Easing.OutCubic
             }
         }

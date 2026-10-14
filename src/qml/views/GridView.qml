@@ -107,7 +107,7 @@ QQ.GridView {
         id: scrollAnimation
         target: root
         property: "contentY"
-        duration: Kirigami.Units.longDuration
+        duration: Kirigami.Units.veryLongDuration
         easing.type: Easing.OutCubic
     }
 }

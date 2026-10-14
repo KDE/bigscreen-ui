@@ -36,7 +36,8 @@ ListView {
     highlightRangeMode: ListView.ApplyRange
     preferredHighlightBegin: Kirigami.Units.gridUnit * 2
     preferredHighlightEnd: height - Kirigami.Units.gridUnit * 6
-    highlightMoveDuration: Kirigami.Units.longDuration
+    highlightMoveDuration: Kirigami.Units.veryLongDuration
+    highlightMoveVelocity: -1
 
     layer.enabled: contentHeight > height - topMargin - bottomMargin
     layer.effect: EdgeFadeEffect {
