@@ -20,6 +20,8 @@ set_source_files_properties(Artwork.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 ecm_target_qml_sources(bigscreen-ui-demo SOURCES
     Artwork.qml
     ControlsPage.qml
+    DetailsPage.qml
+    ExpandingRail.qml
     GallerySection.qml
     GridPage.qml
     ListsPage.qml

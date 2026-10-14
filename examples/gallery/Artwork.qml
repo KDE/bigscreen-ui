@@ -13,7 +13,7 @@ QtObject {
           synopsis: "Kiki the cyber squirrel's discovery of a paintbrush illuminates the lives of all those around her." },
         { title: "Katie", year: 2024, genres: "Drama", runtime: "2h 04m", badges: ["4K", "12+"], image: "qrc:/images/scarlettree.jpg",
           synopsis: "Bugs have overwhelmed KDEValley's defenses. The entire town turns to the one dragon they can count on, Katie." },
-        { title: "Microslop", year: 2025, genres: "Thriller", runtime: "1h 47m", badges: ["4K HDR", "16+"], image: "qrc:/images/altai.jpg",
+        { title: "Agents", year: 2025, genres: "Thriller", runtime: "1h 47m", badges: ["4K HDR", "16+"], image: "qrc:/images/altai.jpg",
           synopsis: "A secret organization is trying to undermine KDEValley's autonomy." },
         { title: "This is tough", year: 2024, genres: "Documentary", runtime: "1h 31m", badges: ["4K", "All"], image: "qrc:/images/volna.jpg",
           synopsis: "Follow a group of hackers trying to build a new mobile operating system and platform." },

@@ -4,109 +4,62 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import QtQuick.Layouts
+import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
+// A featured banner and rails of MediaCards.
 BigscreenUI.Page {
     id: root
 
-    property var shownItem: Artwork.movies[0]
-    property string shownRail: "Featured"
-    readonly property bool browsing: rails.activeFocus
+    readonly property var featured: Artwork.movies[0]
+    readonly property url backdropSource: rails.currentIndex > 0 ? rails.currentItem?.currentItem?.source ?? "" : featured.image
 
-    function show(item: var, rail: string): void {
-        pending = { item: item, rail: rail };
-        showTimer.restart();
+    function openDetails(item: var, rail: string): void {
+        T.ApplicationWindow.window.pageStack.push(detailsPage, { item: item, rail: rail });
     }
-
-    property var pending
 
     background: BigscreenUI.BackdropImage {
-        source: root.shownItem.image
-    }
-
-    onBrowsingChanged: {
-        if (!browsing) {
-            show(Artwork.movies[0], "Featured");
-        }
-    }
-
-    Timer {
-        id: showTimer
-        interval: 150
-        onTriggered: {
-            root.shownItem = root.pending.item;
-            root.shownRail = root.pending.rail;
-        }
-    }
-
-    BigscreenUI.HeroBanner {
-        id: hero
-
-        x: root.contentMargins.left
-        y: root.contentMargins.top
-        width: Math.round(parent.width * 0.5)
-
-        overline: root.shownRail
-        title: root.shownItem.title
-        metadata: root.shownItem.artist ? [root.shownItem.artist] : [String(root.shownItem.year), root.shownItem.runtime, root.shownItem.genres]
-        badges: root.shownItem.badges ?? []
-        description: root.shownItem.synopsis ?? ""
-        actionsVisible: !root.browsing
-
-        BigscreenUI.Button {
-            id: playButton
-            focus: true
-            text: "Play"
-            icon.name: "media-playback-start"
-            KeyNavigation.right: infoButton
-            KeyNavigation.down: rails
-            onClicked: console.log("HeroBanner: Play")
-        }
-        BigscreenUI.Button {
-            id: infoButton
-            text: "More info"
-            icon.name: "documentinfo"
-            KeyNavigation.down: rails
-            onClicked: console.log("HeroBanner: More info")
-        }
+        source: root.backdropSource
     }
 
     BigscreenUI.RailView {
         id: rails
 
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        // The rail view fades rails out in its top margin, above the current rail
-        anchors.topMargin: restingY - topMargin
-        // As tall as the page, so it still reaches the bottom when moved up to the banner
-        height: parent.height
+        anchors.fill: parent
+        anchors.topMargin: root.contentMargins.top - topMargin
+        bottomMargin: root.contentMargins.bottom
+        focus: true
 
-        // Where the rails sit before the transform moves them to the banner
-        readonly property real restingY: Math.round(parent.height * 0.52)
+        FocusScope {
+            implicitHeight: hero.implicitHeight
 
-        // Follow the banner, whose height depends on its text: below its actions, or in their
-        // place while browsing. A transform keeps the view's size fixed. Only the move between
-        // the two is animated, so the rails don't slide around as the page is first laid out.
-        property real browseProgress: root.browsing ? 1 : 0
-        Behavior on browseProgress {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration * 1.5
-                easing.type: Easing.InOutCubic
+            BigscreenUI.HeroBanner {
+                id: hero
+
+                x: root.contentMargins.left
+                width: Math.round(parent.width * 0.5)
+
+                overline: "Featured"
+                title: root.featured.title
+                metadata: [String(root.featured.year), root.featured.runtime, root.featured.genres]
+                badges: root.featured.badges
+                description: root.featured.synopsis
+
+                BigscreenUI.Button {
+                    focus: true
+                    text: "Play"
+                    icon.name: "media-playback-start"
+                    onClicked: console.log("HeroBanner: Play")
+                }
+                BigscreenUI.Button {
+                    text: "More info"
+                    icon.name: "documentinfo"
+                    onClicked: root.openDetails(root.featured, "Featured")
+                }
             }
         }
-
-        transform: Translate {
-            readonly property real belowActions: hero.height + Kirigami.Units.gridUnit * 2
-            y: hero.y + belowActions + (hero.actionRow.y - belowActions) * rails.browseProgress
-               - rails.restingY
-        }
-
-        Keys.priority: Keys.AfterItem
-        Keys.onUpPressed: playButton.forceActiveFocus()
 
         BigscreenUI.ContentRail {
             id: continueRail
@@ -121,8 +74,7 @@ BigscreenUI.Page {
                 text: modelData.title
                 subtitle: "%1 min left".arg(20 + index * 13)
                 progress: [0.62, 0.31, 0.85, 0.12, 0.45][index]
-                onActiveFocusChanged: if (activeFocus) root.show(modelData, continueRail.title)
-                onClicked: console.log("MediaCard: %1".arg(modelData.title))
+                onClicked: root.openDetails(modelData, continueRail.title)
             }
         }
 
@@ -135,9 +87,14 @@ BigscreenUI.Page {
                 artworkWidth: Kirigami.Units.gridUnit * 12
                 source: modelData.image
                 text: modelData.title
-                onActiveFocusChanged: if (activeFocus) root.show(modelData, posterRail.title)
-                onClicked: console.log("MediaCard: %1".arg(modelData.title))
+                onClicked: root.openDetails(modelData, posterRail.title)
             }
+        }
+
+        ExpandingRail {
+            title: "Details that open inline"
+            model: Artwork.movies
+            onMoreInfoRequested: movie => root.openDetails(movie, title)
         }
 
         BigscreenUI.ContentRail {
@@ -154,8 +111,7 @@ BigscreenUI.Page {
                 subtitle: index < 3 ? "Watched" : "%1 min".arg(42 + index)
                 watched: index < 3
                 progress: index === 3 ? 0.4 : -1
-                onActiveFocusChanged: if (activeFocus) root.show(series, episodeRail.title)
-                onClicked: console.log("MediaCard: Episode %1".arg(index + 1))
+                onClicked: root.openDetails(series, episodeRail.title)
             }
         }
 
@@ -170,8 +126,37 @@ BigscreenUI.Page {
                 source: modelData.image
                 text: modelData.title
                 subtitle: modelData.artist
-                onActiveFocusChanged: if (activeFocus) root.show(modelData, albumRail.title)
-                onClicked: console.log("MediaCard: %1".arg(modelData.title))
+                onClicked: root.openDetails(modelData, albumRail.title)
+            }
+        }
+    }
+
+    Component {
+        id: detailsPage
+
+        DetailsPage {
+            id: details
+
+            required property var item
+            required property string rail
+
+            source: item.image
+            overline: rail
+            title: item.title
+            metadata: item.artist ? [item.artist] : [String(item.year), item.runtime, item.genres]
+            badges: item.badges ?? []
+            description: item.synopsis ?? ""
+
+            BigscreenUI.Button {
+                focus: true
+                text: "Play"
+                icon.name: "media-playback-start"
+                onClicked: console.log("DetailsPage: Play %1".arg(details.item.title))
+            }
+            BigscreenUI.Button {
+                text: "Add to watchlist"
+                icon.name: "list-add"
+                onClicked: console.log("DetailsPage: Add %1 to watchlist".arg(details.item.title))
             }
         }
     }
