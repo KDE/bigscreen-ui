@@ -26,12 +26,6 @@ ListView {
      */
     default property alias rails: railModel.children
 
-    /*!
-       \brief Whether rails above the current rail are faded out.
-       \default true
-     */
-    property bool fadeRailsAbove: true
-
     model: ObjectModel {
         id: railModel
     }
@@ -41,7 +35,7 @@ ListView {
     topMargin: Kirigami.Units.gridUnit * 2
     keyNavigationEnabled: true
     clip: true
-    layer.enabled: scrollAnimation.running
+    layer.enabled: contentHeight > height
     layer.effect: EdgeFadeEffect {
         topFadeLength: root.topMargin
     }
@@ -64,12 +58,11 @@ ListView {
         id: scrollAnimation
         target: root
         property: "contentY"
-        duration: Kirigami.Units.longDuration * 1.5
-        easing.type: Easing.OutCubic
+        duration: Kirigami.Units.veryLongDuration
+        easing.type: Easing.BezierSpline
+        easing.bezierCurve: [0.2, 0, 0, 1, 1, 1]
     }
 
-    onCurrentIndexChanged: updateFade()
-    onFadeRailsAboveChanged: updateFade()
     onCountChanged: updateRails()
     Component.onCompleted: updateRails()
 
@@ -93,7 +86,6 @@ ListView {
             railModel.get(i).width = Qt.binding(() => root.width);
         }
         updateSafeArea();
-        updateFade();
     }
 
     SafeArea.onMarginsChanged: updateSafeArea()
@@ -104,12 +96,6 @@ ListView {
             const rail = railModel.get(i);
             rail.SafeArea.additionalMargins.left = root.SafeArea.margins.left;
             rail.SafeArea.additionalMargins.right = root.SafeArea.margins.right;
-        }
-    }
-
-    function updateFade(): void {
-        for (let i = 0; i < railModel.count; ++i) {
-            railModel.get(i).opacity = (fadeRailsAbove && i < currentIndex) ? 0 : 1;
         }
     }
 }

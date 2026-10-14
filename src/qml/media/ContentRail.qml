@@ -61,13 +61,6 @@ FocusScope {
     implicitHeight: column.implicitHeight
     implicitWidth: column.implicitWidth
 
-    Behavior on opacity {
-        NumberAnimation {
-            duration: Kirigami.Units.shortDuration
-            easing.type: Easing.OutQuad
-        }
-    }
-
     ColumnLayout {
         id: column
         anchors.fill: parent
