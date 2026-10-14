@@ -32,16 +32,18 @@ FocusScope {
     property string title
 
     /*!
-       \brief The space between the left screen edge and the first item.
-       \default Units.horizontalContentMargin(SafeArea.margins.left)
+       \brief The space between the left edge and the first item. By default, it lines the first
+       item up with the page's content.
+       \default SafeArea.margins.left
      */
-    property real leftPadding: Units.horizontalContentMargin(SafeArea.margins.left)
+    property real leftPadding: SafeArea.margins.left
 
     /*!
-       \brief The space between the last item and the right screen edge.
-       \default Units.horizontalContentMargin(SafeArea.margins.right)
+       \brief The space between the last item and the right edge. By default, it lines the last
+       item up with the page's content.
+       \default SafeArea.margins.right
      */
-    property real rightPadding: Units.horizontalContentMargin(SafeArea.margins.right)
+    property real rightPadding: SafeArea.margins.right
 
     property alias model: listView.model
     property alias delegate: listView.delegate
@@ -105,12 +107,24 @@ FocusScope {
 
             // Keep the current item at the left padding until the end of the row is reached
             onCurrentItemChanged: scrollToCurrent()
-            onWidthChanged: scrollToCurrent()
+            onWidthChanged: {
+                ensureCurrent();
+                scrollToCurrent();
+            }
+            onCountChanged: ensureCurrent()
             // The padding changes with the layout, such as when a Sidebar appears, and a ListView
             // leaves its items where they were, so move them at once
             onLeftMarginChanged: {
                 scrollAnimation.stop();
                 contentX = targetContentX();
+            }
+
+            // ListView picks its first item as current only as items arrive, which it can skip
+            // while it has no size. The rail takes its height from the current item.
+            function ensureCurrent(): void {
+                if (currentIndex < 0 && count > 0 && width > 0) {
+                    currentIndex = 0;
+                }
             }
 
             function scrollToCurrent(): void {

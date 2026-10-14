@@ -81,9 +81,12 @@ BigscreenUI.Page {
         anchors.right: parent.right
         anchors.top: parent.top
         // The rail view fades rails out in its top margin, above the current rail
-        anchors.topMargin: Math.round(parent.height * 0.52) - topMargin
+        anchors.topMargin: restingY - topMargin
         // As tall as the page, so it still reaches the bottom when moved up to the banner
         height: parent.height
+
+        // Where the rails sit before the transform moves them to the banner
+        readonly property real restingY: Math.round(parent.height * 0.52)
 
         // Follow the banner, whose height depends on its text: below its actions, or in their
         // place while browsing. A transform keeps the view's size fixed. Only the move between
@@ -99,7 +102,7 @@ BigscreenUI.Page {
         transform: Translate {
             readonly property real belowActions: hero.height + Kirigami.Units.gridUnit * 2
             y: hero.y + belowActions + (hero.actionRow.y - belowActions) * rails.browseProgress
-               - Math.round(root.height * 0.52)
+               - rails.restingY
         }
 
         Keys.priority: Keys.AfterItem

@@ -45,7 +45,7 @@ BigscreenUI.ScrollablePage {
                 text: "Open context drawer"
                 KeyNavigation.up: dialogButton
                 KeyNavigation.down: pushButton
-                icon.name: "sidebar-show-right"
+                icon.name: "sidebar-expand-right"
                 onClicked: contextDrawer.open()
             }
         }
@@ -58,7 +58,7 @@ BigscreenUI.ScrollablePage {
                 id: pushButton
                 text: "Push a page"
                 KeyNavigation.up: contextDrawerButton
-                icon.name: "go-next"
+                icon.name: "list-add"
                 onClicked: T.ApplicationWindow.window.pushPage()
             }
         }
