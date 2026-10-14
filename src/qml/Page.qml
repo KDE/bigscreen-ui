@@ -11,10 +11,9 @@ import org.kde.kirigami as Kirigami
 
    The content fills the whole page, so it can reach the edges of the screen, such as a row
    of media that scrolls off the side. Keep text and controls within \l contentMargins, clear
-   of the edges of the screen and anything overlaying the page, such as a NavigationBar. For a
-   page of controls with the standard margins, use ScrollablePage.
+   of the edges of the screen.
 
-   When \l title is set, it is shown at the top of the page.
+   For a page with margins automatically applied, use ScrollablePage.
 
    \code
    BigscreenUI.Page {
@@ -38,15 +37,13 @@ T.Page {
        \qmlproperty real Page::contentMargins.right
        \qmlproperty real Page::contentMargins.top
        \qmlproperty real Page::contentMargins.bottom
-       \brief How far text and controls should keep from each edge of the page.
-
-       This includes SafeArea margins, that could be set by NavigationBar or Sidebar in an ApplicationWindow.
+       \brief How far text and controls should keep from each edge of the page's content.
      */
     readonly property Margins contentMargins: Margins {
-        left: Units.horizontalContentMargin(root.SafeArea.margins.left)
-        right: Units.horizontalContentMargin(root.SafeArea.margins.right)
-        top: Units.verticalContentMargin(root.SafeArea.margins.top)
-        bottom: Units.verticalContentMargin(root.SafeArea.margins.bottom)
+        left: Math.max(Units.horizontalScreenMargin - root.__navigationLeft, Units.contentSpacing)
+        right: Units.horizontalScreenMargin
+        top: Math.max(Units.verticalScreenMargin - root.__navigationTop, Units.contentSpacing)
+        bottom: Units.verticalScreenMargin
     }
 
     component Margins: QtObject {
@@ -56,16 +53,28 @@ T.Page {
         property real bottom
     }
 
-    readonly property bool __underNavigation: T.StackView.index === 0
-    SafeArea.additionalMargins.top: __underNavigation ? T.ApplicationWindow.window?.__pageTopMargin ?? 0 : 0
-    SafeArea.additionalMargins.left: __underNavigation ? T.ApplicationWindow.window?.__pageLeftMargin ?? 0 : 0
+    // The navigation over the page, when ApplicationWindow shows it under the navigation
+    readonly property real __navigationTop: T.StackView.view?.__navigationTop ?? 0
+    readonly property real __navigationLeft: T.StackView.view?.__navigationLeft ?? 0
+
+    // HACK: SafeArea doesn't pass margins while item is being created
+    Component.onCompleted: {
+        SafeArea.additionalMargins.left = Qt.binding(() => __navigationLeft + contentMargins.left);
+        SafeArea.additionalMargins.right = Qt.binding(() => contentMargins.right);
+        SafeArea.additionalMargins.top = Qt.binding(() => __navigationTop + contentMargins.top);
+        SafeArea.additionalMargins.bottom = Qt.binding(() => contentMargins.bottom);
+    }
+
+    // The title already keeps clear of the navigation
+    topPadding: title.length > 0 ? 0 : __navigationTop
+    leftPadding: __navigationLeft
 
     header: Label {
         visible: text.length > 0
         text: root.title
-        leftPadding: root.contentMargins.left
+        leftPadding: root.__navigationLeft + root.contentMargins.left
         rightPadding: root.contentMargins.right
-        topPadding: root.contentMargins.top
+        topPadding: root.__navigationTop + root.contentMargins.top
         type: Label.Title
         elide: Text.ElideRight
         Accessible.role: Accessible.Heading

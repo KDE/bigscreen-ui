@@ -24,13 +24,8 @@ QtObject {
     readonly property int horizontalScreenMargin: Kirigami.Units.gridUnit * 5
     readonly property int verticalScreenMargin: Kirigami.Units.gridUnit * 3
 
-    // Margins between a screen edge and content: recommended padding + safearea (navigation bars)
-    function horizontalContentMargin(safeMargin: real): real {
-        return Math.max(horizontalScreenMargin, safeMargin + Kirigami.Units.gridUnit * 2);
-    }
-    function verticalContentMargin(safeMargin: real): real {
-        return Math.max(verticalScreenMargin, safeMargin + Kirigami.Units.gridUnit * 2);
-    }
+    // The least space between content and whatever is beside it, such as navigation
+    readonly property int contentSpacing: Kirigami.Units.gridUnit * 2
 
     // Corner radius of media artwork
     readonly property int cardCornerRadius: Kirigami.Units.cornerRadius * 2

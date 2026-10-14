@@ -12,10 +12,6 @@ import org.kde.kirigami as Kirigami
 /*!
    \brief A sidebar for switching between the sections of an app.
 
-   The pages should fill the window behind the sidebar and keep their content clear of it
-   by setting \c SafeArea.additionalMargins.left to \l collapsedWidth. Left at the edge of a
-   page should move focus to the sidebar, and right from the sidebar back to the page.
-
    \code
    BigscreenUI.Sidebar {
        id: sidebar
@@ -36,7 +32,7 @@ import org.kde.kirigami as Kirigami
    StackLayout {
        id: pages
        anchors.fill: parent
-       SafeArea.additionalMargins.left: sidebar.collapsedWidth
+       anchors.leftMargin: sidebar.collapsedWidth
        currentIndex: sidebar.currentIndex
        ...
    }
@@ -47,7 +43,7 @@ FocusScope {
 
     enum Mode {
         Rail,     // Collapses to a rail of icons
-        Expanded, // Always shows its labels, beside the pages
+        Expanded, // Always fully shown
         Hidden    // Hides completely until it has focus
     }
 
@@ -63,7 +59,7 @@ FocusScope {
     property list<T.Action> actions
 
     /*!
-       \brief The index of the current entry, the section the app is showing.
+       \brief The index of the current sidebar entry.
      */
     property int currentIndex: 0
 
@@ -87,12 +83,13 @@ FocusScope {
      */
     readonly property bool expanded: mode === Sidebar.Expanded || activeFocus || hoverHandler.hovered
 
-    // Whether the sidebar is expanded over the pages, rather than beside them
+    /*!
+       \brief Whether the sidebar is expanded over the pages, rather than beside them
+     */
     readonly property bool overlaying: expanded && mode !== Sidebar.Expanded
 
     /*!
-       \brief The width the sidebar takes up while focus is elsewhere. Use it for the
-       left safe area margin of the pages behind the sidebar.
+       \brief The width the sidebar takes up while focus is elsewhere.
      */
     readonly property real collapsedWidth: mode === Sidebar.Expanded ? expandedWidth : mode === Sidebar.Hidden ? 0 : railWidth
 
@@ -108,9 +105,6 @@ FocusScope {
     readonly property real railWidth: Kirigami.Units.iconSizes.medium + (padding + Units.horizontalPadding) * 2
     readonly property real padding: Kirigami.Units.largeSpacing
 
-    /*!
-       \brief This signal is emitted when the entry at \a index is selected with Enter or a click.
-     */
     signal activated(int index)
 
     // In Hidden mode, the sidebar keeps its width and slides in from off screen
@@ -194,8 +188,7 @@ FocusScope {
             }
         }
 
-        // Beside the pages, the sidebar is a recessed surface under them; over the pages,
-        // it is raised and has their color
+        // Beside the pages, the sidebar is a recessed surface under them; over the pages, it is raised and has their color
         Rectangle {
             anchors.fill: parent
             color: root.mode === Sidebar.Expanded ? Kirigami.ColorUtils.tintWithAlpha(Kirigami.Theme.backgroundColor, "black", 0.18)
@@ -206,7 +199,7 @@ FocusScope {
             }
         }
 
-        // Shadow cast by the pages onto the sidebar beside them
+        // Right shadow in expanded mode
         Rectangle {
             anchors.right: parent.right
             width: Kirigami.Units.largeSpacing * 2

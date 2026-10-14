@@ -11,8 +11,8 @@ import org.kde.kirigami as Kirigami
 
    Give the page a single content item, such as a ColumnLayout.
 
-   The content keeps within the page's \l {Page::contentMargins}{contentMargins}, so it starts
-   below anything over the page, such as a NavigationBar, and never scrolls under it.
+   The content keeps within the page's \l {Page::contentMargins}{contentMargins}, and fades
+   out as it scrolls into them. It never scrolls under the navigation.
 
    \code
    BigscreenUI.ScrollablePage {
@@ -41,9 +41,9 @@ Page {
     padding: Kirigami.Units.gridUnit * 2
 
     // The title, when there is one, already keeps clear of the top
-    topPadding: title.length > 0 ? padding : contentMargins.top
+    topPadding: title.length > 0 ? padding : __navigationTop + contentMargins.top
     bottomPadding: contentMargins.bottom
-    leftPadding: contentMargins.left
+    leftPadding: __navigationLeft + contentMargins.left
     rightPadding: contentMargins.right
 
     /*!
@@ -53,7 +53,6 @@ Page {
         const position = item.mapToItem(flickable.contentItem, 0, 0);
         const margin = Kirigami.Units.gridUnit;
 
-        // The part of the viewport inside the padding
         const top = flickable.contentY + flickable.topMargin;
         const bottom = flickable.contentY + flickable.height - flickable.bottomMargin;
         let target = flickable.contentY;
@@ -83,16 +82,18 @@ Page {
         Flickable {
             id: flickable
 
-            readonly property real topOverflow: Math.max(0, root.topPadding - (root.title.length > 0 ? 0 : root.SafeArea.margins.top))
-            readonly property real bottomOverflow: Math.max(0, root.bottomPadding - root.SafeArea.margins.bottom)
+            readonly property real leftOverflow: root.contentMargins.left
+            readonly property real rightOverflow: root.contentMargins.right
+            readonly property real topOverflow: root.title.length > 0 ? root.topPadding : root.contentMargins.top
+            readonly property real bottomOverflow: root.contentMargins.bottom
 
-            x: -root.leftPadding
+            x: -leftOverflow
             y: -topOverflow
-            width: parent.width + root.leftPadding + root.rightPadding
+            width: parent.width + leftOverflow + rightOverflow
             height: parent.height + topOverflow + bottomOverflow
 
-            leftMargin: root.leftPadding
-            rightMargin: root.rightPadding
+            leftMargin: leftOverflow
+            rightMargin: rightOverflow
             topMargin: topOverflow
             bottomMargin: bottomOverflow
 

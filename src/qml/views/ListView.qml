@@ -19,10 +19,10 @@ ListView {
     // Room around the rows for the focused row's effect
     readonly property real __focusRoom: Kirigami.Units.gridUnit
 
-    leftMargin: Units.horizontalContentMargin(SafeArea.margins.left) - __focusRoom
-    rightMargin: Units.horizontalContentMargin(SafeArea.margins.right) - __focusRoom
+    leftMargin: SafeArea.margins.left - __focusRoom
+    rightMargin: SafeArea.margins.right - __focusRoom
     topMargin: __focusRoom
-    bottomMargin: Units.verticalContentMargin(SafeArea.margins.bottom)
+    bottomMargin: SafeArea.margins.bottom
 
     // Qt doesn't auto move the rows of a vertical list when its left margin grows (ex. when a Sidebar appears)
     contentX: -leftMargin

@@ -30,10 +30,10 @@ QQ.GridView {
     // Room around the edges for the focused item to grow into
     readonly property real __focusRoom: Kirigami.Units.gridUnit * 2
 
-    leftMargin: Units.horizontalContentMargin(SafeArea.margins.left)
-    rightMargin: Units.horizontalContentMargin(SafeArea.margins.right) - columnSpacing // aesthetic choice
-    topMargin: __focusRoom + SafeArea.margins.top
-    bottomMargin: __focusRoom + SafeArea.margins.bottom
+    leftMargin: SafeArea.margins.left
+    rightMargin: SafeArea.margins.right - columnSpacing // aesthetic choice
+    topMargin: Math.max(__focusRoom, SafeArea.margins.top)
+    bottomMargin: Math.max(__focusRoom, SafeArea.margins.bottom)
 
     focus: true
     keyNavigationEnabled: true

@@ -196,7 +196,7 @@ FocusScope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            height: root.SafeArea.margins.top + Math.round(parent.height * 0.25)
+            height: Math.round(parent.height * 0.25)
             gradient: Gradient {
                 GradientStop { position: 0; color: Qt.rgba(0, 0, 0, 0.75) }
                 GradientStop { position: 1; color: "transparent" }
@@ -219,9 +219,9 @@ FocusScope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.leftMargin: Units.horizontalContentMargin(root.SafeArea.margins.left)
-            anchors.rightMargin: Units.horizontalContentMargin(root.SafeArea.margins.right)
-            anchors.topMargin: Units.verticalContentMargin(root.SafeArea.margins.top)
+            anchors.leftMargin: root.SafeArea.margins.left
+            anchors.rightMargin: root.SafeArea.margins.right
+            anchors.topMargin: root.SafeArea.margins.top
             spacing: Kirigami.Units.smallSpacing
 
             Label {
@@ -253,9 +253,9 @@ FocusScope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            anchors.leftMargin: Units.horizontalContentMargin(root.SafeArea.margins.left)
-            anchors.rightMargin: Units.horizontalContentMargin(root.SafeArea.margins.right)
-            anchors.bottomMargin: Units.verticalContentMargin(root.SafeArea.margins.bottom)
+            anchors.leftMargin: root.SafeArea.margins.left
+            anchors.rightMargin: root.SafeArea.margins.right
+            anchors.bottomMargin: root.SafeArea.margins.bottom
             spacing: Kirigami.Units.gridUnit * 1.5
 
             RowLayout {

@@ -45,8 +45,8 @@ T.Control {
     implicitHeight: implicitContentHeight + topPadding + bottomPadding
 
     anchors.horizontalCenter: parent?.horizontalCenter
-    anchors.bottom: parent?.bottom
-    anchors.bottomMargin: Units.verticalContentMargin(SafeArea.margins.bottom)
+    anchors.bottom: parent ? parent.bottom : 0
+    anchors.bottomMargin: parent ? parent.SafeArea.margins.bottom : 0
 
     opacity: 0
     visible: opacity > 0

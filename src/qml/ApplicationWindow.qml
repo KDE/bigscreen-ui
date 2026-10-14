@@ -34,7 +34,7 @@ T.ApplicationWindow {
     id: root
 
     /*!
-       \brief The stack of pages. Push onto it to open a page over the whole window.
+       \brief The stack of pages.
      */
     readonly property alias pageStack: stack
 
@@ -44,38 +44,32 @@ T.ApplicationWindow {
     property var initialPage
 
     /*!
-       \brief A NavigationBar, shown across the top of the window.
+       \brief A NavigationBar, shown across the top of the window (optional).
      */
     property Item navigationBar
 
     /*!
-       \brief A Sidebar, shown along the left of the window.
+       \brief A Sidebar, shown along the left of the window (optional).
      */
     property Item sidebar
 
     /*!
-       \brief Shows \a page in place of the current page, closing any pages pushed over it.
+       \brief Replace all pages (including stacked ones) with the given page.
      */
     function showPage(page: var): void {
-        if (stack.currentItem !== page) {
-            // HACK: Parent the page before the stack takes it
-            // Otherwise, if the page has already read its SafeArea, its children's SafeArea margins never update
-            if (page instanceof Item) {
-                page.parent = stack;
-            }
-            stack.replace(null, page);
+        if (stack.depth > 1) {
+            stack.popToIndex(0);
+        }
+        if (sections.currentItem !== page) {
+            sections.replace(page);
         }
 
         // Focus the page to close the sidebar if it's open
         const fromSidebar = sidebar ? sidebar.activeFocus : false;
-        if (fromSidebar && stack.currentItem) {
-            stack.currentItem.forceActiveFocus();
+        if (fromSidebar && sections.currentItem) {
+            sections.currentItem.forceActiveFocus();
         }
     }
-
-    // HACK: navbar and sidebar length to be used by Page for SafeArea margins
-    readonly property real __pageTopMargin: navigationBar ? navbarHolder.height : 0
-    readonly property real __pageLeftMargin: sidebarHolder.overlapWidth
 
     Kirigami.Theme.colorSet: Kirigami.Theme.Window
     Kirigami.Theme.inherit: false
@@ -85,124 +79,97 @@ T.ApplicationWindow {
     StackView {
         id: stack
 
-        readonly property bool atTop: depth <= 1
-
         anchors.fill: parent
-        anchors.leftMargin: sidebarHolder.reservedWidth
         focus: true
+        initialItem: home
 
-        initialItem: {
-            // HACK: Parent the page before the stack takes it
-            // Otherwise, if the page has already read its SafeArea, its children's SafeArea margins never update
-            if (root.initialPage instanceof Item) {
-                root.initialPage.parent = stack;
-            }
-            return root.initialPage;
-        }
-
-        // The navigation bar and sidebar hide under pages pushed over the top, so the page takes focus from them
-        onAtTopChanged: {
-            if (!atTop) {
+        // Pages pushed over the navigation take focus from it
+        onDepthChanged: {
+            if (depth > 1) {
                 forceActiveFocus();
             }
         }
 
-        Keys.onUpPressed: event => {
-            event.accepted = navbarHolder.shown;
-            if (event.accepted) {
-                root.navigationBar.forceActiveFocus();
+        // The front page
+        FocusScope {
+            id: home
+            focus: true
+
+            StackView {
+                id: sections
+
+                readonly property real __navigationTop: navbarHolder.height
+                readonly property real __navigationLeft: sidebarHolder.collapsedWidth
+
+                anchors.fill: parent
+                focus: true
+
+                initialItem: root.initialPage
+
+                Keys.onUpPressed: event => {
+                    event.accepted = root.navigationBar !== null;
+                    if (event.accepted) {
+                        root.navigationBar.forceActiveFocus();
+                    }
+                }
+                Keys.onLeftPressed: event => {
+                    event.accepted = root.sidebar !== null;
+                    if (event.accepted) {
+                        root.sidebar.forceActiveFocus();
+                    }
+                }
+
+                // Back from a page goes to the navigation bar or sidebar
+                BackHandler.enabled: root.navigationBar !== null || root.sidebar !== null
+                BackHandler.onActivated: (root.navigationBar ?? root.sidebar).forceActiveFocus()
             }
-        }
-        Keys.onLeftPressed: event => {
-            event.accepted = sidebarHolder.shown;
-            if (event.accepted) {
-                root.sidebar.forceActiveFocus();
+
+            FocusScope {
+                id: navbarHolder
+
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.leftMargin: sidebarHolder.collapsedWidth
+                height: root.navigationBar ? root.navigationBar.height : 0
+                children: root.navigationBar ? [root.navigationBar] : []
+
+                // The navigation bar lines up with the pages' content
+                SafeArea.additionalMargins.left: Math.max(Units.horizontalScreenMargin - sidebarHolder.collapsedWidth, Units.contentSpacing)
+                SafeArea.additionalMargins.right: Units.horizontalScreenMargin
+
+                Keys.onDownPressed: sections.currentItem?.forceActiveFocus()
+
+                // Back from the navigation bar goes on to the sidebar
+                BackHandler.enabled: root.sidebar !== null
+                BackHandler.onActivated: root.sidebar.forceActiveFocus()
+
+                Binding {
+                    target: root.navigationBar
+                    property: "width"
+                    value: navbarHolder.width
+                }
             }
-        }
 
-        // Back from a page goes to the navigation bar, or the sidebar if there is none
-        BackHandler.enabled: navbarHolder.shown || sidebarHolder.shown
-        BackHandler.onActivated: (navbarHolder.shown ? root.navigationBar : root.sidebar).forceActiveFocus()
-    }
+            FocusScope {
+                id: sidebarHolder
 
-    FocusScope {
-        id: navbarHolder
+                // The width the sidebar takes up while focus is elsewhere. While it has focus, it
+                // expands further over the page.
+                readonly property real collapsedWidth: root.sidebar ? root.sidebar.collapsedWidth ?? root.sidebar.width : 0
 
-        // Hidden under pages pushed over the top, fading with them
-        readonly property bool shown: root.navigationBar !== null && stack.atTop
+                // Fills the window, so the sidebar can dim the page while it is expanded over it
+                anchors.fill: parent
+                children: root.sidebar ? [root.sidebar] : []
 
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.leftMargin: sidebarHolder.reservedWidth
-        height: root.navigationBar ? root.navigationBar.height : 0
-        enabled: shown
-        opacity: shown ? 1 : 0
-        visible: opacity > 0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.OutCubic
+                Keys.onRightPressed: sections.currentItem?.forceActiveFocus()
+
+                Binding {
+                    target: root.sidebar
+                    property: "height"
+                    value: sidebarHolder.height
+                }
             }
-        }
-        children: root.navigationBar ? [root.navigationBar] : []
-
-        SafeArea.additionalMargins.left: sidebarHolder.overlapWidth
-
-        // Down that the navigation bar leaves unhandled
-        Keys.onDownPressed: stack.currentItem?.forceActiveFocus()
-
-        // Back from the navigation bar goes on to the sidebar
-        BackHandler.enabled: sidebarHolder.shown
-        BackHandler.onActivated: root.sidebar.forceActiveFocus()
-
-        Binding {
-            target: root.navigationBar
-            property: "width"
-            value: navbarHolder.width
-        }
-    }
-
-    FocusScope {
-        id: sidebarHolder
-
-        // Hidden under pages pushed over the top, fading with them
-        readonly property bool shown: root.sidebar !== null && stack.atTop
-
-        // The width the sidebar takes up while focus is elsewhere
-        readonly property real collapsedWidth: root.sidebar ? root.sidebar.collapsedWidth ?? root.sidebar.width : 0
-
-        // Amount of space fully reserved for the sidebar
-        property real reservedWidth: shown && root.sidebar.mode === Sidebar.Expanded ? collapsedWidth : 0
-        Behavior on reservedWidth {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        // Amount of space reserved for the sidebar, but is overlaid over the page (contents use SafeArea to get overlaid dimensions)
-        readonly property real overlapWidth: Math.max(0, collapsedWidth - reservedWidth)
-
-        // Fills the window, so the sidebar can dim the pages while it is expanded over them
-        anchors.fill: parent
-        enabled: shown
-        opacity: shown ? 1 : 0
-        visible: opacity > 0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.OutCubic
-            }
-        }
-        children: root.sidebar ? [root.sidebar] : []
-
-        Keys.onRightPressed: stack.currentItem?.forceActiveFocus()
-
-        Binding {
-            target: root.sidebar
-            property: "height"
-            value: sidebarHolder.height
         }
     }
 }
