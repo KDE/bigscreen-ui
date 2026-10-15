@@ -164,6 +164,14 @@ T.ApplicationWindow {
 
                 Keys.onRightPressed: sections.currentItem?.forceActiveFocus()
 
+                Connections {
+                    target: root.sidebar
+                    ignoreUnknownSignals: true
+                    function onDismissRequested() {
+                        sections.currentItem?.forceActiveFocus();
+                    }
+                }
+
                 Binding {
                     target: root.sidebar
                     property: "height"

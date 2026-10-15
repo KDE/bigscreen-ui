@@ -81,7 +81,7 @@ FocusScope {
     /*!
        \brief Whether the sidebar shows its labels.
      */
-    readonly property bool expanded: mode === Sidebar.Expanded || activeFocus || hoverHandler.hovered
+    readonly property bool expanded: mode === Sidebar.Expanded || activeFocus
 
     /*!
        \brief Whether the sidebar is expanded over the pages, rather than beside them
@@ -106,6 +106,12 @@ FocusScope {
     readonly property real padding: Kirigami.Units.largeSpacing
 
     signal activated(int index)
+
+    /*!
+       \brief This signal is emitted when the sidebar wants to close (e.g. user taps in empty space)
+       Move focus to the page, so the sidebar collapses.
+     */
+    signal dismissRequested()
 
     // In Hidden mode, the sidebar keeps its width and slides in from off screen
     width: expanded || mode === Sidebar.Hidden ? expandedWidth : collapsedWidth
@@ -135,11 +141,6 @@ FocusScope {
         }
     }
 
-    HoverHandler {
-        id: hoverHandler
-        enabled: root.mode !== Sidebar.Hidden
-    }
-
     // Dims the pages while the sidebar is expanded over them
     Rectangle {
         z: -1
@@ -152,6 +153,14 @@ FocusScope {
                 duration: Kirigami.Units.longDuration
                 easing.type: Easing.OutCubic
             }
+        }
+
+        // Tapping the dimmed area causes sidebar to request for close
+        MouseArea {
+            anchors.fill: parent
+            anchors.leftMargin: root.width
+            enabled: root.overlaying
+            onClicked: root.dismissRequested()
         }
     }
 
@@ -173,6 +182,17 @@ FocusScope {
 
     Item {
         anchors.fill: parent
+
+        // Open full view when sidebar is tapped in rail mode
+        MouseArea {
+            anchors.fill: parent
+            enabled: root.mode === Sidebar.Rail
+            onClicked: {
+                if (!root.overlaying) {
+                    root.forceActiveFocus();
+                }
+            }
+        }
 
         // While collapsed, the rail fades into the page so it sits on top of artwork
         Rectangle {
@@ -321,13 +341,12 @@ FocusScope {
                             Layout.rightMargin: root.padding
 
                             implicitHeight: separator ? 0 : Kirigami.Units.gridUnit * 3
-                            // The height is fixed, so center the content in all of it
                             verticalPadding: 0
-                            // A separator only takes up space
                             opacity: separator ? 0 : 1
                             visible: !("visible" in modelData) || modelData.visible
-                            enabled: modelData.enabled
-                            focusPolicy: separator ? Qt.NoFocus : Qt.StrongFocus
+                            enabled: !separator && modelData.enabled
+                            // Taking focus would expand the sidebar, so a tap or click only activates the entry, and focus comes from the keys
+                            focusPolicy: separator ? Qt.NoFocus : Qt.TabFocus
                             leftInset: 0
                             rightInset: 0
                             topInset: 0
