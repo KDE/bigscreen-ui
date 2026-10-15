@@ -68,7 +68,12 @@ ItemDelegate {
      */
     property real trailingPadding: Kirigami.Units.gridUnit
 
-    onPressed: root.forceActiveFocus()
+    // Unless the focus policy leaves out clicks, such as for entries that take focus only from keys
+    onPressed: {
+        if (root.focusPolicy & Qt.ClickFocus) {
+            root.forceActiveFocus();
+        }
+    }
     Keys.onReturnPressed: {
         click();
     }
