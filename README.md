@@ -9,8 +9,8 @@ Bigscreen UI provides reusable Qt Quick components designed for applications tar
 
 ## Links
 
-* Project page: https://invent.kde.org/devinlin/bigscreen-ui
-* File issues: https://invent.kde.org/devinlin/bigscreen-ui/-/work-items
+* Project page: https://invent.kde.org/libraries/bigscreen-ui
+* File issues: https://invent.kde.org/libraries/bigscreen-ui/-/work-items
 * Development channel: https://matrix.to/#/#plasma-bigscreen:kde.org
 
 ## Using the QML module
