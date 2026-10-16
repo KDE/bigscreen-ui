@@ -74,6 +74,11 @@ FocusScope {
     property string iconName
 
     /*!
+       \brief The footer of the sidebar.
+     */
+    property Item footer
+
+    /*!
        \brief The width of the sidebar when it shows its labels.
      */
     property real expandedWidth: Kirigami.Units.gridUnit * 16
@@ -399,6 +404,25 @@ FocusScope {
                     // Without a separator, the entries stay at the top
                     Item {
                         Layout.fillHeight: !root.hasSeparator
+                    }
+
+                    Item {
+                        id: footerHolder
+                        Layout.fillWidth: true
+                        Layout.leftMargin: root.padding
+                        Layout.rightMargin: root.padding
+                        Layout.topMargin: Kirigami.Units.smallSpacing
+                        implicitHeight: root.footer?.visible ? root.footer.implicitHeight : 0
+                        visible: root.footer !== null
+                        data: root.footer ? [root.footer] : []
+
+                        onChildrenChanged: {
+                            for (const child of children) {
+                                child.anchors.left = footerHolder.left;
+                                child.anchors.right = footerHolder.right;
+                                child.anchors.bottom = footerHolder.bottom;
+                            }
+                        }
                     }
 
                     Item {
