@@ -20,9 +20,17 @@ QtObject {
     readonly property int titleFontPixelSize: 48
     readonly property int displayFontPixelSize: 72
 
-    // Recommended margins between the edges of the screen and content
+    // Recommended maximum margins between the edges of the screen and content
     readonly property int horizontalScreenMargin: Kirigami.Units.gridUnit * 5
     readonly property int verticalScreenMargin: Kirigami.Units.gridUnit * 3
+
+    // Actual recommended margins (factors in screen size)
+    function horizontalScreenMarginFor(windowWidth: real): int {
+        return Math.round(Math.max(Kirigami.Units.gridUnit, Math.min(horizontalScreenMargin, windowWidth * 0.05)));
+    }
+    function verticalScreenMarginFor(windowHeight: real): int {
+        return Math.round(Math.max(Kirigami.Units.gridUnit, Math.min(verticalScreenMargin, windowHeight * 0.05)));
+    }
 
     // The least space between content and whatever is beside it, such as navigation
     readonly property int contentSpacing: Kirigami.Units.gridUnit * 2

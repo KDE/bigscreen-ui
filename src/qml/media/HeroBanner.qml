@@ -53,9 +53,8 @@ ColumnLayout {
 
     /*!
        \brief Pixel size of the title.
-       \default Units.displayFontPixelSize
      */
-    property int titlePixelSize: Units.displayFontPixelSize
+    property int titlePixelSize: Window.width > 0 ? Math.round(Math.max(Units.sectionFontPixelSize, Math.min(Units.displayFontPixelSize, Window.width / 26))) : Units.displayFontPixelSize
 
     /*!
        \brief Whether the actions are shown.
@@ -65,8 +64,7 @@ ColumnLayout {
 
     /*!
        \qmlproperty list<Item> actions
-       \brief Items shown in a row under the description, usually Buttons. Left and right
-       move focus between them.
+       \brief Items shown in a row under the description, usually Buttons. Left and right move focus between them.
      */
     default property alias actions: actionRow.data
 

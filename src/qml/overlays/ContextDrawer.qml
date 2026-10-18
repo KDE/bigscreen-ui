@@ -31,7 +31,7 @@ T.Popup {
 
     parent: T.Overlay.overlay
     height: parent ? parent.height : null
-    width: Math.min(Kirigami.Units.gridUnit * 30, Math.max(Kirigami.Units.gridUnit * 25, Math.round(parent ? (parent.width * 0.3) : 0)))
+    width: Math.min(parent ? parent.width : 0, Kirigami.Units.gridUnit * 30, Math.max(Kirigami.Units.gridUnit * 25, Math.round(parent ? (parent.width * 0.3) : 0)))
 
     topPadding: 0
     bottomPadding: 0

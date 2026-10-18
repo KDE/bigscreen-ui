@@ -40,11 +40,14 @@ T.Page {
        \brief How far text and controls should keep from each edge of the page's content.
      */
     readonly property Margins contentMargins: Margins {
-        left: Math.max(Units.horizontalScreenMargin - root.__navigationLeft, Units.contentSpacing)
-        right: Units.horizontalScreenMargin
-        top: Math.max(Units.verticalScreenMargin - root.__navigationTop, Units.contentSpacing)
-        bottom: Units.verticalScreenMargin
+        left: Math.max(root.__horizontalScreenMargin - root.__navigationLeft, Units.contentSpacing)
+        right: root.__horizontalScreenMargin
+        top: Math.max(root.__verticalScreenMargin - root.__navigationTop, Units.contentSpacing)
+        bottom: root.__verticalScreenMargin
     }
+
+    readonly property int __horizontalScreenMargin: Units.horizontalScreenMarginFor(Window.width > 0 ? Window.width : width)
+    readonly property int __verticalScreenMargin: Units.verticalScreenMarginFor(Window.height > 0 ? Window.height : height)
 
     component Margins: QtObject {
         property real left

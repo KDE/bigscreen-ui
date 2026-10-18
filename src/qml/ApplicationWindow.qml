@@ -139,8 +139,8 @@ T.ApplicationWindow {
                 height: root.navigationBar ? root.navigationBar.height : 0
                 children: root.navigationBar ? [root.navigationBar] : []
 
-                SafeArea.additionalMargins.left: Math.max(Units.horizontalScreenMargin - sidebarHolder.collapsedWidth, Units.contentSpacing)
-                SafeArea.additionalMargins.right: Units.horizontalScreenMargin
+                SafeArea.additionalMargins.left: Math.max(Units.horizontalScreenMarginFor(root.width) - sidebarHolder.collapsedWidth, Units.contentSpacing)
+                SafeArea.additionalMargins.right: Units.horizontalScreenMarginFor(root.width)
 
                 Keys.onDownPressed: sections.currentItem?.forceActiveFocus()
 
