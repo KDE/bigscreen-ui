@@ -4,6 +4,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include <KLocalizedQmlContext>
+
 int main(int argc, char *argv[])
 {
     if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_STYLE")) {
@@ -16,6 +18,7 @@ int main(int argc, char *argv[])
     application.setOrganizationDomain(QStringLiteral("kde.org"));
 
     QQmlApplicationEngine engine;
+    KLocalization::setupLocalizedContext(&engine);
     engine.loadFromModule("org.kde.bigscreen.ui.demo", "Main");
 
     if (engine.rootObjects().isEmpty()) {

@@ -10,7 +10,7 @@ import QtQuick.Templates as T
 Dialog {
     id: root
 
-    title: qsTr("Quit %1?").arg(Qt.application.displayName)
+    title: i18nd("bigscreen-ui", "Quit %1?", Qt.application.displayName)
     standardButtons: T.Dialog.Ok | T.Dialog.Cancel
     openFocusItem: standardButton(T.Dialog.Ok)
 
@@ -18,7 +18,7 @@ Dialog {
 
     Component.onCompleted: {
         const quitButton = standardButton(T.Dialog.Ok);
-        quitButton.text = qsTr("Quit");
+        quitButton.text = i18nd("bigscreen-ui", "Quit");
         quitButton.icon.name = "application-exit";
     }
 }

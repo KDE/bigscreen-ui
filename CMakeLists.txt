@@ -26,9 +26,11 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
     Quick
     QuickControls2
 )
-find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS Kirigami)
+find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS Kirigami I18n)
 
 add_subdirectory(src)
+
+ki18n_install(po)
 
 option(BUILD_EXAMPLES "Build the Bigscreen UI demonstration application" ON)
 if(BUILD_EXAMPLES)

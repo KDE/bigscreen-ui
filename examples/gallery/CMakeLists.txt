@@ -35,6 +35,7 @@ ecm_target_qml_sources(bigscreen-ui-demo SOURCES
 target_link_libraries(bigscreen-ui-demo PRIVATE
     Qt6::Qml
     Qt6::Quick
+    KF6::I18nQml
 )
 
 qt_add_resources(bigscreen-ui-demo images
