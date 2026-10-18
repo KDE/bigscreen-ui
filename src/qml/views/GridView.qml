@@ -36,7 +36,7 @@ QQ.GridView {
     bottomMargin: Math.max(__focusRoom, SafeArea.margins.bottom)
 
     focus: true
-    keyNavigationEnabled: true
+    keyNavigationEnabled: !(headerItem?.activeFocus ?? false) // Disable keyNavigation when header is focused
     boundsBehavior: Flickable.StopAtBounds
     clip: true
     cacheBuffer: Math.max(height, 0)
@@ -44,7 +44,7 @@ QQ.GridView {
 
     layer.enabled: contentHeight > height - topMargin - bottomMargin
     layer.effect: EdgeFadeEffect {
-        topFadeLength: root.contentY > -root.topMargin ? root.__focusRoom : 0
+        topFadeLength: root.contentY > root.originY - root.topMargin ? root.__focusRoom : 0
         bottomFadeLength: root.__focusRoom
     }
 
@@ -58,6 +58,18 @@ QQ.GridView {
     }
 
     onCurrentItemChanged: scrollToCurrent()
+
+    Connections {
+        target: root.headerItem
+
+        // Scroll to beginning when header is focued
+        function onActiveFocusChanged(): void {
+            if (root.headerItem.activeFocus) {
+                scrollAnimation.to = root.originY - root.topMargin;
+                scrollAnimation.restart();
+            }
+        }
+    }
     onHeightChanged: scrollToCurrentInstant()
     onCellHeightChanged: scrollToCurrentInstant()
 
@@ -76,7 +88,6 @@ QQ.GridView {
         if (!__canScroll()) {
             return;
         }
-        // A scroll still animating would otherwise carry on to where it was headed
         scrollAnimation.stop();
         contentY = __currentTargetContentY();
     }
@@ -93,7 +104,9 @@ QQ.GridView {
         const top = contentY + topMargin;
         const bottom = contentY + height - bottomMargin;
         let target = contentY;
-        if (currentItem.y < top) {
+        if (currentItem.y < cellHeight) { // The first row with the header above it
+            target = originY - topMargin;
+        } else if (currentItem.y < top) {
             target = currentItem.y - topMargin;
         } else if (currentItem.y + cellHeight - rowSpacing > bottom) {
             target = currentItem.y + cellHeight - rowSpacing + bottomMargin - height;
