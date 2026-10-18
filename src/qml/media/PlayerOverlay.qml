@@ -161,13 +161,6 @@ FocusScope {
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.NoButton
-        hoverEnabled: true
-        onPositionChanged: root.show()
-    }
-
     Item {
         id: wakeCatcher
         Keys.onPressed: event => {
@@ -176,6 +169,9 @@ FocusScope {
                 return;
             }
             root.show();
+            if (event.key === Qt.Key_Down) {
+                seekBar.forceActiveFocus();
+            }
             event.accepted = true;
         }
     }
@@ -278,6 +274,7 @@ FocusScope {
                     stepSize: root.seekStep
                     Accessible.name: "Playback position"
                     KeyNavigation.down: playButton
+                    Keys.onUpPressed: root.hide()
                     onMoved: root.seekRequested(value)
                 }
 
