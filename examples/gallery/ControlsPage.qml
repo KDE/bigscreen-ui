@@ -189,7 +189,7 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Progress and seeking"
-            description: "MediaProgressBar shows how far into something the viewer is. SeekBar is the focusable version: left and right move by its step size."
+            description: "ProgressBar shows how far along something is. SeekBar is the focusable version: left and right move by its step size."
 
             GridLayout {
                 columns: 2
@@ -197,10 +197,10 @@ BigscreenUI.ScrollablePage {
                 rowSpacing: Kirigami.Units.gridUnit
 
                 BigscreenUI.Label {
-                    text: "MediaProgressBar"
+                    text: "ProgressBar"
                     color: Kirigami.Theme.disabledTextColor
                 }
-                BigscreenUI.MediaProgressBar {
+                BigscreenUI.ProgressBar {
                     Layout.preferredWidth: Kirigami.Units.gridUnit * 30
                     value: 0.62
                 }

@@ -147,7 +147,7 @@ T.ItemDelegate {
                 }
             }
 
-            MediaProgressBar {
+            ProgressBar {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom

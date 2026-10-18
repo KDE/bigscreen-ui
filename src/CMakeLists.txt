@@ -32,6 +32,7 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/controls/ChipBar.qml
     qml/controls/Label.qml
     qml/controls/PlaceholderMessage.qml
+    qml/controls/ProgressBar.qml
     qml/controls/RoundButton.qml
     qml/controls/SeekBar.qml
     qml/controls/SwitchIndicator.qml
@@ -54,7 +55,6 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/media/HeroBanner.qml
     qml/media/MediaCard.qml
     qml/media/MediaGrid.qml
-    qml/media/MediaProgressBar.qml
     qml/media/PlayerOverlay.qml
     qml/media/RailView.qml
 
