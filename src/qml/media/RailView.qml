@@ -21,10 +21,9 @@ ListView {
     id: root
 
     /*!
-       \qmlproperty list<Item> rails
-       \brief The rails shown in the view.
+       \brief The rails in the view, including those left out while empty.
      */
-    default property alias rails: railModel.children
+    default property list<Item> rails
 
     model: ObjectModel {
         id: railModel
@@ -64,7 +63,38 @@ ListView {
     }
 
     onCountChanged: updateRails()
-    Component.onCompleted: updateRails()
+    onRailsChanged: __updateShownRails()
+    Component.onCompleted: __updateShownRails()
+
+    // Puts the rails with items in the view, keeping the current one
+    function __updateShownRails(): void {
+        const current = currentItem;
+        let currentRow = 0;
+        railModel.clear();
+        for (const rail of rails) {
+            const shown = rail.count === undefined || rail.count > 0;
+            rail.visible = shown;
+            if (shown) {
+                if (rail === current) {
+                    currentRow = railModel.count;
+                }
+                railModel.append(rail);
+            }
+        }
+        currentIndex = currentRow;
+    }
+
+    Instantiator {
+        model: root.rails
+        delegate: Connections {
+            required property Item modelData
+            target: modelData
+            ignoreUnknownSignals: true
+            function onCountChanged(): void {
+                Qt.callLater(root.__updateShownRails);
+            }
+        }
+    }
 
     // Make the rail holding the focused item current when focus arrives by mouse or touch
     Connections {
