@@ -62,6 +62,7 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/overlays/ContextDrawerHeader.qml
     qml/overlays/Dialog.qml
     qml/overlays/DialogButtonBox.qml
+    qml/overlays/QuitDialog.qml
     qml/overlays/Toast.qml
 
     qml/utils/DelegateBackground.qml

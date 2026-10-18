@@ -9,15 +9,12 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
-// A rail of movies whose cards open their details inline, under the row. The details show
-// the current card, so they follow it along the row. Back or leaving the row closes them.
 FocusScope {
     id: root
 
     property alias title: rail.title
     property alias model: rail.model
 
-    // The focused card, so the page's backdrop can follow it
     readonly property Item currentItem: rail.currentItem
     readonly property var movie: rail.currentItem?.modelData
 
@@ -67,7 +64,6 @@ FocusScope {
             }
         }
 
-        // Clips the details while they open and close
         Item {
             Layout.fillWidth: true
             Layout.preferredHeight: root.expanded ? hero.implicitHeight + Kirigami.Units.gridUnit * 2 : 0

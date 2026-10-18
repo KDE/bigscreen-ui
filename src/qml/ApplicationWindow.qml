@@ -54,6 +54,12 @@ T.ApplicationWindow {
     property Item sidebar
 
     /*!
+       \brief The dialog opened when back is pressed on the sidebar, or on the navigation bar
+       when there is no sidebar. Set it to \c null to stay in the app instead.
+     */
+    property T.Popup quitDialog: defaultQuitDialog
+
+    /*!
        \brief Replace all pages (including stacked ones) with the given page.
      */
     function showPage(page: var): void {
@@ -90,7 +96,6 @@ T.ApplicationWindow {
             }
         }
 
-        // The front page
         FocusScope {
             id: home
             focus: true
@@ -134,15 +139,20 @@ T.ApplicationWindow {
                 height: root.navigationBar ? root.navigationBar.height : 0
                 children: root.navigationBar ? [root.navigationBar] : []
 
-                // The navigation bar lines up with the pages' content
                 SafeArea.additionalMargins.left: Math.max(Units.horizontalScreenMargin - sidebarHolder.collapsedWidth, Units.contentSpacing)
                 SafeArea.additionalMargins.right: Units.horizontalScreenMargin
 
                 Keys.onDownPressed: sections.currentItem?.forceActiveFocus()
 
-                // Back from the navigation bar goes on to the sidebar
-                BackHandler.enabled: root.sidebar !== null
-                BackHandler.onActivated: root.sidebar.forceActiveFocus()
+                // Back from the navigation bar goes on to the sidebar, or asks to quit
+                BackHandler.enabled: root.sidebar !== null || root.quitDialog !== null
+                BackHandler.onActivated: {
+                    if (root.sidebar) {
+                        root.sidebar.forceActiveFocus();
+                    } else {
+                        root.quitDialog.open();
+                    }
+                }
 
                 Binding {
                     target: root.navigationBar
@@ -154,8 +164,6 @@ T.ApplicationWindow {
             FocusScope {
                 id: sidebarHolder
 
-                // The width the sidebar takes up while focus is elsewhere. While it has focus, it
-                // expands further over the page.
                 readonly property real collapsedWidth: root.sidebar ? root.sidebar.collapsedWidth ?? root.sidebar.width : 0
 
                 // Fills the window, so the sidebar can dim the page while it is expanded over it
@@ -163,6 +171,10 @@ T.ApplicationWindow {
                 children: root.sidebar ? [root.sidebar] : []
 
                 Keys.onRightPressed: sections.currentItem?.forceActiveFocus()
+
+                // Back from the sidebar asks to quit
+                BackHandler.enabled: root.sidebar !== null && root.quitDialog !== null
+                BackHandler.onActivated: root.quitDialog.open()
 
                 Connections {
                     target: root.sidebar
@@ -179,5 +191,9 @@ T.ApplicationWindow {
                 }
             }
         }
+    }
+
+    QuitDialog {
+        id: defaultQuitDialog
     }
 }
