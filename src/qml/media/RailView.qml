@@ -21,7 +21,7 @@ ListView {
     id: root
 
     /*!
-       \brief The rails in the view, including those left out while empty.
+       \brief The rails in the view.
      */
     default property list<Item> rails
 
@@ -42,7 +42,6 @@ ListView {
 
     highlightFollowsCurrentItem: false
 
-    // Scroll the current rail to the top of the view, below the top margin
     onCurrentItemChanged: scrollToCurrent()
 
     function scrollToCurrent(): void {
@@ -66,22 +65,32 @@ ListView {
     onRailsChanged: __updateShownRails()
     Component.onCompleted: __updateShownRails()
 
-    // Puts the rails with items in the view, keeping the current one
     function __updateShownRails(): void {
         const current = currentItem;
         let currentRow = 0;
         railModel.clear();
+
+        // HACK: needed to ensure ListView doesn't explode them out of existence when going up/down
+        forceLayout();
+
+        // Puts the rails with items in the view and keeping the current one
         for (const rail of rails) {
-            const shown = rail.count === undefined || rail.count > 0;
-            rail.visible = shown;
-            if (shown) {
-                if (rail === current) {
-                    currentRow = railModel.count;
-                }
-                railModel.append(rail);
+            if (rail.count === 0) {
+                rail.parent = hiddenRails;
+                continue;
             }
+            if (rail === current) {
+                currentRow = railModel.count;
+            }
+            railModel.append(rail);
         }
         currentIndex = currentRow;
+    }
+
+    // Holds the rails left out
+    Item {
+        id: hiddenRails
+        visible: false
     }
 
     Instantiator {
