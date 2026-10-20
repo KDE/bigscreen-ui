@@ -115,7 +115,7 @@ FocusScope {
      */
     signal dismissRequested()
 
-    width: expanded || (mode === Sidebar.Hidden ? expandedWidth : collapsedWidth)
+    width: (expanded || mode === Sidebar.Hidden) ? expandedWidth : collapsedWidth
     Behavior on width { NumberAnimation { duration: Kirigami.Units.longDuration; easing.type: Easing.OutCubic } }
 
     transform: Translate {
