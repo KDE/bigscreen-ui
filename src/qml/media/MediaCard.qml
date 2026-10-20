@@ -86,8 +86,7 @@ T.ItemDelegate {
     Accessible.name: subtitle.length > 0 ? text + ", " + subtitle : text
 
     onPressed: root.forceActiveFocus()
-    Keys.onReturnPressed: click()
-    Keys.onEnterPressed: click()
+    EnterKeyHandler.enabled: true
 
     onActiveFocusChanged: {
         if (!activeFocus) {

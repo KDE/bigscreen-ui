@@ -131,9 +131,7 @@ ItemDelegate {
     }
 
     onPressed: root.forceActiveFocus()
-    Keys.onReturnPressed: {
-        click();
-    }
+    EnterKeyHandler.enabled: true
     onClicked: comboBoxDialog.open()
 
     Accessible.onPressAction: root.clicked()

@@ -15,6 +15,8 @@ set_source_files_properties(qml/Units.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 target_sources(bigscreenuiplugin PRIVATE
     backhandler.cpp
     backhandler.h
+    enterkeyhandler.cpp
+    enterkeyhandler.h
     keynavigationgroup.cpp
     keynavigationgroup.h
 )
@@ -71,6 +73,14 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
 
     qml/views/GridView.qml
     qml/views/ListView.qml
+)
+
+ecm_target_qml_sources(bigscreenuiplugin PRIVATE SOURCES
+    qml/private/SidebarBackground.qml
+    qml/private/SidebarEntry.qml
+    qml/private/SidebarEntryView.qml
+    qml/private/SidebarHeader.qml
+    qml/private/SidebarScrim.qml
 )
 
 target_link_libraries(bigscreenuiplugin PRIVATE

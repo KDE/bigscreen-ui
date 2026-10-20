@@ -33,8 +33,7 @@ T.AbstractButton {
     Accessible.name: text
 
     onPressed: root.forceActiveFocus()
-    Keys.onReturnPressed: click()
-    Keys.onEnterPressed: click()
+    EnterKeyHandler.enabled: true
 
     background: DelegateBackground {
         control: root

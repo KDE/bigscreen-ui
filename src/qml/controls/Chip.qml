@@ -28,8 +28,7 @@ T.Button {
     hoverEnabled: true
 
     onPressed: root.forceActiveFocus()
-    Keys.onReturnPressed: click()
-    Keys.onEnterPressed: click()
+    EnterKeyHandler.enabled: true
 
     background: DelegateBackground {
         control: root

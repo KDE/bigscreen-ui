@@ -106,9 +106,7 @@ T.SwitchDelegate {
     Layout.fillWidth: true
 
     onPressed: root.forceActiveFocus()
-    Keys.onReturnPressed: {
-        click();
-    }
+    EnterKeyHandler.enabled: true
 
     contentItem: RowLayout {
         spacing: 0

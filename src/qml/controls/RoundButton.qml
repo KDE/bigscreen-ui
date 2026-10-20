@@ -35,8 +35,7 @@ T.Button {
     }
 
     onPressed: root.forceActiveFocus()
-    Keys.onReturnPressed: click()
-    Keys.onEnterPressed: click()
+    EnterKeyHandler.enabled: true
 
     contentItem: Kirigami.Icon {
         implicitWidth: root.icon.width
