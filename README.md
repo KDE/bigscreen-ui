@@ -13,6 +13,14 @@ Bigscreen UI provides reusable Qt Quick components designed for applications tar
 * File issues: https://invent.kde.org/libraries/bigscreen-ui/-/work-items
 * Development channel: https://matrix.to/#/#plasma-bigscreen:kde.org
 
+## Dependencies
+
+* Kirigami
+* KColorScheme
+* KI18n
+* qqc2-desktop-style
+* Qt 6 (Quick Controls)
+
 ## Using the QML module
 
 Import the module as `org.kde.bigscreen.ui`:
