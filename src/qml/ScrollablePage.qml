@@ -98,7 +98,12 @@ Page {
             bottomMargin: bottomOverflow
 
             clip: true
-            layer.enabled: contentHeight > height - topMargin - bottomMargin
+
+            // HACK: delay as toggling the layer deletes its effect at once (see EdgeFadeEffect)
+            Binding on layer.enabled {
+                value: flickable.contentHeight > flickable.height - flickable.topMargin - flickable.bottomMargin
+                delayed: true
+            }
             layer.effect: EdgeFadeEffect {
                 topFadeLength: flickable.topOverflow
                 bottomFadeLength: flickable.bottomOverflow

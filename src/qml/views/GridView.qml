@@ -42,7 +42,11 @@ QQ.GridView {
     cacheBuffer: Math.max(height, 0)
     highlightFollowsCurrentItem: false
 
-    layer.enabled: contentHeight > height - topMargin - bottomMargin
+    // HACK: delay as toggling the layer deletes its effect at once (see EdgeFadeEffect)
+    Binding on layer.enabled {
+        value: root.contentHeight > root.height - root.topMargin - root.bottomMargin
+        delayed: true
+    }
     layer.effect: EdgeFadeEffect {
         topFadeLength: root.contentY > root.originY - root.topMargin ? root.__focusRoom : 0
         bottomFadeLength: root.__focusRoom

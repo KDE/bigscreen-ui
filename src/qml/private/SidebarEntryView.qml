@@ -41,7 +41,12 @@ Flickable {
     interactive: overflowing
     boundsBehavior: Flickable.StopAtBounds
     clip: overflowing
-    layer.enabled: overflowing
+
+    // HACK: delay as toggling the layer deletes its effect at once (see EdgeFadeEffect)
+    Binding on layer.enabled {
+        value: root.overflowing
+        delayed: true
+    }
     layer.effect: EdgeFadeEffect {
         topFadeLength: root.fadeLength
         bottomFadeLength: root.fadeLength

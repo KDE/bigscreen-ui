@@ -15,7 +15,12 @@ import QtQuick.Effects
    \code
    GridView {
        topMargin: Kirigami.Units.gridUnit * 2
-       layer.enabled: contentHeight > height
+
+       // HACK: delay as toggling the layer deletes its effect at once (see EdgeFadeEffect)
+       Binding on layer.enabled {
+           value: contentHeight > height
+           delayed: true
+       }
        layer.effect: BigscreenUI.EdgeFadeEffect {
            topFadeLength: Kirigami.Units.gridUnit * 2
        }

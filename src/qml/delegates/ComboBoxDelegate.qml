@@ -238,7 +238,11 @@ ItemDelegate {
                 bottomMargin: overflow
 
                 clip: true
-                layer.enabled: contentHeight > height - topMargin - bottomMargin
+                // Delayed, as toggling the layer deletes its effect at once (see EdgeFadeEffect)
+                Binding on layer.enabled {
+                    value: optionList.contentHeight > optionList.height - optionList.topMargin - optionList.bottomMargin
+                    delayed: true
+                }
                 layer.effect: EdgeFadeEffect {
                     topFadeLength: optionList.overflow
                     bottomFadeLength: optionList.overflow

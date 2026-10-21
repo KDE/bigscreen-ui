@@ -34,7 +34,12 @@ ListView {
     topMargin: Kirigami.Units.gridUnit * 2
     keyNavigationEnabled: true
     clip: true
-    layer.enabled: contentHeight > height
+
+    // HACK: delay as toggling the layer deletes its effect at once (see EdgeFadeEffect)
+    Binding on layer.enabled {
+        value: root.contentHeight > root.height
+        delayed: true
+    }
     layer.effect: EdgeFadeEffect {
         topFadeLength: root.topMargin
     }
