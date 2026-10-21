@@ -23,6 +23,8 @@ T.Popup {
     property alias content: contentControl.contentItem
 
     modal: true
+
+    closePolicy: T.Popup.CloseOnPressOutside // BackHandler already handles "back" buttons
     BackHandler.enabled: root.visible
     BackHandler.onActivated: root.close()
 

@@ -83,10 +83,12 @@ bool BackHandler::eventFilter(QObject *watched, QEvent *event)
     }
 
     bool isBackAction = false;
+    bool isAutoRepeat = false;
 
     if (event->type() == QEvent::KeyPress) {
         auto keyEvent = static_cast<QKeyEvent *>(event);
         isBackAction = keyEvent->key() == Qt::Key_Escape || keyEvent->key() == Qt::Key_Back;
+        isAutoRepeat = keyEvent->isAutoRepeat();
     } else if (event->type() == QEvent::MouseButtonRelease) {
         auto mouseEvent = static_cast<QMouseEvent *>(event);
         isBackAction = mouseEvent->button() == Qt::BackButton;
@@ -94,6 +96,12 @@ bool BackHandler::eventFilter(QObject *watched, QEvent *event)
 
     if (!isBackAction || (watched == m_window && !shouldHandleKeyEvent())) {
         return QObject::eventFilter(watched, event);
+    }
+
+    // Don't propagate back button from autorepeat further
+    if (isAutoRepeat) {
+        event->setAccepted(m_accepted);
+        return m_accepted;
     }
 
     Q_EMIT activated();
@@ -164,8 +172,14 @@ QQuickItem *BackHandler::targetItem() const
         return item;
     }
 
-    const QVariant contentItem = m_target->property("contentItem");
-    return qobject_cast<QQuickItem *>(contentItem.value<QObject *>());
+    const QVariant contentItemProperty = m_target->property("contentItem");
+    auto contentItem = qobject_cast<QQuickItem *>(contentItemProperty.value<QObject *>());
+
+    // QQuickPopup is not a QQuickItem
+    if (contentItem && m_target->inherits("QQuickPopup") && contentItem->parentItem()) {
+        return contentItem->parentItem();
+    }
+    return contentItem;
 }
 
 QQuickWindow *BackHandler::targetWindow() const

@@ -41,6 +41,8 @@ T.Dialog {
 
     onOpened: openFocusItem.forceActiveFocus()
     onRejected: root.close()
+
+    closePolicy: T.Popup.CloseOnPressOutside // BackHandler already handles "back" buttons
     BackHandler.enabled: root.visible
     BackHandler.onActivated: root.reject()
 
