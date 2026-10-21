@@ -61,7 +61,8 @@ T.Dialog {
     }
 
     exit: Transition {
-        NumberAnimation { property: "opacity"; from: 1; to: 0; duration: Kirigami.Units.shortDuration; easing.type: Easing.InCubic }
+        NumberAnimation { property: "opacity"; from: 1; to: 0; duration: Kirigami.Units.longDuration; easing.type: Easing.OutCubic }
+        NumberAnimation { property: "scale"; from: 1; to: 0.95; duration: Kirigami.Units.longDuration; easing.type: Easing.OutCubic }
     }
 
     header: T.Control {
