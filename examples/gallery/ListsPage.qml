@@ -60,11 +60,17 @@ BigscreenUI.ScrollablePage {
                     id: comboBoxDelegate
                     text: "ComboBoxDelegate"
                     KeyNavigation.up: switchDelegate
-                    KeyNavigation.down: customDelegate
+                    KeyNavigation.down: colorSchemeDelegate
                     icon.name: "view-list-details"
                     model: ["Small", "Medium", "Large", "Extra large"]
                     currentIndex: 1
                     onActivated: index => console.log("ComboBoxDelegate: %1".arg(model[index]))
+                }
+
+                BigscreenUI.ColorSchemeDelegate {
+                    id: colorSchemeDelegate
+                    KeyNavigation.up: comboBoxDelegate
+                    KeyNavigation.down: customDelegate
                 }
 
                 BigscreenUI.TextDelegate {
@@ -75,7 +81,7 @@ BigscreenUI.ScrollablePage {
 
                 BigscreenUI.ItemDelegate {
                     id: customDelegate
-                    KeyNavigation.up: comboBoxDelegate
+                    KeyNavigation.up: colorSchemeDelegate
                     KeyNavigation.down: raisedSample
                     text: "ItemDelegate with custom content"
                     contentItem: BigscreenUI.Label {

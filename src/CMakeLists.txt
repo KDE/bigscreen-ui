@@ -15,6 +15,8 @@ set_source_files_properties(qml/Units.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 target_sources(bigscreenuiplugin PRIVATE
     backhandler.cpp
     backhandler.h
+    colorschememanager.cpp
+    colorschememanager.h
     enterkeyhandler.cpp
     enterkeyhandler.h
     keynavigationgroup.cpp
@@ -41,6 +43,7 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/controls/TextField.qml
 
     qml/delegates/ButtonDelegate.qml
+    qml/delegates/ColorSchemeDelegate.qml
     qml/delegates/ComboBoxDelegate.qml
     qml/delegates/ItemDelegate.qml
     qml/delegates/SwitchDelegate.qml
@@ -86,6 +89,7 @@ ecm_target_qml_sources(bigscreenuiplugin PRIVATE SOURCES
 target_link_libraries(bigscreenuiplugin PRIVATE
     Qt6::Qml
     Qt6::Quick
+    KF6::ColorScheme
 )
 
 ecm_finalize_qml_module(bigscreenuiplugin DESTINATION ${KDE_INSTALL_QMLDIR})

@@ -105,22 +105,20 @@ FocusScope {
                 scrollToCurrent();
             }
             onCountChanged: ensureCurrent()
-            // The padding changes with the layout, such as when a Sidebar appears, and a ListView
-            // leaves its items where they were, so move them at once
+
+            // Ensure margin changes still keep item pinned
             onLeftMarginChanged: {
                 scrollAnimation.stop();
                 contentX = targetContentX();
             }
 
-            // ListView picks its first item as current only as items arrive, which it can skip
-            // while it has no size. The rail takes its height from the current item.
-            function ensureCurrent(): void {
+            function ensureCurrent() {
                 if (currentIndex < 0 && count > 0 && width > 0) {
                     currentIndex = 0;
                 }
             }
 
-            function scrollToCurrent(): void {
+            function scrollToCurrent() {
                 if (!currentItem) {
                     return;
                 }

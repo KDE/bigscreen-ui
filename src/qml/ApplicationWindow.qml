@@ -59,6 +59,8 @@ T.ApplicationWindow {
      */
     property T.Popup quitDialog: defaultQuitDialog
 
+    readonly property QtObject __colorSchemeManager: ColorSchemeManager
+
     /*!
        \brief Replace all pages (including stacked ones) with the given page.
      */
