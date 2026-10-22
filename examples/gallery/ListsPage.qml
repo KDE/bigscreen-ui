@@ -70,6 +70,12 @@ BigscreenUI.ScrollablePage {
                 BigscreenUI.ColorSchemeDelegate {
                     id: colorSchemeDelegate
                     KeyNavigation.up: comboBoxDelegate
+                    KeyNavigation.down: aboutDelegate
+                }
+
+                BigscreenUI.AboutDelegate {
+                    id: aboutDelegate
+                    KeyNavigation.up: colorSchemeDelegate
                     KeyNavigation.down: customDelegate
                 }
 
@@ -81,7 +87,7 @@ BigscreenUI.ScrollablePage {
 
                 BigscreenUI.ItemDelegate {
                     id: customDelegate
-                    KeyNavigation.up: colorSchemeDelegate
+                    KeyNavigation.up: aboutDelegate
                     KeyNavigation.down: raisedSample
                     text: "ItemDelegate with custom content"
                     contentItem: BigscreenUI.Label {

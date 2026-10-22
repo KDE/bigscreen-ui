@@ -7,6 +7,7 @@ ecm_add_qml_module(bigscreenuiplugin
     GENERATE_PLUGIN_SOURCE
     DEPENDENCIES
         QtQuick
+        org.kde.coreaddons
         org.kde.kirigami
 )
 
@@ -42,6 +43,7 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/controls/SwitchIndicator.qml
     qml/controls/TextField.qml
 
+    qml/delegates/AboutDelegate.qml
     qml/delegates/ButtonDelegate.qml
     qml/delegates/ColorSchemeDelegate.qml
     qml/delegates/ComboBoxDelegate.qml
@@ -63,6 +65,8 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
     qml/media/PlayerOverlay.qml
     qml/media/RailView.qml
 
+    qml/pages/AboutPage.qml
+
     qml/overlays/ContextDrawer.qml
     qml/overlays/ContextDrawerHeader.qml
     qml/overlays/Dialog.qml
@@ -79,6 +83,7 @@ ecm_target_qml_sources(bigscreenuiplugin SOURCES
 )
 
 ecm_target_qml_sources(bigscreenuiplugin PRIVATE SOURCES
+    qml/private/AboutTextDialog.qml
     qml/private/SidebarBackground.qml
     qml/private/SidebarEntry.qml
     qml/private/SidebarEntryView.qml

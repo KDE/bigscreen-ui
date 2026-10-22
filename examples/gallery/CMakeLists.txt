@@ -36,6 +36,7 @@ target_link_libraries(bigscreen-ui-demo PRIVATE
     Qt6::Qml
     Qt6::Quick
     KF6::I18nQml
+    KF6::CoreAddons
 )
 
 qt_add_resources(bigscreen-ui-demo images
