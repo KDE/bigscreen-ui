@@ -66,9 +66,10 @@ ScrollablePage {
     BackHandler.enabled: visible && (T.StackView.index ?? 0) > 0
     BackHandler.onActivated: T.StackView.view.pop()
 
+    // Focus arriving on the page goes on to the first entry
     onActiveFocusChanged: {
-        if (activeFocus) { // FOcus first item
-            column.nextItemInFocusChain()?.forceActiveFocus();
+        if (activeFocus && Window.activeFocusItem === root) {
+            nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason);
         }
     }
 
