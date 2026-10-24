@@ -82,7 +82,15 @@ FocusScope {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
-            implicitHeight: currentItem ? currentItem.implicitHeight : 0
+
+            // Use the largest item observed height as the listview height for consistency
+            // TODO: this might cause other problems? (in case someone is digging around here)
+            implicitHeight: Math.max(maxItemHeight, tallestItemHeight)
+
+            readonly property real tallestItemHeight: contentItem.childrenRect.height
+            property real maxItemHeight: 0
+            onTallestItemHeightChanged: maxItemHeight = Math.max(maxItemHeight, tallestItemHeight)
+            onModelChanged: maxItemHeight = 0
 
             focus: true
             orientation: ListView.Horizontal
