@@ -39,7 +39,7 @@ class BackHandler : public QObject
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged FINAL)
 
     /*!
-        \brief Whether the back event is accepted by this item, and not propagated to its parent.
+        \brief Whether the back event is accepted by this item, and not propagated to handlers further up.
      */
     Q_PROPERTY(bool accepted READ accepted WRITE setAccepted NOTIFY acceptedChanged FINAL)
     QML_ELEMENT
@@ -66,14 +66,13 @@ Q_SIGNALS:
     void enabledChanged();
     void acceptedChanged();
 
-protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
-
 private Q_SLOTS:
     void updateWindow();
 
 private:
-    bool shouldHandleKeyEvent() const;
+    friend class BackHandlerDispatcher;
+
+    bool isActive() const;
     QQuickItem *targetItem() const;
     QQuickWindow *targetWindow() const;
 

@@ -8,20 +8,123 @@
 
 #include <QEvent>
 #include <QKeyEvent>
-#include <QMetaProperty>
 #include <QMouseEvent>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QTimer>
 #include <QVariant>
 
+// Dispatcher installed per window, tracking handlers up the item hierarchy
+class BackHandlerDispatcher : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit BackHandlerDispatcher(QQuickWindow *window)
+        : QObject(window)
+        , m_window(window)
+    {
+        m_window->installEventFilter(this);
+    }
+
+    static BackHandlerDispatcher *get(QQuickWindow *window, bool create)
+    {
+        auto dispatcher = window->findChild<BackHandlerDispatcher *>(QString(), Qt::FindDirectChildrenOnly);
+        if (!dispatcher && create) {
+            dispatcher = new BackHandlerDispatcher(window);
+        }
+        return dispatcher;
+    }
+
+    void add(BackHandler *handler)
+    {
+        if (!m_handlers.contains(handler)) {
+            m_handlers.append(handler);
+        }
+    }
+
+    void remove(BackHandler *handler)
+    {
+        m_handlers.removeAll(handler);
+    }
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (watched != m_window) {
+            return false;
+        }
+
+        bool isAutoRepeat = false;
+        bool emitActivated = true;
+
+        switch (event->type()) {
+        case QEvent::KeyPress: {
+            auto keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() != Qt::Key_Escape && keyEvent->key() != Qt::Key_Back) {
+                return false;
+            }
+            isAutoRepeat = keyEvent->isAutoRepeat();
+            break;
+        }
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+            if (static_cast<QMouseEvent *>(event)->button() != Qt::BackButton) {
+                return false;
+            }
+            emitActivated = event->type() == QEvent::MouseButtonRelease;
+            break;
+        default:
+            return false;
+        }
+
+        if (!m_window->isActive()) {
+            return false;
+        }
+
+        const QList<QPointer<BackHandler>> handlers = handlersForFocusItem();
+
+        for (const auto &handler : handlers) {
+            if (!handler || !handler->isActive()) {
+                continue;
+            }
+            // Don't propagate back button from autorepeat further
+            if (emitActivated && !isAutoRepeat) {
+                Q_EMIT handler->activated();
+            }
+            if (handler && handler->accepted()) {
+                event->accept();
+                return true;
+            }
+        }
+        return false;
+    }
+
+private:
+    QList<QPointer<BackHandler>> handlersForFocusItem()
+    {
+        m_handlers.removeAll(nullptr);
+
+        QList<QPointer<BackHandler>> result;
+        for (QQuickItem *item = m_window->activeFocusItem(); item; item = item->parentItem()) {
+            for (const auto &handler : std::as_const(m_handlers)) {
+                if (handler->isActive() && handler->targetItem() == item) {
+                    result.append(handler);
+                }
+            }
+        }
+        return result;
+    }
+
+    QQuickWindow *m_window;
+    QList<QPointer<BackHandler>> m_handlers;
+};
+
 BackHandler::BackHandler(QObject *target)
     : QObject(target)
     , m_target(target)
 {
     if (m_target) {
-        m_target->installEventFilter(this);
-
         const int visibleChangedIndex = m_target->metaObject()->indexOfSignal("visibleChanged()");
         if (visibleChangedIndex >= 0) {
             QMetaObject::connect(m_target, visibleChangedIndex, this, metaObject()->indexOfSlot("updateWindow()"));
@@ -33,11 +136,10 @@ BackHandler::BackHandler(QObject *target)
 
 BackHandler::~BackHandler()
 {
-    if (m_target) {
-        m_target->removeEventFilter(this);
-    }
     if (m_window) {
-        m_window->removeEventFilter(this);
+        if (auto dispatcher = BackHandlerDispatcher::get(m_window, false)) {
+            dispatcher->remove(this);
+        }
     }
 }
 
@@ -76,39 +178,6 @@ BackHandler *BackHandler::qmlAttachedProperties(QObject *object)
     return new BackHandler(object);
 }
 
-bool BackHandler::eventFilter(QObject *watched, QEvent *event)
-{
-    if (!m_enabled) {
-        return QObject::eventFilter(watched, event);
-    }
-
-    bool isBackAction = false;
-    bool isAutoRepeat = false;
-
-    if (event->type() == QEvent::KeyPress) {
-        auto keyEvent = static_cast<QKeyEvent *>(event);
-        isBackAction = keyEvent->key() == Qt::Key_Escape || keyEvent->key() == Qt::Key_Back;
-        isAutoRepeat = keyEvent->isAutoRepeat();
-    } else if (event->type() == QEvent::MouseButtonRelease) {
-        auto mouseEvent = static_cast<QMouseEvent *>(event);
-        isBackAction = mouseEvent->button() == Qt::BackButton;
-    }
-
-    if (!isBackAction || (watched == m_window && !shouldHandleKeyEvent())) {
-        return QObject::eventFilter(watched, event);
-    }
-
-    // Don't propagate back button from autorepeat further
-    if (isAutoRepeat) {
-        event->setAccepted(m_accepted);
-        return m_accepted;
-    }
-
-    Q_EMIT activated();
-    event->setAccepted(m_accepted);
-    return m_accepted;
-}
-
 void BackHandler::updateWindow()
 {
     auto item = targetItem();
@@ -127,39 +196,26 @@ void BackHandler::updateWindow()
     }
 
     if (m_window) {
-        m_window->removeEventFilter(this);
+        if (auto dispatcher = BackHandlerDispatcher::get(m_window, false)) {
+            dispatcher->remove(this);
+        }
     }
 
     m_window = window;
 
     if (m_window) {
-        m_window->installEventFilter(this);
+        BackHandlerDispatcher::get(m_window, true)->add(this);
     }
 }
 
-bool BackHandler::shouldHandleKeyEvent() const
+bool BackHandler::isActive() const
 {
-    if (!m_target) {
+    if (!m_enabled || !m_target) {
         return false;
     }
 
     const QVariant visibleProperty = m_target->property("visible");
-    if (visibleProperty.isValid() && !visibleProperty.toBool()) {
-        return false;
-    }
-
-    auto window = targetWindow();
-    if (!window || !window->isActive()) {
-        return false;
-    }
-
-    auto item = targetItem();
-    if (!item) {
-        return true;
-    }
-
-    auto activeFocusItem = window->activeFocusItem();
-    return activeFocusItem && (activeFocusItem == item || item->isAncestorOf(activeFocusItem));
+    return !visibleProperty.isValid() || visibleProperty.toBool();
 }
 
 QQuickItem *BackHandler::targetItem() const
@@ -170,6 +226,10 @@ QQuickItem *BackHandler::targetItem() const
 
     if (auto item = qobject_cast<QQuickItem *>(m_target)) {
         return item;
+    }
+
+    if (auto window = qobject_cast<QQuickWindow *>(m_target)) {
+        return window->contentItem();
     }
 
     const QVariant contentItemProperty = m_target->property("contentItem");
@@ -200,4 +260,5 @@ QQuickWindow *BackHandler::targetWindow() const
     return qobject_cast<QQuickWindow *>(windowProperty.value<QObject *>());
 }
 
+#include "backhandler.moc"
 #include "moc_backhandler.cpp"
