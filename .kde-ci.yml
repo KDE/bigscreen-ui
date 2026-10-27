@@ -5,8 +5,11 @@ Dependencies:
  - 'on': ['Linux']
    'require':
     'frameworks/extra-cmake-modules': '@latest-kf6'
+    'frameworks/kcolorscheme': '@latest-kf6'
+    'frameworks/kcoreaddons': '@latest-kf6'
+    'frameworks/ki18n': '@latest-kf6'
     'frameworks/kirigami': '@latest-kf6'
-    'plasma/plasma-bigscreen': '@same'
+    'frameworks/qqc2-desktop-style': '@latest-kf6'
 
 Options:
  require-passing-tests-on: ['@all']
