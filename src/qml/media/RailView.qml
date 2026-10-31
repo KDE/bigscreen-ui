@@ -53,7 +53,9 @@ ListView {
         if (!currentItem) {
             return;
         }
-        scrollAnimation.to = currentItem.y - topMargin;
+        const minimum = originY - topMargin;
+        const maximum = Math.max(minimum, originY + contentHeight + bottomMargin - height);
+        scrollAnimation.to = Math.max(minimum, Math.min(maximum, currentItem.y - topMargin));
         scrollAnimation.restart();
     }
 
