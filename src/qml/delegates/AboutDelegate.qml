@@ -28,7 +28,7 @@ ButtonDelegate {
 
     text: i18nd("bigscreen-ui", "About %1", aboutData.displayName)
     description: i18nd("bigscreen-ui", "Version %1", aboutData.version)
-    icon.name: Kirigami.Settings.applicationWindowIcon.name || aboutData.componentName
+    icon.name: aboutData.desktopFileName || aboutData.componentName
 
     trailing: Kirigami.Icon {
         source: "go-next"
