@@ -20,7 +20,7 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Buttons"
-            description: "Button is for actions with a label. RoundButton is for icon-only controls."
+            description: "Buttons can have an icon or text (both optional)."
 
             RowLayout {
                 spacing: Kirigami.Units.largeSpacing * 2
@@ -93,7 +93,7 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Chips"
-            description: "ChipBar keeps one chip selected, for filters such as genres or seasons. A Chip can also be used on its own as a toggle."
+            description: "ChipBar keeps one chip selected at a time. A Chip can also be used on its own as a toggle."
 
             BigscreenUI.ChipBar {
                 id: genres
@@ -130,7 +130,6 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Text field"
-            description: "Typing works as soon as the field has focus."
 
             BigscreenUI.TextField {
                 id: searchField
@@ -143,8 +142,8 @@ BigscreenUI.ScrollablePage {
         }
 
         GallerySection {
-            title: "Type scale"
-            description: "Set a Label's type to use these styles. Large text uses a light weight."
+            title: "Label"
+            description: "Set a Label's type to use different styles."
 
             Repeater {
                 model: [
@@ -176,20 +175,19 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Badges"
-            description: "Short metadata shown next to a title."
 
             RowLayout {
                 spacing: Kirigami.Units.largeSpacing
                 BigscreenUI.Badge { text: "4K HDR" }
                 BigscreenUI.Badge { text: "Dolby Atmos" }
-                BigscreenUI.Badge { text: "CC" }
                 BigscreenUI.Badge { text: "16+" }
+                BigscreenUI.Badge { text: "Watched" }
             }
         }
 
         GallerySection {
-            title: "Progress and seeking"
-            description: "ProgressBar shows how far along something is. SeekBar is the focusable version: left and right move by its step size."
+            title: "Progress and seeking bar"
+            description: "ProgressBar shows how far along something is. SeekBar is interactable by the user."
 
             GridLayout {
                 columns: 2

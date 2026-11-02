@@ -7,7 +7,6 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
-// PlayerOverlay over a still image, with simulated playback
 BigscreenUI.Page {
     id: root
 
@@ -17,7 +16,7 @@ BigscreenUI.Page {
     property int movieIndex: 3
     readonly property var movie: Artwork.movies[movieIndex]
     property real position: 38 * 60 * 1000
-    readonly property real duration: 107 * 60 * 1000
+    readonly property real duration: 100 * 60 * 1000
     property bool playing: true
     property bool buffering: false
 

@@ -9,7 +9,6 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
-// MediaGrid of a library, filtered with a ChipBar, and a PlaceholderMessage when it is empty
 BigscreenUI.Page {
     id: root
 

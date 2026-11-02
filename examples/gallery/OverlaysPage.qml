@@ -24,7 +24,7 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Dialog"
-            description: "A modal dialog with standard buttons. The back key cancels it, and focus returns to the button that opened it."
+            description: "A modal dialog with standard buttons."
 
             BigscreenUI.Button {
                 id: dialogButton
@@ -38,7 +38,7 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Context drawer"
-            description: "A panel that slides in from the right, for options related to the current screen, such as subtitle or audio track selection."
+            description: "A panel that slides in from the right to display contextual options."
 
             BigscreenUI.Button {
                 id: contextDrawerButton
@@ -52,7 +52,6 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "Stack view"
-            description: "StackView crossfades between pages. The pushed page uses BackHandler, so Escape or the remote's back key returns here."
 
             BigscreenUI.Button {
                 id: pushButton
@@ -83,7 +82,7 @@ BigscreenUI.ScrollablePage {
 
             BigscreenUI.Label {
                 Layout.fillWidth: true
-                text: "Profiles keep separate watch history and recommendations."
+                text: "This is a description."
                 wrapMode: Text.Wrap
             }
 
@@ -137,7 +136,6 @@ BigscreenUI.ScrollablePage {
                 icon.name: "edit-undo"
                 KeyNavigation.up: motionOption
                 onClicked: {
-                    console.log("ContextDrawer: Reset");
                     contextDrawer.close();
                 }
             }

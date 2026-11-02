@@ -22,7 +22,7 @@ BigscreenUI.Page {
 
         iconName: "media-playback-start"
         text: "PlayerOverlay"
-        explanation: "Playback controls over a video, with simulated playback. Open it over the whole window, then press back to close it."
+        explanation: "Playback controls over a video"
         helpfulAction: Kirigami.Action {
             text: "Open player"
             icon.name: "media-playback-start"

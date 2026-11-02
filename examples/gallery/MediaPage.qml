@@ -9,7 +9,6 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
-// A featured banner and rails of MediaCards.
 BigscreenUI.Page {
     id: root
 
@@ -89,12 +88,6 @@ BigscreenUI.Page {
                 text: modelData.title
                 onClicked: root.openDetails(modelData, posterRail.title)
             }
-        }
-
-        ExpandingRail {
-            title: "Details that open inline"
-            model: Artwork.movies
-            onMoreInfoRequested: movie => root.openDetails(movie, title)
         }
 
         BigscreenUI.ContentRail {

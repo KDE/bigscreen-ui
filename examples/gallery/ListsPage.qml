@@ -34,7 +34,7 @@ BigscreenUI.ScrollablePage {
                     id: buttonDelegate
                     focus: true
                     text: "ButtonDelegate"
-                    description: "Runs an action, here with a trailing arrow"
+                    description: "Run an action"
                     icon.name: "applications-graphics"
                     trailing: Kirigami.Icon {
                         source: "go-next"
@@ -81,7 +81,7 @@ BigscreenUI.ScrollablePage {
 
                 BigscreenUI.TextDelegate {
                     text: "TextDelegate"
-                    description: "Information only. It can't take focus, so the arrow keys skip it."
+                    description: "Information only. It can't take focus so arrow keys skip it."
                     icon.name: "dialog-information"
                 }
 
@@ -101,7 +101,7 @@ BigscreenUI.ScrollablePage {
 
         GallerySection {
             title: "DelegateBackground"
-            description: "The background all of the controls share. Use it to give custom controls the same raised look and focus style."
+            description: "Shared background for controls."
 
             RowLayout {
                 spacing: Kirigami.Units.gridUnit
