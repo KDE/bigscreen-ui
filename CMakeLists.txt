@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 3.24)
 
-project(bigscreen-ui VERSION 1.0.0)
+project(bigscreen-ui VERSION 0.1.0)
 
 set(QT_MIN_VERSION "6.11.0")
 set(KF_MIN_VERSION "6.14.0")
