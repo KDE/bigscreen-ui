@@ -40,9 +40,9 @@ T.Page {
        \brief How far text and controls should keep from each edge of the page's content.
      */
     readonly property Margins contentMargins: Margins {
-        left: Math.max(root.__horizontalScreenMargin - root.__navigationLeft, Units.contentSpacing)
+        left: Math.max(root.__horizontalScreenMargin - root.__navigationLeft, Units.__minimumContentSpacing)
         right: root.__horizontalScreenMargin
-        top: Math.max(root.__verticalScreenMargin - root.__navigationTop, Units.contentSpacing)
+        top: Math.max(root.__verticalScreenMargin - root.__navigationTop, Units.__minimumContentSpacing)
         bottom: root.__verticalScreenMargin
     }
 

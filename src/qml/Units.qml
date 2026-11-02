@@ -32,15 +32,15 @@ QtObject {
         return Math.round(Math.max(Kirigami.Units.gridUnit, Math.min(verticalScreenMargin, windowHeight * 0.05)));
     }
 
-    // The least space between content and whatever is beside it, such as navigation
-    readonly property int contentSpacing: Kirigami.Units.gridUnit * 2
+    // The least space between content and whatever is beside it
+    readonly property int __minimumContentSpacing: Kirigami.Units.gridUnit * 2
 
-    // Corner radius of media artwork
+    // Corner radius of cards
     readonly property int cardCornerRadius: Kirigami.Units.cornerRadius * 2
 
     // Border width of the highlight drawn around focused media artwork
     readonly property int focusBorderWidth: 4
 
     // Scale applied to focused media artwork
-    readonly property real focusScale: 1.06
+    readonly property real focusScale: 1.07
 }

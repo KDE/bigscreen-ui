@@ -23,9 +23,6 @@ ListView {
      */
     property int selectedIndex: 0
 
-    /*!
-       \brief This signal is emitted when the chip at \a index is activated.
-     */
     signal activated(int index)
 
     implicitWidth: contentWidth

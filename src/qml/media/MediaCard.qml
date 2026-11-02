@@ -58,7 +58,7 @@ T.ItemDelegate {
     property real artworkWidth: Kirigami.Units.gridUnit * 12
 
     /*!
-       \brief The height of the artwork. Defaults to 2:3 poster ratio.
+       \brief The height of the artwork.
      */
     property real artworkHeight: artworkWidth * 1.5
 
@@ -111,7 +111,7 @@ T.ItemDelegate {
             width: root.artworkWidth
             height: root.artworkHeight
 
-            radius: Units.cardCornerRadius
+            radius: Kirigami.Units.cornerRadius * 2
             color: Kirigami.Theme.alternateBackgroundColor
             fillMode: Image.PreserveAspectCrop
             asynchronous: true

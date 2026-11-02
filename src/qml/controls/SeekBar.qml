@@ -8,8 +8,6 @@ import org.kde.kirigami as Kirigami
 
 /*!
    \brief A user-adjustable playback position slider.
-
-   The groove thickens and a handle appears while it has focus.
  */
 T.Slider {
     id: root
