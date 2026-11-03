@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Devin Lin <devin@kde.org>
 # SPDX-License-Identifier: LGPL-2.0-or-later
 
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.30)
 
 project(bigscreen-ui VERSION 0.1.0)
 
@@ -32,7 +32,7 @@ add_subdirectory(src)
 
 ki18n_install(po)
 
-option(BUILD_EXAMPLES "Build the Bigscreen UI demonstration application" ON)
+option(BUILD_EXAMPLES "Build the Bigscreen UI demonstration application" OFF)
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()

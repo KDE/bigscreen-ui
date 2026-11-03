@@ -62,3 +62,11 @@ cmake -B build
 cmake --build build
 cmake --install build
 ```
+
+Examples are not built by default. To build them with `kde-builder`:
+
+```bash
+kde-builder bigscreen-ui --cmake-options="-DBUILD_EXAMPLES=ON"
+
+bigscreen-ui-demo
+```

@@ -21,7 +21,7 @@ class QQuickItem;
    on the button. Key-repeat (while holding down) is disabled.
 
    \code
-   T.Button {
+   BigscreenUI.Button {
        BigscreenUI.EnterKeyHandler.enabled: true
    }
    \endcode
