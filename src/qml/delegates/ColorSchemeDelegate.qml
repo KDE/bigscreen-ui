@@ -4,6 +4,9 @@
 import QtQuick
 
 /*!
+   \qmltype ColorSchemeDelegate
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A delegate for picking the app's color scheme.
  */
 ComboBoxDelegate {

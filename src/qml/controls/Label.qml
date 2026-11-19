@@ -6,6 +6,13 @@ import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype Label
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Label
+
+   \brief A regular label to show text.
+ */
 T.Label {
     enum Type {
         Body,    // Units.defaultFontPixelSize

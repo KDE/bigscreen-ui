@@ -9,7 +9,11 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
-   \brief Indicator for background activity
+   \qmltype BusyIndicator
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::BusyIndicator
+
+   \brief Indicator for background activity.
  */
 // From qqc2-breeze-style
 T.BusyIndicator {

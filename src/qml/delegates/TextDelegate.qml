@@ -8,6 +8,12 @@ import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype TextDelegate
+   \inqmlmodule org.kde.bigscreen.ui
+
+   \brief A non-clickable text item for use in lists.
+ */
 ItemDelegate {
     id: root
 

@@ -9,7 +9,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
-   \brief Controls overlay over media content
+   \qmltype PlayerOverlay
+   \inqmlmodule org.kde.bigscreen.ui
+
+   \brief Controls overlay over media content.
  */
 FocusScope {
     id: root

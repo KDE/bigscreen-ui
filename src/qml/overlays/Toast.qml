@@ -8,6 +8,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype Toast
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Control
+
    \brief Component to show an app message.
 
    Place it at the bottom of the window and call show(). It fades out on its own after

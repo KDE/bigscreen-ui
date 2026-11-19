@@ -7,6 +7,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype Chip
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Button
+
    \brief A compact button used for filters (e.g. genres). A checked chip is
    shown as selected.
  */

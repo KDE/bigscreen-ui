@@ -8,6 +8,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype NavigationTab
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::AbstractButton
+
    \brief A tab in a NavigationBar.
  */
 T.AbstractButton {

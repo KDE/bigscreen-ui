@@ -8,6 +8,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype ContextDrawer
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Popup
+
    \brief A modal panel that slides in from the right to show contextual options.
  */
 T.Popup {

@@ -7,6 +7,13 @@ import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype SwitchDelegate
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::SwitchDelegate
+
+   \brief A toggle switch for use in lists.
+ */
 T.SwitchDelegate {
     id: root
 

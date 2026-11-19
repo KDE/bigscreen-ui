@@ -7,6 +7,9 @@ import QtQuick.Effects
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype AmbientBackground
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A background of soft colored light, for pages without images to put in the background.
 
    The light is tinted with \l tint and two hues either side of it. The page darkens

@@ -8,6 +8,9 @@ import QtQml.Models
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype RailView
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A vertical stack of ContentRails.
 
    \code

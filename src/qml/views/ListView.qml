@@ -6,6 +6,9 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype ListView
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A vertically scrolling list of rows, such as ButtonDelegates, lined up with the page's content margins.
  */
 ListView {

@@ -7,6 +7,9 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype ContentRail
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A titled, horizontally scrolling row of items, usually MediaCards.
 
    The current item stays at the left edge while the row scrolls.

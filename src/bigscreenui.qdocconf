@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2026 User8395 <therealuser8395@proton.me>
+# SPDX-License-Identifier: LGPL-2.0-or-later
+
+include($KDE_DOCS/global/qt-module-defaults.qdocconf)
+
+project = Bigscreen UI
+description = Bigscreen UI provides reusable Qt Quick components designed for applications targeting TV/console style platforms (i.e. Plasma Bigscreen).
+
+documentationinheaders = true
+
+depends = kde qtcore qtgui qtqml qtquick qtquickcontrols kcolorscheme
+
+sourcedirs += .
+headerdirs += .
+exampledirs += ../examples/gallery
+imagedirs += ../examples/gallery/images
+
+qhp.projects = BigscreenUI
+
+qhp.BigscreenUI.file            = bigscreenui.qhp
+qhp.BigscreenUI.namespace       = org.kde.bigscreen.ui.$QT_VERSION_TAG
+qhp.BigscreenUI.virtualFolder   = bigscreenui
+qhp.BigscreenUI.indexTitle      = bigscreenui
+qhp.BigscreenUI.indexRoot       = 

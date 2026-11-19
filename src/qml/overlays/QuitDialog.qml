@@ -5,6 +5,9 @@ import QtQuick
 import QtQuick.Templates as T
 
 /*!
+   \qmltype QuitDialog
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A dialog that asks the user to confirm quitting the app.
  */
 Dialog {

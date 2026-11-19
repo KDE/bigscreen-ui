@@ -7,6 +7,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype SeekBar
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Slider
+
    \brief A user-adjustable playback position slider.
  */
 T.Slider {

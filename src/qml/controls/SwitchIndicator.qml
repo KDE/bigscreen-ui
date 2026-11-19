@@ -6,6 +6,9 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype SwitchIndicator
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief The track and handle of a switch.
  */
 Item {

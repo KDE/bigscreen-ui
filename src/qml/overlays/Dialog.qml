@@ -8,6 +8,13 @@ import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype Dialog
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Dialog
+
+   \brief A popup dialog.
+ */
 T.Dialog {
     id: root
 

@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: 2026 User8395 <therealuser8395@proton.me>
+# SPDX-License-Identifier: LGPL-2.0-or-later
+
+/*!
+    \qmlmodule org.kde.bigscreen.ui
+    \title Bigscreen UI QML Types
+*/

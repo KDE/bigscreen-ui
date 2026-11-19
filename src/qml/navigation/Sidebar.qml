@@ -10,6 +10,9 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype Sidebar
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A sidebar for switching between the sections of an app.
 
    \code

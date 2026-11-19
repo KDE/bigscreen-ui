@@ -98,3 +98,5 @@ target_link_libraries(bigscreenuiplugin PRIVATE
 )
 
 ecm_finalize_qml_module(bigscreenuiplugin DESTINATION ${KDE_INSTALL_QMLDIR})
+
+ecm_generate_qdoc(bigscreenuiplugin bigscreenui.qdocconf)

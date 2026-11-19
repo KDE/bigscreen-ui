@@ -8,6 +8,13 @@ import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype DialogButtonBox
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::DialogButtonBox
+
+   \brief A customizable button box for a \l {Dialog}.
+ */
 T.DialogButtonBox {
     id: root
 

@@ -7,12 +7,13 @@ import QtQuick as QQ
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype GridView
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A vertically scrolling grid, accomodating for a page's content margins.
    The current item is always kept fully in view, with room around it for its focus effect.
 
    For a grid of MediaCards, use MediaGrid.
-
-   \endcode
  */
 QQ.GridView {
     id: root

@@ -6,6 +6,9 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype ChipBar
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A horizontal row of Chips where one is selected at a time.
 
    \code

@@ -9,6 +9,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype MediaCard
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::ItemDelegate
+
    \brief A focusable piece of media artwork.
 
    The artwork is drawn at \l artworkWidth by \l artworkHeight. The title (\c text) and

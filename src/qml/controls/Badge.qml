@@ -6,6 +6,9 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype Badge
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A small label for short metadata.
  */
 Label {

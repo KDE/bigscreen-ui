@@ -14,6 +14,9 @@
 class QQuickItem;
 
 /*!
+   \qmltype KeyNavigationGroup
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief Attached property to make a row/column of controls arrow-navigable.
 
    Attach it to a row or column of controls, and the arrow keys along its orientation move
@@ -35,11 +38,14 @@ class KeyNavigationGroup : public QObject
     Q_OBJECT
 
     /*!
+       \qmlattachedproperty Qt::Orientations KeyNavigationGroup::orientation
        \brief The direction the controls are laid out in (for arrow key navigation).
+       \sa Qt::Orientations
      */
     Q_PROPERTY(Qt::Orientations orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
 
     /*!
+       \qmlattachedproperty bool KeyNavigationGroup::enabled
        \brief Whether the arrow keys move focus in the group.
      */
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged FINAL)

@@ -8,6 +8,12 @@ import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype ButtonDelegate
+   \inqmlmodule org.kde.bigscreen.ui
+
+   \brief A button that can show more information for use in lists.
+ */
 ItemDelegate {
     id: root
 

@@ -14,6 +14,9 @@ import org.kde.kirigami as Kirigami
 import org.kde.coreaddons as Core
 
 /*!
+   \qmltype AboutPage
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A page with information about the app.
  */
 ScrollablePage {

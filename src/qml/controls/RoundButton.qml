@@ -7,6 +7,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype RoundButton
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Button
+
    \brief A circular icon-only button.
  */
 T.Button {

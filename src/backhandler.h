@@ -15,6 +15,9 @@ class QQuickItem;
 class QQuickWindow;
 
 /*!
+   \qmltype BackHandler
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief Attached property to handle "back" events.
 
    This includes the "escape" and "back" buttons on the keyboard, as well as the
@@ -33,12 +36,15 @@ class QQuickWindow;
 class BackHandler : public QObject
 {
     Q_OBJECT
+
     /*!
+        \qmlattachedproperty bool BackHandler::enabled
         \brief Whether the back handler is active.
      */
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged FINAL)
 
     /*!
+        \qmlattachedproperty bool BackHandler::accepted
         \brief Whether the back event is accepted by this item, and not propagated to handlers further up.
      */
     Q_PROPERTY(bool accepted READ accepted WRITE setAccepted NOTIFY acceptedChanged FINAL)
@@ -60,6 +66,7 @@ public:
 
 Q_SIGNALS:
     /*!
+        \qmlattachedsignal BackHandler::activated()
         \brief Emitted when the back action is received by the item.
      */
     void activated();

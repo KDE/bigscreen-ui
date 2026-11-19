@@ -6,22 +6,75 @@ pragma Singleton
 import QtQml
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype Units
+   \inqmlmodule org.kde.bigscreen.ui
+
+   \brief Standard units for use across apps to ensure a unified design.
+ */
 QtObject {
+
+    /*!
+       \brief Standard horizontal padding.
+     */
     readonly property int horizontalPadding: Kirigami.Units.gridUnit
+
+    /*!
+       \brief Standard vertical padding.
+     */
     readonly property int verticalPadding: Kirigami.Units.gridUnit
 
+
+    /*!
+       \brief Standard vertical spacing.
+     */
     readonly property int verticalSpacing: Kirigami.Units.gridUnit
+
+    /*!
+       \brief Standard horizontal spacing.
+     */
     readonly property int horizontalSpacing: Kirigami.Units.largeSpacing
 
+
+    /*!
+       \brief Standard size for small text.
+     */
     readonly property int smallFontPixelSize: 14
+
+    /*!
+       \brief Standard size for regular text.
+     */
     readonly property int defaultFontPixelSize: 18
+
+    /*!
+       \brief Standard size for small headings.
+     */
     readonly property int headingFontPixelSize: 22
+
+    /*!
+       \brief Standard size for section headings.
+     */
     readonly property int sectionFontPixelSize: 30
+
+    /*!
+       \brief Standard size for titles.
+     */
     readonly property int titleFontPixelSize: 48
+
+    /*!
+       \brief Standard size for display text.
+     */
     readonly property int displayFontPixelSize: 72
 
-    // Recommended maximum margins between the edges of the screen and content
+
+    /*!
+       \brief Recommended maximum margin between the horizontal edges of the screen and content.
+     */
     readonly property int horizontalScreenMargin: Kirigami.Units.gridUnit * 5
+
+    /*!
+       \brief Recommended maximum margin between the vertical edges of the screen and content.
+     */
     readonly property int verticalScreenMargin: Kirigami.Units.gridUnit * 3
 
     // Actual recommended margins (factors in screen size)
@@ -35,12 +88,18 @@ QtObject {
     // The least space between content and whatever is beside it
     readonly property int __minimumContentSpacing: Kirigami.Units.gridUnit * 2
 
-    // Corner radius of cards
+    /*!
+       \brief Corner radius of cards.
+     */
     readonly property int cardCornerRadius: Kirigami.Units.cornerRadius * 2
 
-    // Border width of the highlight drawn around focused media artwork
+    /*!
+       \brief Border width of the highlight drawn around focused media artwork.
+     */
     readonly property int focusBorderWidth: 4
 
-    // Scale applied to focused media artwork
+    /*!
+       \brief Scale applied to focused media artwork.
+     */
     readonly property real focusScale: 1.07
 }

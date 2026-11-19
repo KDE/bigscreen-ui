@@ -7,6 +7,9 @@ import QtQuick.Window
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype ScrollablePage
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A page that can scroll. The selected item is kept in the visible view.
 
    Give the page a single content item, such as a ColumnLayout.

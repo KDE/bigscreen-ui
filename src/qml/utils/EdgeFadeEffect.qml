@@ -5,6 +5,9 @@ import QtQuick
 import QtQuick.Effects
 
 /*!
+   \qmltype EdgeFadeEffect
+   \inqmlmodule org.kde.bigscreen.ui
+   
    \brief Fades the top and bottom edges of an item to transparent.
 
    Use it as the layer effect of a scrolling view, so content leaving the view fades

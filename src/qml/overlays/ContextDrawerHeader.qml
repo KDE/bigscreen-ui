@@ -7,6 +7,9 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype ContextDrawerHeader
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief The header on a ContextDrawer, containing a title, subtitle and icon.
  */
 ColumnLayout {

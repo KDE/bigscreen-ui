@@ -8,6 +8,9 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype NavigationBar
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A row of tabs across the top of the screen for switching between the main
    pages of an application.
 

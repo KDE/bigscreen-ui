@@ -8,6 +8,13 @@ import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype ComboBoxDelegate
+   \inqmlmodule org.kde.bigscreen.ui
+
+   \brief Combined button and popup list for selecting options.
+   \sa ComboBox
+ */
 ItemDelegate {
     id: root
 

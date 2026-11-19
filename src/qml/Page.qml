@@ -7,6 +7,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype Page
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Page
+
    \brief A page of an app.
 
    The content fills the whole page, so it can reach the edges of the screen, such as a row

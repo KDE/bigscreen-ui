@@ -6,6 +6,13 @@ import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype TextField
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::TextField
+
+   \brief A field for text input.
+ */
 T.TextField {
     id: root
 

@@ -7,6 +7,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype ProgressBar
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::ProgressBar
+
    \brief A progress bar.
  */
 T.ProgressBar {

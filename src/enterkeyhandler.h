@@ -15,6 +15,9 @@
 class QQuickItem;
 
 /*!
+   \qmltype EnterKeyHandler
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief Attached property that makes the Enter key work like a mouse button on a button when selected.
 
    Pressing Enter while the button is selected clicks the button. Holding Enter emits the pressAndHold() event
@@ -29,6 +32,11 @@ class QQuickItem;
 class EnterKeyHandler : public QObject
 {
     Q_OBJECT
+
+    /*!
+       \qmlattachedproperty bool EnterKeyHandler::enabled
+       \brief Enable the handler on the item.
+    */
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged FINAL)
     QML_ELEMENT
     QML_UNCREATABLE("Attached property only")

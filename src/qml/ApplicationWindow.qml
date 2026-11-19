@@ -7,6 +7,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype ApplicationWindow
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::ApplicationWindow
+
    \brief A top-level window with a stack of pages, and an optional navigation bar and sidebar.
 
    \code
@@ -62,7 +66,7 @@ T.ApplicationWindow {
     readonly property QtObject __colorSchemeManager: ColorSchemeManager
 
     /*!
-       \brief Replace all pages (including stacked ones) with the given page.
+       \brief Replace all pages (including stacked ones) with \a page.
      */
     function showPage(page: var): void {
         if (stack.depth > 1) {

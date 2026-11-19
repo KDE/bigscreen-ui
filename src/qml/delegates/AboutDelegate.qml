@@ -8,6 +8,9 @@ import org.kde.kirigami as Kirigami
 import org.kde.coreaddons as Core
 
 /*!
+   \qmltype AboutDelegate
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A delegate that opens the app's AboutPage, for a settings page or menu.
 
    It shows the app's name, version and icon, and pushes the AboutPage onto the window's page

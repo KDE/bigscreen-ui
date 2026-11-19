@@ -7,6 +7,10 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype StackView
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::StackView
+
    \brief A stack of pages that crossfades when pages are pushed, popped or replaced.
  */
 T.StackView {

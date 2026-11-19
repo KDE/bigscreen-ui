@@ -7,6 +7,9 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype HeroBanner
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief Large title, metadata and description for a featured or focused piece of media,
    with a row of actions underneath.
 

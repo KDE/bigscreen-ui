@@ -6,6 +6,9 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype BackdropImage
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief Full-screen artwork that fades into the window background on the left and at the
    bottom, so text drawn over it stays readable.
  */

@@ -8,6 +8,13 @@ import QtQuick.Effects
 
 import org.kde.kirigami as Kirigami
 
+/*!
+   \qmltype Button
+   \inqmlmodule org.kde.bigscreen.ui
+   \inherits QtQuick.Controls::Button
+
+   \brief A regular button.
+ */
 T.Button {
     id: root
 

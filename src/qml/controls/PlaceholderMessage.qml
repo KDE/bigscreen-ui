@@ -8,6 +8,9 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 
 /*!
+   \qmltype PlaceholderMessage
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A large icon and message shown in place of content that is empty or failed
    to load, with an optional action.
 

@@ -7,6 +7,9 @@ import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
 /*!
+   \qmltype MediaGrid
+   \inqmlmodule org.kde.bigscreen.ui
+
    \brief A vertically scrolling grid of MediaCards, such as the contents of a folder or a
    library.
 
