@@ -89,7 +89,7 @@ T.ItemDelegate {
 
     Accessible.name: subtitle.length > 0 ? text + ", " + subtitle : text
 
-    onPressed: root.forceActiveFocus()
+    onPressed: root.forceActiveFocus(Qt.MouseFocusReason)
     EnterKeyHandler.enabled: true
 
     onActiveFocusChanged: {

@@ -110,7 +110,13 @@ FocusScope {
             highlightFollowsCurrentItem: false
 
             // Keep the current item at the left padding until the end of the row is reached
-            onCurrentItemChanged: scrollToCurrent()
+            onCurrentItemChanged: {
+                // Skip for mouse or touch
+                if (!(currentItem?.activeFocus && currentItem.focusReason === Qt.MouseFocusReason)) {
+                    scrollToCurrent();
+                }
+            }
+            onMovementStarted: scrollAnimation.stop()
             onWidthChanged: {
                 ensureCurrent();
                 scrollToCurrent();

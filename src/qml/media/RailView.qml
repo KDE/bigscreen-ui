@@ -50,7 +50,14 @@ ListView {
 
     highlightFollowsCurrentItem: false
 
-    onCurrentItemChanged: scrollToCurrent()
+    // Skip scrolling when focus arrived by mouse or touch, so the view doesn't move under a drag
+    onCurrentItemChanged: {
+        const focusItem = Window.activeFocusItem;
+        if (!(focusItem?.activeFocus && focusItem.focusReason === Qt.MouseFocusReason)) {
+            scrollToCurrent();
+        }
+    }
+    onMovementStarted: scrollAnimation.stop()
 
     function scrollToCurrent(): void {
         if (!currentItem) {
